@@ -36,33 +36,38 @@ void s21_print_decimal_number(s21_decimal *num) {
 int main(void) {
   s21_decimal bit_number = {0};
   s21_decimal bit_number_2 = {0};
+  s21_decimal bit_number_3 = {0};
   s21_decimal bit_number_result = {0};
+  s21_decimal bit_number_result_2 = {0};
   int dst = 245;
 
   // ---------работа с int------------
 
-  // printf("%d", get_bit_from_not_decimal(i, 31));
-  s21_from_int_to_decimal(2147483646, &bit_number);
-  s21_from_int_to_decimal(10, &bit_number_2);
+  s21_from_int_to_decimal(123456, &bit_number);
+  s21_from_int_to_decimal(234567, &bit_number_2);
+  // s21_from_int_to_decimal(2147483647, &bit_number_3);
   // dst = s21_sub(bit_number, bit_number_2, &bit_number_result);
   // dst = s21_add(bit_number, bit_number_2, &bit_number_result);
 
-  printf("first dec number\n");
-  s21_print_decimal_number(&bit_number);
-  printf("second dec number\n");
-  s21_print_decimal_number(&bit_number_2);
-  s21_mul(bit_number, bit_number_2, &bit_number_result);
-  printf("result dec number\n");
-  s21_print_decimal_number(&bit_number_result);
+  // printf("first dec number\n");
+  // s21_print_decimal_number(&bit_number);
+  // printf("second dec number\n");
+  // s21_print_decimal_number(&bit_number_2);
+  // s21_sub(bit_number, bit_number_2, &bit_number_result);
+  // printf("result dec number\n");
+  // s21_print_decimal_number(&bit_number_result);
+
   // // set_dec_number_to_0(&bit_number);
   // print_decimal_number(&bit_number_result);
   // int res_2 = s21_from_decimal_to_int(bit_number_2, &dst_2);
 
   // (void)ress;
   // (void)ress_2;
-  // (void)bit_number;
+  (void)bit_number;
   (void)bit_number_2;
+  (void)bit_number_3;
   (void)bit_number_result;
+  (void)bit_number_result_2;
   (void)dst;
 
   // printf("code_of _errors = %d\n", ress);
@@ -80,17 +85,29 @@ int main(void) {
 
   // int i = 0;
   // while (i != 128) {
-  //   if (i == 31 || i == 0) {
-  //     s21_set_bit_1(&bit_number, i);
+  //   if (i > 42 && i < 73) {
+  //     s21_set_bit_1(&bit_number, i);  // число
   //   }
-  //   if (i == 127) {
-  //     s21_set_bit_1(&bit_number, i);  // знак
+  //   if ((i > 32 && i < 40) || i < 30) {
+  //     s21_set_bit_1(&bit_number_2, i);  // число
   //   }
-  //   if (i == 112 || i == 115) {
-  //     s21_set_bit_1(&bit_number, i);  // степень
-  //   }
+  //   // if (i == 127) {
+  //   //   s21_set_bit_1(&bit_number, i);  // знак
+  //   // }
+  //   // if (i == 112 || i == 115) {
+  //   //   s21_set_bit_1(&bit_number, i);  // степень
+  //   // }
   //   i++;
   // }
+
+  printf("first dec number\n");
+  s21_print_decimal_number(&bit_number);
+  printf("second dec number\n");
+  s21_print_decimal_number(&bit_number_2);
+  s21_mul(bit_number, bit_number_2, &bit_number_result);
+  printf("result dec number\n");
+  s21_print_decimal_number(&bit_number_result);
+
   // printf("i = %d\n", i);
   // printf("децимал перед входом в функцию\n");
   // // div_decimal_by_10(&bit_number);

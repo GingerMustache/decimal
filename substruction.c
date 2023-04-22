@@ -10,7 +10,7 @@ int s21_sub(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
   int flag_bit_min = 0;
   int bit_of_num_1 = 0;
   int bit_of_num_2 = 0;
-
+  // сравнение не работает с числами выше 31 бита
   if (s21_is_greater(value_1, value_2)) {
     val_1 = value_1;
     val_2 = value_2;
@@ -52,7 +52,6 @@ int s21_sub(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
     index_bit++;
   }
   *result = tmp;
-  // if (sign_flag) set_sign_of_number(result, -1); //Не понятно пока
 
   return output;
 }

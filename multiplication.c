@@ -5,11 +5,13 @@ int s21_mul(s21_decimal value_1, s21_decimal value_2, s21_decimal* result) {
   int count_1 = 0, count_2 = 0;
   int val_1 = 0, val_2 = 0;
   int index = 0;
-  int res_of_summ = 0;
+  unsigned long long res_of_summ = 0;
 
   if (result) {
     s21_decimal step = {0};
-    while (index != 7) {  // проверка что на что умножать будет
+    s21_set_dec_number_to_0(result);
+
+    while (index != 32) {  // проверка что на что умножать будет
       val_1 = s21_get_bit(&value_1, index);
       val_2 = s21_get_bit(&value_2, index);
       count_1 += val_1;
@@ -29,7 +31,7 @@ int s21_mul(s21_decimal value_1, s21_decimal value_2, s21_decimal* result) {
         index++;
       }
     } else {
-      while (index != 96) {
+      while (index != 96) {  // проверить переполнение
         if (s21_get_bit(&value_2, index)) {
           step = value_1;
           s21_shift_bits(&step, index);
