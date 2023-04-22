@@ -125,7 +125,7 @@ int main(void) {
   printf("децимал перед входом в функцию\n");
   s21_print_decimal_number(&bit_number);
   printf("децимал после входа в функцию\n");
-  printf("Output = %d\n", s21_truncate(bit_number, &bit_number_result));
+  printf("Output = %d\n", s21_negate(bit_number, &bit_number_result));
   s21_print_decimal_number(&bit_number_result);
   // printf("Power = %d\n", get_power_of_decimal(bit_number));
   // printf("output = %d\n", s21_from_decimal_to_float(bit_number,
