@@ -42,15 +42,16 @@ int main(void) {
   // ---------работа с int------------
 
   // printf("%d", get_bit_from_not_decimal(i, 31));
-  s21_from_int_to_decimal(2, &bit_number);
-  s21_from_int_to_decimal(16, &bit_number_2);
-  dst = s21_sub(bit_number, bit_number_2, &bit_number_result);
+  s21_from_int_to_decimal(2147483646, &bit_number);
+  s21_from_int_to_decimal(10, &bit_number_2);
+  // dst = s21_sub(bit_number, bit_number_2, &bit_number_result);
   // dst = s21_add(bit_number, bit_number_2, &bit_number_result);
 
   printf("first dec number\n");
   s21_print_decimal_number(&bit_number);
   printf("second dec number\n");
   s21_print_decimal_number(&bit_number_2);
+  s21_mul(bit_number, bit_number_2, &bit_number_result);
   printf("result dec number\n");
   s21_print_decimal_number(&bit_number_result);
   // // set_dec_number_to_0(&bit_number);
