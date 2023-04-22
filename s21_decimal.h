@@ -63,5 +63,6 @@ void s21_div_decimal_by_10(s21_decimal *num);
 s21_decimal s21_decimal_get_inf(void);
 void s21_set_power_of_decimal(s21_decimal *src, int power);
 int s21_truncate(s21_decimal value, s21_decimal *result);
+int s21_negate(s21_decimal value, s21_decimal *result);
 
 #endif  // _SRC_S21_DECIMAL_H_
