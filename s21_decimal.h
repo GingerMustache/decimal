@@ -64,10 +64,12 @@ int s21_truncate(s21_decimal value, s21_decimal *result);
 int s21_negate(s21_decimal value, s21_decimal *result);
 int s21_sign_handle(s21_decimal *value_1, s21_decimal *value_2,
                     s21_decimal *result, int function);
+
 //------------------------Сдвиги----------------------//
 void s21_shift_bits(s21_decimal *dec_num, int index);
-void s21_shift_31(s21_decimal *dec_num, int flg_63);
+void s21_shift_31(s21_decimal *dec_num, int flg_31, int flg_63);
 void s21_shift_63(s21_decimal *dec_num);
+
 //------------------------Сравнение----------------------//
 int s21_is_greater(s21_decimal num_1, s21_decimal num_2);
 int s21_is_greater_or_equal(s21_decimal num_1, s21_decimal num_2);
