@@ -44,7 +44,6 @@ void s21_shift_bits(s21_decimal *dec_num, int index);
 int s21_from_int_to_decimal(int src, s21_decimal *dst);
 int s21_from_decimal_to_int(s21_decimal src, int *dst);
 void s21_print_decimal_number(s21_decimal *num);
-int s21_is_greater(s21_decimal num_1, s21_decimal num_2);
 int s21_add(s21_decimal value_1, s21_decimal value_2, s21_decimal *result);
 int s21_sub(s21_decimal value_1, s21_decimal value_2, s21_decimal *result);
 int s21_mul(s21_decimal value_1, s21_decimal value_2, s21_decimal *result);
@@ -64,5 +63,11 @@ s21_decimal s21_decimal_get_inf(void);
 void s21_set_power_of_decimal(s21_decimal *src, int power);
 int s21_truncate(s21_decimal value, s21_decimal *result);
 int s21_negate(s21_decimal value, s21_decimal *result);
-void multiply_by_10(s21_decimal *num);
+//------------------------Сравнение----------------------//
+int s21_is_greater(s21_decimal num_1, s21_decimal num_2);
+int s21_is_greater_or_equal(s21_decimal num_1, s21_decimal num_2);
+int s21_is_less(s21_decimal num_1, s21_decimal num_2);
+int s21_is_less_or_equal(s21_decimal num_1, s21_decimal num_2);
+int s21_is_equal(s21_decimal num_1, s21_decimal num_2);
+int s21_is_not_equal(s21_decimal num_1, s21_decimal num_2);
 #endif  // _SRC_S21_DECIMAL_H_
