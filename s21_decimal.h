@@ -63,6 +63,8 @@ s21_decimal s21_decimal_get_inf(void);
 void s21_set_power_of_decimal(s21_decimal *src, int power);
 int s21_truncate(s21_decimal value, s21_decimal *result);
 int s21_negate(s21_decimal value, s21_decimal *result);
+int sign_handle(s21_decimal *value_1, s21_decimal *value_2, s21_decimal *result,
+                int function);
 //------------------------Сравнение----------------------//
 int s21_is_greater(s21_decimal num_1, s21_decimal num_2);
 int s21_is_greater_or_equal(s21_decimal num_1, s21_decimal num_2);
