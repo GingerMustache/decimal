@@ -43,8 +43,8 @@ int main(void) {
 
   // ---------работа с int------------
 
-  s21_from_int_to_decimal(-2, &bit_number);
-  s21_from_int_to_decimal(-3, &bit_number_2);
+  s21_from_int_to_decimal(1234567, &bit_number);
+  s21_from_int_to_decimal(1234567, &bit_number_2);
   // s21_from_int_to_decimal(2147483647, &bit_number_3);
   // dst = s21_sub(bit_number, bit_number_2, &bit_number_result);
   // dst = s21_add(bit_number, bit_number_2, &bit_number_result);
@@ -85,18 +85,18 @@ int main(void) {
 
   // int i = 0;
   // while (i != 128) {
-  //   if (i == 1 || i == 3) {
+  //   if (i == 31 || i == 30) {
   //     s21_set_bit_1(&bit_number, i);  // число
   //   }
-  //   if (i == 0) {
+  //   if (i == 2) {
   //     s21_set_bit_1(&bit_number_2, i);  // число
   //   }
   //   // if (i == 127) {
   //   //   s21_set_bit_1(&bit_number, i);  // знак
   //   // }
-  //   if (i == 112) {
-  //     s21_set_bit_1(&bit_number_2, i);  // степень
-  //   }
+  //   // if (i == 112) {
+  //   //   s21_set_bit_1(&bit_number_2, i);  // степень
+  //   // }
   //   i++;
   // }
 
@@ -105,7 +105,7 @@ int main(void) {
   printf("second dec number\n");
   s21_print_decimal_number(&bit_number_2);
   printf("result of function = %d\n",
-         s21_sub(bit_number, bit_number_2, &bit_number_result));
+         s21_mul(bit_number, bit_number_2, &bit_number_result));
   printf("result dec number\n");
   s21_print_decimal_number(&bit_number_result);
 

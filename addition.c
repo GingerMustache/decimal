@@ -1,7 +1,6 @@
 #include "s21_decimal.h"
 
 // add checks of overflow
-// добавить проверку знака
 // добавить normalize
 int s21_add(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
   int output = CONVERSATION_ERROR;

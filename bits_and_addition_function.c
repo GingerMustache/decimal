@@ -55,10 +55,29 @@ int s21_inverse_bit(s21_decimal *dec_num, int index) {
   return dec_num->bits[getRow] ^= (1 << getCol);
 }
 
-// schould make not only for int ??
+// осталось только ускорить на 32 - индекс (-)
+// добавить 63 индекс в исключения
 void s21_shift_bits(s21_decimal *dec_num, int index) {
-  int getRow = s21_get_row(index);
-  dec_num->bits[getRow] = dec_num->bits[getRow] << index;
+  // int getRow = s21_get_row(index);
+  int flg_31 = 1;
+  while (index) {
+    if (s21_get_bit(dec_num, 31)) {
+      dec_num->bits[1] = dec_num->bits[1] << 1;
+      s21_set_bit_1(dec_num, 32);
+      s21_set_bit_0(dec_num, 31);
+      dec_num->bits[0] = dec_num->bits[0] << 1;
+      dec_num->bits[2] = dec_num->bits[2] << 1;
+      flg_31 = 0;
+    }
+    if (flg_31) {
+      dec_num->bits[0] = dec_num->bits[0] << 1;
+      dec_num->bits[1] = dec_num->bits[1] << 1;
+      dec_num->bits[2] = dec_num->bits[2] << 1;
+    }
+    flg_31 = 1;
+    index--;
+  }
+  // dec_num->bits[getRow] = dec_num->bits[getRow] << index;
 }
 
 int s21_get_float_bit(int num, int index) { return (num & (1 << index)) != 0; };
