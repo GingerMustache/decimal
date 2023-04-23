@@ -1,13 +1,13 @@
 #include "s21_decimal.h"
-
+// работает только для int
 int s21_mul(s21_decimal value_1, s21_decimal value_2, s21_decimal* result) {
-  int output = 0;
-  int count_1 = 0, count_2 = 0;
-  int val_1 = 0, val_2 = 0;
-  int index = 0;
-  unsigned long long res_of_summ = 0;
+  int output = CONVERSATION_ERROR;
 
   if (result) {
+    int count_1 = 0, count_2 = 0;
+    int val_1 = 0, val_2 = 0;
+    int index = 0;
+    unsigned long long res_of_summ = 0;
     s21_decimal step = {0};
     s21_set_dec_number_to_0(result);
 
@@ -42,6 +42,7 @@ int s21_mul(s21_decimal value_1, s21_decimal value_2, s21_decimal* result) {
       }
     }
     (void)res_of_summ;
+    output = CONVERSATION_OK;
   }
   return output;
 }

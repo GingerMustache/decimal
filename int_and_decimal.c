@@ -34,7 +34,6 @@ int s21_from_decimal_to_int(s21_decimal src, int *dst) {
     int power_of_decimal = s21_get_power_of_decimal(src);
 
     if (power_of_decimal < 28) {
-      output = CONVERSATION_OK;
       *dst = 0;
       int sign = s21_get_bit(&src, 127);
       int index = 0;
@@ -60,6 +59,8 @@ int s21_from_decimal_to_int(s21_decimal src, int *dst) {
         *dst = buffer;
       }
       printf("buffer = %lld\n", buffer);  // delete
+
+      output = CONVERSATION_OK;
     }
   }
 

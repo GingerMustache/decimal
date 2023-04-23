@@ -60,8 +60,8 @@ int s21_get_float_exp_from_string(char *str) {
 }
 
 int s21_from_float_to_decimal(float src, s21_decimal *dst) {
+  int output = CONVERSATION_OK;
   int count_significant_decimal_digits = 6;
-  int output = 0;
   int zero_scale = 0;
   int scale = 0;
   int scale_of_float = 0;
@@ -172,6 +172,7 @@ int s21_from_decimal_to_float(s21_decimal src, float *dst) {
       if (get_sign) tmp *= -1;
 
       *dst = (float)tmp;
+
       output = CONVERSATION_OK;
     }
   }

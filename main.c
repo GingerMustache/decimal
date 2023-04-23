@@ -43,8 +43,8 @@ int main(void) {
 
   // ---------работа с int------------
 
-  s21_from_int_to_decimal(123456, &bit_number);
-  s21_from_int_to_decimal(234567, &bit_number_2);
+  s21_from_int_to_decimal(12342, &bit_number);
+  s21_from_int_to_decimal(12342, &bit_number_2);
   // s21_from_int_to_decimal(2147483647, &bit_number_3);
   // dst = s21_sub(bit_number, bit_number_2, &bit_number_result);
   // dst = s21_add(bit_number, bit_number_2, &bit_number_result);
@@ -85,10 +85,10 @@ int main(void) {
 
   // int i = 0;
   // while (i != 128) {
-  //   if (i > 42 && i < 73) {
+  //   if (i == 65 || i < 35) {
   //     s21_set_bit_1(&bit_number, i);  // число
   //   }
-  //   if ((i > 32 && i < 40) || i < 30) {
+  //   if (i == 65 || i < 34) {
   //     s21_set_bit_1(&bit_number_2, i);  // число
   //   }
   //   // if (i == 127) {
@@ -104,9 +104,10 @@ int main(void) {
   s21_print_decimal_number(&bit_number);
   printf("second dec number\n");
   s21_print_decimal_number(&bit_number_2);
-  s21_mul(bit_number, bit_number_2, &bit_number_result);
-  printf("result dec number\n");
-  s21_print_decimal_number(&bit_number_result);
+  printf("result of comparence = %d\n",
+         s21_is_greater(bit_number, bit_number_2));
+  // printf("result dec number\n");
+  // s21_print_decimal_number(&bit_number_result);
 
   // printf("i = %d\n", i);
   // printf("децимал перед входом в функцию\n");
