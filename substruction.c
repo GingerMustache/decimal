@@ -8,9 +8,17 @@ int s21_sub(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
   if (!result) {
     output = CONVERSATION_ERROR;
 
-  } else if (sign_1 == sign_2) {  // не правильно работает
+  } else if ((sign_1 == 1 && sign_2 == 0)) {  // не правильно работает
+    s21_set_bit_1(&value_2, 127);
     output = s21_add(value_1, value_2, result);
+
+  } else if ((sign_1 == 0 && sign_2 == 1)) {
+    s21_set_bit_0(&value_2, 127);
+    output = s21_add(value_1, value_2, result);
+
   } else {
+    s21_set_bit_0(&value_1, 127);
+    s21_set_bit_0(&value_2, 127);
     s21_decimal val_1 = {0};
     s21_decimal val_2 = {0};
     s21_decimal tmp = {0};
@@ -23,10 +31,12 @@ int s21_sub(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
     if (s21_is_greater(value_1, value_2)) {
       val_1 = value_1;
       val_2 = value_2;
+      if (sign_1 == 1) s21_set_bit_1(&tmp, 127);
     } else {
       val_1 = value_2;
       val_2 = value_1;
-      s21_set_bit_1(&tmp, 127);  // смена знака на -
+      if ((sign_2 == 0 && sign_1 == 0)) s21_set_bit_1(&tmp, 127);
+      if ((sign_2 == 1 && sign_1 == 1)) s21_set_bit_0(&tmp, 127);
     }
 
     while (index_bit != 96) {
