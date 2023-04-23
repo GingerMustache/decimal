@@ -43,8 +43,8 @@ int main(void) {
 
   // ---------работа с int------------
 
-  s21_from_int_to_decimal(12345656, &bit_number);
-  s21_from_int_to_decimal(12345657, &bit_number_2);
+  s21_from_int_to_decimal(-2, &bit_number);
+  s21_from_int_to_decimal(2, &bit_number_2);
   // s21_from_int_to_decimal(2147483647, &bit_number_3);
   // dst = s21_sub(bit_number, bit_number_2, &bit_number_result);
   // dst = s21_add(bit_number, bit_number_2, &bit_number_result);
@@ -104,10 +104,10 @@ int main(void) {
   s21_print_decimal_number(&bit_number);
   printf("second dec number\n");
   s21_print_decimal_number(&bit_number_2);
-  printf("result of comparence = %d\n",
-         s21_is_greater_or_equal(bit_number, bit_number_2));
-  // printf("result dec number\n");
-  // s21_print_decimal_number(&bit_number_result);
+  printf("result of function = %d\n",
+         s21_sub(bit_number, bit_number_2, &bit_number_result));
+  printf("result dec number\n");
+  s21_print_decimal_number(&bit_number_result);
 
   // printf("i = %d\n", i);
   // printf("децимал перед входом в функцию\n");

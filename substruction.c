@@ -2,8 +2,15 @@
 
 int s21_sub(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
   int output = CONVERSATION_ERROR;
+  int sign_1 = s21_get_bit(&value_1, 127);
+  int sign_2 = s21_get_bit(&value_2, 127);
 
-  if (result) {
+  if (!result) {
+    output = CONVERSATION_ERROR;
+
+  } else if (sign_1 == sign_2) {  // не правильно работает
+    output = s21_add(value_1, value_2, result);
+  } else {
     s21_decimal val_1 = {0};
     s21_decimal val_2 = {0};
     s21_decimal tmp = {0};
