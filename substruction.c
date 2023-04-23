@@ -1,7 +1,7 @@
 #include "s21_decimal.h"
 
-int sign_handle(s21_decimal *value_1, s21_decimal *value_2, s21_decimal *result,
-                int function) {
+int s21_sign_handle(s21_decimal *value_1, s21_decimal *value_2,
+                    s21_decimal *result, int function) {
   // function = 0 (from s21_add)
   // function = 1 (from s21_sub)
   int output = 0;
@@ -43,7 +43,7 @@ int s21_sub(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
   int output = CONVERSATION_ERROR;
   int sign_1 = s21_get_bit(&value_1, 127);
   int sign_2 = s21_get_bit(&value_2, 127);
-  output = sign_handle(&value_1, &value_2, result, 1);
+  output = s21_sign_handle(&value_1, &value_2, result, 1);
 
   if (!result) {
     output = CONVERSATION_ERROR;

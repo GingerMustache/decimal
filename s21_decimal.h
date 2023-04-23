@@ -40,7 +40,6 @@ void s21_set_bit_1(s21_decimal *dec_num, int index);
 void s21_set_bit_0(s21_decimal *dec_num, int index);
 void s21_set_dec_number_to_0(s21_decimal *src_num);
 int s21_inverse_bit(s21_decimal *dec_num, int index);
-void s21_shift_bits(s21_decimal *dec_num, int index);
 int s21_from_int_to_decimal(int src, s21_decimal *dst);
 int s21_from_decimal_to_int(s21_decimal src, int *dst);
 void s21_print_decimal_number(s21_decimal *num);
@@ -63,8 +62,12 @@ s21_decimal s21_decimal_get_inf(void);
 void s21_set_power_of_decimal(s21_decimal *src, int power);
 int s21_truncate(s21_decimal value, s21_decimal *result);
 int s21_negate(s21_decimal value, s21_decimal *result);
-int sign_handle(s21_decimal *value_1, s21_decimal *value_2, s21_decimal *result,
-                int function);
+int s21_sign_handle(s21_decimal *value_1, s21_decimal *value_2,
+                    s21_decimal *result, int function);
+//------------------------Сдвиги----------------------//
+void s21_shift_bits(s21_decimal *dec_num, int index);
+void s21_shift_31(s21_decimal *dec_num, int flg_63);
+void s21_shift_63(s21_decimal *dec_num);
 //------------------------Сравнение----------------------//
 int s21_is_greater(s21_decimal num_1, s21_decimal num_2);
 int s21_is_greater_or_equal(s21_decimal num_1, s21_decimal num_2);

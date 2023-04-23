@@ -6,7 +6,7 @@ int s21_add(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
   int output = CONVERSATION_ERROR;
   int sign_1 = s21_get_bit(&value_1, 127);
   // int sign_2 = s21_get_bit(&value_2, 127);
-  output = sign_handle(&value_1, &value_2, result, 0);
+  output = s21_sign_handle(&value_1, &value_2, result, 0);
 
   if (!result) {
     output = CONVERSATION_ERROR;
