@@ -15,10 +15,16 @@ int s21_add(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
     char flag_bit_1 = 0;
     int num_1 = 0;
     int num_2 = 0;
+    int power_of_1 = s21_get_power_of_decimal(value_1);
+    int power_of_2 = s21_get_power_of_decimal(value_2);
+    int power_of_result = 0;
     s21_decimal tmp = {0};
 
     if (sign_1) s21_set_bit_1(&tmp, 127);  // постановка знака чисел
-    s21_normalize(&value_1, &value_2);  // нормализация
+
+    if (power_of_1 && power_of_2) {
+      power_of_result = s21_normalize(&value_1, &value_2);  // нормализация
+    }
 
     while (index != 96) {
       num_1 = s21_get_bit(&value_1, index);
@@ -50,6 +56,7 @@ int s21_add(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
       index++;
     }
     *result = tmp;
+    s21_set_power_of_decimal(result, power_of_result);
     output = CONVERSATION_OK;
   }
 
