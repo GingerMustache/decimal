@@ -131,15 +131,15 @@ int main(void) {
   // }
   // bit_number.bits[2] = bit_number.bits[2] << 31;
 
-  printf("Output = %d\n", s21_from_float_to_decimal(10.1, &bit_number));
-  printf("Output = %d\n", s21_from_float_to_decimal(10.12, &bit_number_2));
+  printf("Output = %d\n", s21_from_float_to_decimal(-0.1234, &bit_number));
+  printf("Output = %d\n", s21_from_float_to_decimal(12345.353, &bit_number_2));
   // printf("децимал перед входом в функцию\n");
   printf("\nfirst dec number\n");
   s21_print_decimal_number(&bit_number);
   printf("\nsecond dec number\n");
   s21_print_decimal_number(&bit_number_2);
   printf("result of function = %d\n",
-         s21_add(bit_number, bit_number_2, &bit_number_result));
+         s21_mul(bit_number, bit_number_2, &bit_number_result));
   // // normalize(&bit_number, &bit_number_2);
   printf("result dec number\n");
   s21_print_decimal_number(&bit_number_result);

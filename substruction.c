@@ -1,5 +1,6 @@
 #include "s21_decimal.h"
 
+// функция для принятия решения (-) или (+)
 int s21_sign_handle(s21_decimal *value_1, s21_decimal *value_2,
                     s21_decimal *result, int function) {
   // function = 0 (from s21_add)
@@ -47,15 +48,6 @@ int s21_sub(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
 
   if (!result) {
     output = CONVERSATION_ERROR;
-
-    // } else if ((sign_1 == 1 && sign_2 == 0)) {  // не правильно работает
-    //   s21_set_bit_1(&value_2, 127);
-    //   output = s21_add(value_1, value_2, result);
-
-    // } else if ((sign_1 == 0 && sign_2 == 1)) {
-    //   s21_set_bit_0(&value_2, 127);
-    //   output = s21_add(value_1, value_2, result);
-
   } else if (output == 2) {
     s21_set_bit_0(&value_1, 127);
     s21_set_bit_0(&value_2, 127);
@@ -67,6 +59,13 @@ int s21_sub(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
     int flag_bit_min = 0;
     int bit_of_num_1 = 0;
     int bit_of_num_2 = 0;
+    int power_of_result = 0;
+    int power_of_1 = s21_get_power_of_decimal(value_1);
+    int power_of_2 = s21_get_power_of_decimal(value_2);
+
+    if (power_of_1 && power_of_2) {
+      power_of_result = s21_normalize(&value_1, &value_2);  // нормализация
+    }
 
     if (s21_is_greater(value_1, value_2)) {
       val_1 = value_1;
@@ -113,7 +112,7 @@ int s21_sub(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
       index_bit++;
     }
     *result = tmp;
-
+    s21_set_power_of_decimal(result, power_of_result);
     output = CONVERSATION_OK;
   }
 
