@@ -18,6 +18,7 @@ int s21_add(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
     s21_decimal tmp = {0};
 
     if (sign_1) s21_set_bit_1(&tmp, 127);  // постановка знака чисел
+    s21_normalize(&value_1, &value_2);  // нормализация
 
     while (index != 96) {
       num_1 = s21_get_bit(&value_1, index);

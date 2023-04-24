@@ -44,11 +44,16 @@ int s21_rewrite_float_bits_to_buff(s21_decimal *buff,
   return (scale -= 127);
 }
 
-int s21_get_float_exp_from_string(char *str) {
+int get_float_exp_from_string(char *str, int *sign_of_float_power) {
   int result = 0;
   char *ptr = str;
   while (*ptr) {
     if (*ptr == 'E') {
+      if (*(ptr + 1) == '+') {
+        *sign_of_float_power = 1;
+      } else if (*(ptr + 1) == '-') {
+        *sign_of_float_power = 2;
+      }
       ++ptr;
       result = strtol(ptr, NULL, 10);
       break;
@@ -65,6 +70,7 @@ int s21_from_float_to_decimal(float src, s21_decimal *dst) {
   int zero_scale = 0;
   int scale = 0;
   int scale_of_float = 0;
+  int sign_of_float_power = 0;
   unsigned long int result = 0;
   char buffer_flt[64];
 
@@ -94,7 +100,8 @@ int s21_from_float_to_decimal(float src, s21_decimal *dst) {
         count_significant_decimal_digits = 28 - zero_scale;
       }
       sprintf(buffer_flt, "%.6E", fabs(src));
-      scale_of_float = s21_get_float_exp_from_string(buffer_flt) + 1;
+      scale_of_float =
+          get_float_exp_from_string(buffer_flt, &sign_of_float_power) + 1;
       if (scale_of_float > 28) {
         output = CONVERSATION_ERROR;
       }
@@ -116,21 +123,22 @@ int s21_from_float_to_decimal(float src, s21_decimal *dst) {
         scale--;
         lenght_of_buffer--;
       }
+
       printf("Строка без точки: %ld\n", result);
       if (zero_scale == 0) {
-        scale = scale - scale_of_float;
+        if (sign_of_float_power == 1 && scale_of_float > 6) {
+          scale = 0;
+        } else {
+          scale = scale - scale_of_float;
+        }
       } else if (zero_scale == 28) {
         scale = zero_scale;
       } else {
         scale = zero_scale + scale - scale_of_float;
       }
       while (scale < 0) {
-        if (zero_scale) {
-          result *= 10;
-          scale++;
-        } else {
-          scale++;
-        }
+        result *= 10;
+        scale++;
       }
     } else {
       output = CONVERSATION_ERROR;
