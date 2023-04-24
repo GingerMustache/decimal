@@ -43,7 +43,7 @@ int main(void) {
 
   // ---------работа с int------------
 
-  // s21_from_int_to_decimal(999999999, &bit_number);
+  s21_from_int_to_decimal(999999999, &bit_number);
   s21_from_int_to_decimal(999999999, &bit_number_2);
   // s21_from_int_to_decimal(2147483647, &bit_number_3);
   // dst = s21_sub(bit_number, bit_number_2, &bit_number_result);
@@ -83,22 +83,22 @@ int main(void) {
 
   // --------работа с deciimal--------
 
-  int i = 0;
-  while (i != 128) {
-    if (i == 40) {
-      s21_set_bit_1(&bit_number, i);  // число
-    }
-    if (i == 2) {
-      s21_set_bit_1(&bit_number_2, i);  // число
-    }
-    // if (i == 127) {
-    //   s21_set_bit_1(&bit_number, i);  // знак
-    // }
-    // if (i == 112) {
-    //   s21_set_bit_1(&bit_number_2, i);  // степень
-    // }
-    i++;
-  }
+  // int i = 0;
+  // while (i != 128) {
+  //   if (i == 40) {
+  //     s21_set_bit_1(&bit_number, i);  // число
+  //   }
+  //   if (i == 2) {
+  //     s21_set_bit_1(&bit_number_2, i);  // число
+  //   }
+  //   // if (i == 127) {
+  //   //   s21_set_bit_1(&bit_number, i);  // знак
+  //   // }
+  //   // if (i == 112) {
+  //   //   s21_set_bit_1(&bit_number_2, i);  // степень
+  //   // }
+  //   i++;
+  // }
   // bit_number.bits[2] = bit_number.bits[2] << 31;
   printf("first dec number\n");
   s21_print_decimal_number(&bit_number);
@@ -156,12 +156,3 @@ int main(void) {
   // (void)res;
   return 0;
 }
-
-/* dashboard
-  - добавить обработку на null inf -inf nan (сделано для float_to_decimal)
-  - написать negeate
-
-  done
-  - add comparence to substruction
-
-*/
