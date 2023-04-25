@@ -40,7 +40,7 @@ int s21_from_decimal_to_int(s21_decimal src, int *dst) {
       long long buffer = 0;  // 20 didgets
 
       while (power_of_decimal) {
-        s21_div_decimal_by_10(&src);
+        s21_div_decimal_by_10(&src);  // заменить потом на нормальное деление
         power_of_decimal--;
       }
       while (index != 96) {

@@ -63,7 +63,7 @@ int s21_sub(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
     int power_of_1 = s21_get_power_of_decimal(value_1);
     int power_of_2 = s21_get_power_of_decimal(value_2);
 
-    if (power_of_1 && power_of_2) {
+    if ((power_of_1 && power_of_2) || (power_of_1 || power_of_2)) {
       power_of_result = s21_normalize(&value_1, &value_2);  // нормализация
     }
 

@@ -21,7 +21,7 @@ int s21_add(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
 
     if (sign_1) s21_set_bit_1(&tmp, 127);  // постановка знака чисел
 
-    if (power_of_1 && power_of_2) {
+    if ((power_of_1 && power_of_2) || (power_of_1 || power_of_2)) {
       power_of_result = s21_normalize(&value_1, &value_2);  // нормализация
     }
 

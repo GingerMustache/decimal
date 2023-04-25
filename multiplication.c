@@ -22,7 +22,7 @@ int s21_mul(s21_decimal value_1, s21_decimal value_2, s21_decimal* result) {
     s21_set_bit_0(&value_2, 127);  // устанавливаем знаки в (+)
     s21_set_bit_0(&value_1, 127);
 
-    if (power_of_1 && power_of_2) {
+    if ((power_of_1 && power_of_2) || (power_of_1 || power_of_2)) {
       s21_normalize(&value_1, &value_2);  // нормализация
     }
 

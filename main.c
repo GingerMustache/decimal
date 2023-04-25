@@ -27,7 +27,7 @@ int s21_normalize(s21_decimal *num_1, s21_decimal *num_2) {
     }
     return (power_num_2);
   }
-  return (0);
+  return (power_num_1);
 }
 
 void s21_print_decimal_number(s21_decimal *num) {
@@ -73,8 +73,8 @@ int main(void) {
 
   // ---------работа с int------------
 
-  // s21_from_int_to_decimal(999999999, &bit_number);
-  // s21_from_int_to_decimal(999999999, &bit_number_2);
+  // s21_from_int_to_decimal(2, &bit_number);
+  // s21_from_int_to_decimal(2, &bit_number_2);
   // s21_from_int_to_decimal(2147483647, &bit_number_3);
   // dst = s21_sub(bit_number, bit_number_2, &bit_number_result);
   // dst = s21_add(bit_number, bit_number_2, &bit_number_result);
@@ -115,35 +115,36 @@ int main(void) {
 
   // int i = 0;
   // while (i != 128) {
-  //   if (i == 0) {
+  //   if (i == 95) {
   //     s21_set_bit_1(&bit_number, i);  // число
   //   }
-  //   if (i == 1 || i == 3) {
+  //   if (i == 95) {
   //     s21_set_bit_1(&bit_number_2, i);  // число
   //   }
-  //   // if (i == 127) {
-  //   //   s21_set_bit_1(&bit_number, i);  // знак
-  //   // }
-  //   if (i == 112) {
-  //     s21_set_bit_1(&bit_number_2, i);  // степень
-  //   }
-  //   i++;
+  // if (i == 127) {
+  //   s21_set_bit_1(&bit_number, i);  // знак
+  // }
+  // if (i == 112) {
+  //   s21_set_bit_1(&bit_number_2, i);  // степень
+  // }
+  // i++;
   // }
   // bit_number.bits[2] = bit_number.bits[2] << 31;
 
-  printf("Output = %d\n", s21_from_float_to_decimal(-2.10, &bit_number));
-  printf("Output = %d\n", s21_from_float_to_decimal(-2.20, &bit_number_2));
+  printf("Output = %d\n", s21_from_float_to_decimal(2.1, &bit_number));
+  printf("Output = %d\n", s21_from_float_to_decimal(2.56745, &bit_number_2));
   // printf("децимал перед входом в функцию\n");
   printf("\nfirst dec number\n");
   s21_print_decimal_number(&bit_number);
   printf("\nsecond dec number\n");
   s21_print_decimal_number(&bit_number_2);
-  printf("res of comparence %d\n", s21_is_greater(bit_number, bit_number_2));
+  printf("res of comparence %d\n",
+         s21_add(bit_number, bit_number_2, &bit_number_result));
   // printf("result of function = %d\n",
   //        s21_mul(bit_number, bit_number_2, &bit_number_result));
   // // normalize(&bit_number, &bit_number_2);
-  // printf("result dec number\n");
-  // s21_print_decimal_number(&bit_number_result);
+  printf("result dec number\n");
+  s21_print_decimal_number(&bit_number_result);
 
   // printf("i = %d\n", i);
   // printf("децимал перед входом в функцию\n");
