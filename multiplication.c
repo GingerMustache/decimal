@@ -13,6 +13,8 @@ int s21_mul(s21_decimal value_1, s21_decimal value_2, s21_decimal* result) {
     s21_set_dec_number_to_0(result);
     s21_decimal tmp = *result;
     // int power_of_result = 0;
+    // степень пропадает при вычислениях и появляется *result = tmp
+    // степепнь сохраняется  в нормализации
     int power_of_1 = s21_get_power_of_decimal(value_1);
     int power_of_2 = s21_get_power_of_decimal(value_2);
     // int res_of_summ = 0; принимал s21_add

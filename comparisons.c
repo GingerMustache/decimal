@@ -1,14 +1,18 @@
 #include "s21_decimal.h"
 
-// need to add comparence of exp part
+// вроде работает нормально
 int s21_is_greater(s21_decimal num_1, s21_decimal num_2) {
   int res_1 = 0, res_2 = 0;
   int i = 95;
   int output = 0;  // 0 - false, 1 - true
   int sign_1 = s21_get_bit(&num_1, 127);
   int sign_2 = s21_get_bit(&num_2, 127);
-  // до if теобходимо разобраться со степенью
+  int power_of_1 = s21_get_power_of_decimal(num_1);
+  int power_of_2 = s21_get_power_of_decimal(num_2);
 
+  if ((power_of_1 && power_of_2) || (power_of_1 || power_of_2)) {
+    s21_normalize(&num_1, &num_2);  // нормализация
+  }
   if (sign_1 < sign_2) {
     output = 1;
   } else if (sign_1 > sign_2) {
@@ -38,14 +42,15 @@ int s21_is_greater(s21_decimal num_1, s21_decimal num_2) {
 int s21_is_less(s21_decimal num_1, s21_decimal num_2) {
   return (s21_is_greater(num_2, num_1));
 }
-
+// вроде работает нормально
 int s21_is_equal(s21_decimal num_1, s21_decimal num_2) {
   int output = 0;
-  // int power_1 = s21_get_power_of_decimal(num_1);
-  // int power_2 = s21_get_power_of_decimal(num_2);
+  int power_of_1 = s21_get_power_of_decimal(num_1);
+  int power_of_2 = s21_get_power_of_decimal(num_2);
 
-  // необходимо добавить нормализацию
-  // 0.1 и степень 1,  должен быть == 1
+  if ((power_of_1 && power_of_2) || (power_of_1 || power_of_2)) {
+    s21_normalize(&num_1, &num_2);  // нормализация
+  }
 
   output = num_1.bits[0] == num_2.bits[0] && num_1.bits[1] == num_2.bits[1] &&
            num_1.bits[2] == num_2.bits[2] && num_1.bits[3] == num_2.bits[3];
