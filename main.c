@@ -131,8 +131,8 @@ int main(void) {
   // }
   // bit_number.bits[2] = bit_number.bits[2] << 31;
 
-  printf("Output = %d\n", s21_from_float_to_decimal(-0.1234, &bit_number));
-  printf("Output = %d\n", s21_from_float_to_decimal(12345.353, &bit_number_2));
+  printf("Output = %d\n", s21_from_float_to_decimal(-1234567, &bit_number));
+  printf("Output = %d\n", s21_from_float_to_decimal(0, &bit_number_2));
   // printf("децимал перед входом в функцию\n");
   printf("\nfirst dec number\n");
   s21_print_decimal_number(&bit_number);

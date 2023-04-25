@@ -73,6 +73,7 @@ void s21_set_power_of_decimal(s21_decimal *src, int power);
 int s21_sign_handle(s21_decimal *value_1, s21_decimal *value_2,
                     s21_decimal *result, int function);
 int s21_normalize(s21_decimal *num_1, s21_decimal *num_2);
+void s21_truncate_zero(s21_decimal *value, int count_zero);
 
 //------------------------Сдвиги(вспомогательные)----------------------//
 void s21_shift_bits(s21_decimal *dec_num, int index);

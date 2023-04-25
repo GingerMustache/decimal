@@ -8,12 +8,21 @@ int s21_truncate(s21_decimal value, s21_decimal *result) {
     int power = s21_get_power_of_decimal(value);
     s21_set_power_of_decimal(&value, 0);
     while (power) {
-      s21_div_decimal_by_10(&value);
+      s21_div_decimal_by_10(&value);  // заменить после на нормальное деление
       power--;
     }
     *result = value;
   }
   return output;
+}
+// убрать в другие функции
+void s21_truncate_zero(s21_decimal *value, int count_zero) {
+  if (value) {
+    while (count_zero) {
+      s21_div_decimal_by_10(value);  // заменить после на нормальное деление
+      count_zero--;
+    }
+  }
 }
 
 int s21_negate(s21_decimal value, s21_decimal *result) {
