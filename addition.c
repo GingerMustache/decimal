@@ -10,6 +10,8 @@ int s21_add(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
   if (!result) {
     output = CONVERSATION_ERROR;
   } else if (output == 2) {
+    output = CONVERSATION_OK;
+
     int index = 0;
     char flag_bit_1 = 0;
     int num_1 = 0;
@@ -25,38 +27,43 @@ int s21_add(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
       power_of_result = s21_normalize(&value_1, &value_2);  // нормализация
     }
 
-    while (index != 96) {
-      num_1 = s21_get_bit(&value_1, index);
-      num_2 = s21_get_bit(&value_2, index);
-
-      if ((num_1 && !num_2) || (!num_1 && num_2)) {
-        if (flag_bit_1) {
-          s21_set_bit_0(&tmp, index);
-          flag_bit_1 = 1;
-        } else {
-          s21_set_bit_1(&tmp, index);
-        }
-      } else if (!num_1 && !num_2) {
-        if (flag_bit_1) {
-          s21_set_bit_1(&tmp, index);
-          flag_bit_1 = 0;
-        } else {
-          s21_set_bit_0(&tmp, index);
-        }
-      } else {  // (num_1 && num_2)
-        if (flag_bit_1) {
-          s21_set_bit_1(&tmp, index);
-          flag_bit_1 = 1;
-        } else {
-          s21_set_bit_0(&tmp, index);
-          flag_bit_1 = 1;
-        }
+    while (index != 97) {
+      if (index >= 96 && flag_bit_1) {
+        output = CONVERSATION_BIG;
+      } else {
+        num_1 = s21_get_bit(&value_1, index);
+        num_2 = s21_get_bit(&value_2, index);
       }
-      index++;
+      if (output == CONVERSATION_OK) {
+        if ((num_1 && !num_2) || (!num_1 && num_2)) {
+          if (flag_bit_1) {
+            s21_set_bit_0(&tmp, index);
+            flag_bit_1 = 1;
+          } else {
+            s21_set_bit_1(&tmp, index);
+          }
+        } else if (!num_1 && !num_2) {
+          if (flag_bit_1) {
+            s21_set_bit_1(&tmp, index);
+            flag_bit_1 = 0;
+          } else {
+            s21_set_bit_0(&tmp, index);
+          }
+        } else {  // (num_1 && num_2)
+          if (flag_bit_1) {
+            s21_set_bit_1(&tmp, index);
+            flag_bit_1 = 1;
+          } else {
+            s21_set_bit_0(&tmp, index);
+            flag_bit_1 = 1;
+          }
+        }
+        index++;
+      }
+      *result = tmp;
+      // постановка степени, нужна проверка на underflow
+      s21_set_power_of_decimal(result, power_of_result);
     }
-    *result = tmp;
-    s21_set_power_of_decimal(result, power_of_result);
-    output = CONVERSATION_OK;
   }
 
   return output;
