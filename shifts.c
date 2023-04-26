@@ -1,4 +1,16 @@
 #include "s21_decimal.h"
+// все возникшие ошибки могут быть из за добавления сдвигов влво и вправо !!
+
+void shift_bit_left(s21_decimal *value, int count) {
+  value->bits[2] <<= count;
+  value->bits[1] <<= count;
+  value->bits[0] <<= count;
+}
+void shift_bit_right(s21_decimal *value, int count) {
+  value->bits[2] >>= count;
+  value->bits[1] >>= count;
+  value->bits[0] >>= count;
+}
 
 // следует добавить проверку на переполнение 95 бита
 void s21_shift_31(s21_decimal *dec_num, int flg_31, int flg_63) {
@@ -85,14 +97,16 @@ void s21_shift_bits(s21_decimal *dec_num, int index) {
            если сдвиг можно сделать без перехода в другие разряды то двигаем все
            на index сразу
         */
-        dec_num->bits[2] <<= index;
-        dec_num->bits[1] <<= index;
-        dec_num->bits[0] <<= index;
+        // dec_num->bits[2] <<= index;
+        // dec_num->bits[1] <<= index;
+        // dec_num->bits[0] <<= index;
+        shift_bit_left(dec_num, index);
         flg_index = 0;
       } else {
-        dec_num->bits[2] <<= 1;
-        dec_num->bits[1] <<= 1;
-        dec_num->bits[0] <<= 1;
+        // dec_num->bits[2] <<= 1;
+        // dec_num->bits[1] <<= 1;
+        // dec_num->bits[0] <<= 1;
+        shift_bit_left(dec_num, 1);
         flg_overlow_index = 0;
       }
     }

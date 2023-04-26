@@ -83,6 +83,8 @@ void s21_shift_bits(s21_decimal *dec_num, int index);
 void s21_shift_31(s21_decimal *dec_num, int flg_31, int flg_63);
 void s21_shift_63(s21_decimal *dec_num);
 int check_index_shift(s21_decimal dec_num, int index);
+void shift_bit_right(s21_decimal *value, int count);
+void shift_bit_left(s21_decimal *value, int count);
 
 //------------------------Работа с битами----------------------//
 int s21_get_col(int bit);
@@ -92,5 +94,6 @@ void s21_set_bit_1(s21_decimal *dec_num, int index);
 void s21_set_bit_0(s21_decimal *dec_num, int index);
 int s21_inverse_bit(s21_decimal *dec_num, int index);
 int s21_get_bit_from_not_decimal(float src, int index);
+int s21_div(s21_decimal value_1, s21_decimal value_2, s21_decimal *result);
 
 #endif  // _SRC_S21_DECIMAL_H_
