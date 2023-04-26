@@ -73,8 +73,8 @@ int main(void) {
 
   // ---------работа с int------------
 
-  s21_from_int_to_decimal(15, &bit_number);
-  s21_from_int_to_decimal(3, &bit_number_2);
+  s21_from_int_to_decimal(35, &bit_number);
+  s21_from_int_to_decimal(8, &bit_number_2);
   // s21_from_int_to_decimal(2147483647, &bit_number_3);
   // dst = s21_sub(bit_number, bit_number_2, &bit_number_result);
   // dst = s21_add(bit_number, bit_number_2, &bit_number_result);

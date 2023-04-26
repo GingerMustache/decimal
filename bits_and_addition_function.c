@@ -49,6 +49,11 @@ void s21_set_dec_number_to_0(s21_decimal *src_num) {
   memset(&(src_num->bits), 0, sizeof(src_num->bits));
 }
 
+int s21_is_decimal_0(s21_decimal dec_num) {
+  s21_decimal zero_decimal = {0};
+  return s21_is_equal(zero_decimal, dec_num);
+}
+
 int s21_inverse_bit(s21_decimal *dec_num, int index) {
   int getRow = s21_get_row(index);
   int getCol = s21_get_col(index);
@@ -65,6 +70,11 @@ void s21_div_decimal_by_10(s21_decimal *num) {
     num->bits[i] = (unsigned int)(tmp / 10);
     rem = (tmp % 10) << 32;
   }
+}
+
+void s21_mul_decimal_by_10(s21_decimal *num) {
+  s21_decimal decimal_10 = {10, 0, 0, 0};
+  s21_mul(*num, decimal_10, num);
 }
 
 int s21_get_power_of_decimal(s21_decimal src) {

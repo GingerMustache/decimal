@@ -67,7 +67,8 @@ int s21_sub(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
       power_of_result = s21_normalize(&value_1, &value_2);  // нормализация
     }
 
-    if (s21_is_greater(value_1, value_2)) {
+    if (s21_is_greater_or_equal(
+            value_1, value_2)) {  // поменя с is_greter на is_greater_or_equal
       val_1 = value_1;
       val_2 = value_2;
       if (sign_1 == 1) s21_set_bit_1(&tmp, 127);
