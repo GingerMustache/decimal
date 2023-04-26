@@ -112,8 +112,8 @@ int s21_sub(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
       }
       index_bit++;
     }
+    s21_set_power_of_decimal(&tmp, power_of_result);
     *result = tmp;
-    s21_set_power_of_decimal(result, power_of_result);
     output = CONVERSATION_OK;
   }
 
