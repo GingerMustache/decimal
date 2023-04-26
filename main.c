@@ -73,8 +73,8 @@ int main(void) {
 
   // ---------работа с int------------
 
-  s21_from_int_to_decimal(35, &bit_number);
-  s21_from_int_to_decimal(8, &bit_number_2);
+  // s21_from_int_to_decimal(15, &bit_number);
+  // s21_from_int_to_decimal(8, &bit_number_2);
   // s21_from_int_to_decimal(2147483647, &bit_number_3);
   // dst = s21_sub(bit_number, bit_number_2, &bit_number_result);
   // dst = s21_add(bit_number, bit_number_2, &bit_number_result);
@@ -131,8 +131,8 @@ int main(void) {
   // }
   // bit_number.bits[2] = bit_number.bits[2] << 31;
 
-  // printf("Output = %d\n", s21_from_float_to_decimal(2, &bit_number));
-  // printf("Output = %d\n", s21_from_float_to_decimal(1.1, &bit_number_2));
+  printf("Output = %d\n", s21_from_float_to_decimal(99.9, &bit_number));
+  printf("Output = %d\n", s21_from_float_to_decimal(33.3, &bit_number_2));
   // printf("децимал перед входом в функцию\n");
   printf("\nfirst dec number\n");
   s21_print_decimal_number(&bit_number);
