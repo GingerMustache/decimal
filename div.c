@@ -17,7 +17,7 @@ int s21_div(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
   }
   s21_decimal tmp_1 = value_1;
   s21_decimal tmp_2 = value_2;
-  // добавить нормализацию
+
   if (result) {
     while (!s21_is_decimal_0(reminder) && power_of_result < 29) {
       s21_set_dec_number_to_0(&reminder);
@@ -27,14 +27,18 @@ int s21_div(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
           // сдвигаем влево tmp_2 пока он <= tmp_1
         }
         if (s21_is_greater(tmp_2, tmp_1)) {
-          shift_bit_right(&tmp_2,
-                          1);  // сдвиг вправо, когда tmp_2 был меньше tmp_1
+          shift_bit_right(&tmp_2, 1);
           power_of_value_2 -= 1;
         }
-        if (s21_is_less_or_equal(tmp_2, tmp_1)) {
-          s21_sub(tmp_1, tmp_2, &tmp_1);
-          s21_set_bit_1(&tmp_result, power_of_value_2);  // ставим бит степени
+        if (power_of_value_2 < 0) {
+          //   shift_bit_left(&tmp_2, 1);
           tmp_2 = value_2;
+        } else {
+          if (s21_is_less_or_equal(tmp_2, tmp_1)) {
+            s21_sub(tmp_1, tmp_2, &tmp_1);
+            s21_set_bit_1(&tmp_result, power_of_value_2);  // ставим бит степени
+            tmp_2 = value_2;
+          }
         }
 
         power_of_value_2 = 0;
@@ -56,7 +60,8 @@ int s21_div(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
       }
     }
     if (power_of_1 > power_of_2) {
-      power_of_result /*был -*/ = power_of_1 - power_of_2;
+      power_of_result -= power_of_1;  //??????? нужно больше тестов
+      //   power_of_result /*был -*/ = power_of_1 - power_of_2;
     } else if (power_of_1 < power_of_2) {
       power_of_result += power_of_1 - power_of_2;
     }
@@ -73,8 +78,7 @@ int s21_div(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
         440 / 4.4
         100 / 10
         225.225 / 1.5
+        0.02 / 0.5
 
     не верно
-        0.15 / 0.3
-
 */
