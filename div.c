@@ -3,6 +3,8 @@
 // добавить обработку ошибок
 // проверить заполнение периодом и добавить его обработку
 int s21_div(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
+  int output = CONVERSATION_OK;
+
   s21_decimal tmp_result = {0};
   s21_decimal final_tmp_result = {0};
   s21_decimal reminder = {1};
@@ -12,13 +14,19 @@ int s21_div(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
   int power_of_1 = s21_get_power_of_decimal(value_1);
   int power_of_2 = s21_get_power_of_decimal(value_2);
 
-  if ((power_of_1 && power_of_2) || (power_of_1 || power_of_2)) {
-    power_of_result = s21_normalize(&value_1, &value_2);  // нормализация
-  }
-  s21_decimal tmp_1 = value_1;
-  s21_decimal tmp_2 = value_2;
+  if (s21_is_decimal_0(value_2)) {  // деление на 0
+    output = CONVERSATION_DIV_ZERO;
+    *result = s21_decimal_get_inf();
+  } else if (s21_is_decimal_0(value_1)) {
+    output = CONVERSATION_OK;
+    s21_set_dec_number_to_0(result);
+  } else {
+    if ((power_of_1 && power_of_2) || (power_of_1 || power_of_2)) {
+      power_of_result = s21_normalize(&value_1, &value_2);  // нормализация
+    }
+    s21_decimal tmp_1 = value_1;
+    s21_decimal tmp_2 = value_2;
 
-  if (result) {
     while (!s21_is_decimal_0(reminder) && power_of_result <= 27) {
       s21_set_dec_number_to_0(&reminder);
       while (!check_reminder) {
@@ -36,7 +44,8 @@ int s21_div(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
         } else {
           if (s21_is_less_or_equal(tmp_2, tmp_1)) {
             s21_sub(tmp_1, tmp_2, &tmp_1);
-            s21_set_bit_1(&tmp_result, power_of_value_2);  // ставим бит степени
+            s21_set_bit_1(&tmp_result,
+                          power_of_value_2);  // ставим бит степени
             tmp_2 = value_2;
           }
         }
@@ -70,7 +79,7 @@ int s21_div(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
     *result = final_tmp_result;
   }
 
-  return (1);
+  return (output);
 }
 
 /*
@@ -80,7 +89,7 @@ int s21_div(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
         100 / 10
         225.225 / 1.5
         0.02 / 0.5
-        7 / 3
+        7 / 3 ?
 
     не верно
     0.00000000002 / 0.00000000002 при делении одинаковых чисел надо убирать
