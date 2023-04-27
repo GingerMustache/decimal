@@ -1,6 +1,6 @@
 #include "s21_decimal.h"
 // все возникшие ошибки могут быть из за добавления сдвигов влво и вправо !!
-
+// добавил flg_overflow_mul и все, что с ним связано
 void shift_bit_left(s21_decimal *value, int count) {
   value->bits[2] <<= count;
   value->bits[1] <<= count;
@@ -24,12 +24,19 @@ void s21_shift_31(s21_decimal *dec_num, int flg_31, int flg_63) {
   dec_num->bits[0] = dec_num->bits[0] << 1;
 }
 
-void s21_shift_63(s21_decimal *dec_num) {
-  dec_num->bits[2] = dec_num->bits[2] << 1;
-  s21_set_bit_1(dec_num, 64);
-  s21_set_bit_0(dec_num, 63);
-  dec_num->bits[1] = dec_num->bits[1] << 1;
+int s21_shift_63(s21_decimal *dec_num) {
+  int output = 0;
+  if (!s21_get_bit(dec_num, 95)) {
+    dec_num->bits[2] = dec_num->bits[2]
+                       << 1;  // могу смещать только если 95 бит свободен
+    s21_set_bit_1(dec_num, 64);
+    s21_set_bit_0(dec_num, 63);
+    dec_num->bits[1] = dec_num->bits[1] << 1;
+    output = 1;
+  }
+  return (output);
 }
+
 // добавить проверку для 95 при приклепнии проверки на переполнение
 int check_index_shift(s21_decimal dec_num, int index) {
   int output = 0;
@@ -68,30 +75,31 @@ int check_index_shift(s21_decimal dec_num, int index) {
   return (0);
 }
 
-void s21_shift_bits(s21_decimal *dec_num, int index) {
+int s21_shift_bits(s21_decimal *dec_num, int index) {
   int flg_31 = 1;
   int flg_63 = 1;
   int flg_index = 1;
   int flg_overlow_index = 1;
-  while (index && flg_index) {
+  int flg_overlow_mul = 1;
+  while (index && flg_index && flg_overlow_mul) {
     if (s21_get_bit(dec_num, 63)) {
-      s21_shift_63(dec_num);
+      flg_overlow_mul = s21_shift_63(dec_num);
       flg_63 = 0;
 
-      if (s21_get_bit(dec_num, 31)) {
+      if (s21_get_bit(dec_num, 31) && flg_overlow_mul) {
         s21_shift_31(dec_num, 0, flg_63);
         flg_31 = 0;
       }
 
-      if (flg_31) dec_num->bits[0] = dec_num->bits[0] << 1;
+      if (flg_31 && flg_overlow_mul) dec_num->bits[0] = dec_num->bits[0] << 1;
       flg_31 = 0;
     }
-    if (s21_get_bit(dec_num, 31) && flg_31) {
+    if (s21_get_bit(dec_num, 31) && flg_31 && flg_overlow_mul) {
       s21_shift_31(dec_num, flg_31, flg_63);
       flg_31 = 0;
       flg_63 = 0;
     }
-    if (flg_31 && flg_63) {
+    if (flg_31 && flg_63 && flg_overlow_mul) {
       if (check_index_shift(*dec_num, index) && flg_overlow_index) {
         /*
            если сдвиг можно сделать без перехода в другие разряды то двигаем все
@@ -114,4 +122,5 @@ void s21_shift_bits(s21_decimal *dec_num, int index) {
     flg_63 = 1;
     index--;
   }
+  return flg_overlow_mul == 1 ? 0 : 1;
 }

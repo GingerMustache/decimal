@@ -84,9 +84,9 @@ void s21_truncate_zero(s21_decimal *value, int count_zero);
 int s21_is_decimal_0(s21_decimal dec_num);
 
 //------------------------Сдвиги(вспомогательные)----------------------//
-void s21_shift_bits(s21_decimal *dec_num, int index);
+int s21_shift_bits(s21_decimal *dec_num, int index);
 void s21_shift_31(s21_decimal *dec_num, int flg_31, int flg_63);
-void s21_shift_63(s21_decimal *dec_num);
+int s21_shift_63(s21_decimal *dec_num);
 int check_index_shift(s21_decimal dec_num, int index);
 void shift_bit_right(s21_decimal *value, int count);
 void shift_bit_left(s21_decimal *value, int count);

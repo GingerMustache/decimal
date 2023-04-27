@@ -1,5 +1,5 @@
 #include "s21_decimal.h"
-// добавить проверку знака и переполнения
+// добавить проверку и переполнения
 // добавлена tmp ошибки из-за неё только могут быть
 int s21_mul(s21_decimal value_1, s21_decimal value_2, s21_decimal* result) {
   int output = CONVERSATION_ERROR;
@@ -44,28 +44,30 @@ int s21_mul(s21_decimal value_1, s21_decimal value_2, s21_decimal* result) {
         index++;
       }
     } else {
-      while (index != 96) {
+      while (index != 96 && output == 0) {
         if (s21_get_bit(&value_2, index)) {
           step = value_1;
-          s21_shift_bits(&step, index);
+          output = s21_shift_bits(&step, index);
           s21_add(step, tmp, &tmp);
           s21_set_dec_number_to_0(&step);
         }
         index++;
       }
     }
-    output = CONVERSATION_OK;  // тут, до проверки на overflow
-    *result = tmp;
-    // обрезает нули при необходимости
-    if (power_of_1 && power_of_2) {
-      s21_truncate_zero(result, abs(power_of_1 - power_of_2));
-    }
-    s21_set_power_of_decimal(result,
-                             power_of_1 + power_of_2);  // постановка степени
-    if (sign_1 != sign_2) {  // постановка знака
-      s21_set_bit_1(result, 127);
-    } else {
-      s21_set_bit_0(result, 127);
+    if (output == CONVERSATION_OK) {
+      // output = CONVERSATION_OK;  // тут, до проверки на overflow
+      *result = tmp;
+      // обрезает нули при необходимости
+      if (power_of_1 && power_of_2) {
+        s21_truncate_zero(result, abs(power_of_1 - power_of_2));
+      }
+      s21_set_power_of_decimal(result,
+                               power_of_1 + power_of_2);  // постановка степени
+      if (sign_1 != sign_2) {  // постановка знака
+        s21_set_bit_1(result, 127);
+      } else {
+        s21_set_bit_0(result, 127);
+      }
     }
   }
   return output;
