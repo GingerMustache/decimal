@@ -19,7 +19,7 @@ int s21_div(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
   s21_decimal tmp_2 = value_2;
 
   if (result) {
-    while (!s21_is_decimal_0(reminder) && power_of_result < 29) {
+    while (!s21_is_decimal_0(reminder) && power_of_result <= 27) {
       s21_set_dec_number_to_0(&reminder);
       while (!check_reminder) {
         for (; s21_is_less(tmp_2, tmp_1); power_of_value_2++) {
@@ -65,6 +65,7 @@ int s21_div(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
     } else if (power_of_1 < power_of_2) {
       power_of_result += power_of_1 - power_of_2;
     }
+    // может поставить,если степень > 28 = степень = 28?
     s21_set_power_of_decimal(&final_tmp_result, power_of_result);
     *result = final_tmp_result;
   }
@@ -79,6 +80,9 @@ int s21_div(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
         100 / 10
         225.225 / 1.5
         0.02 / 0.5
+        7 / 3
 
     не верно
+    0.00000000002 / 0.00000000002 при делении одинаковых чисел надо убирать
+   степень
 */
