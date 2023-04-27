@@ -97,6 +97,11 @@ s21_decimal s21_decimal_get_inf(void) {
   return result;
 }
 
+void s21_set_dec_number_to_1(s21_decimal *src_num) {
+  s21_decimal decimal_1 = {1};
+  *src_num = decimal_1;
+}
+
 void s21_set_power_of_decimal(s21_decimal *src, int power) {
   if (power < 29) {
     for (int i = 112; i < 120; i++) {  // обнуление

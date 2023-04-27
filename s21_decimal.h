@@ -63,6 +63,7 @@ int s21_is_not_equal(s21_decimal num_1, s21_decimal num_2);
 void s21_set_sign_of_int_and_float_number(s21_decimal *dec_num, float num_1,
                                           int case_of_type);
 void s21_set_dec_number_to_0(s21_decimal *src_num);
+void s21_set_dec_number_to_1(s21_decimal *src_num);
 void s21_print_decimal_number(s21_decimal *num);
 int s21_get_float_bit(int num, int index);
 int s21_rewrite_float_bits_to_buff(s21_decimal *buff, float val);
