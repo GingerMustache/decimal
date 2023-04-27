@@ -35,10 +35,10 @@ int s21_mul(s21_decimal value_1, s21_decimal value_2, s21_decimal* result) {
     index = 0;
     // case 1, где меньше едииц на то и умножаем
     if (count_1 < count_2) {
-      while (index != 96) {
+      while (index != 96 && output == 0) {
         if (s21_get_bit(&value_1, index)) {
           step = value_2;
-          s21_shift_bits(&step, index);
+          output = s21_shift_bits(&step, index);
           s21_add(step, tmp, &tmp);
           s21_set_dec_number_to_0(&step);
         }

@@ -81,7 +81,8 @@ int check_index_shift(s21_decimal dec_num, int index) {
         get_31 = 2;
       }
     }
-    if (output == 3 || (output == 1 && (!_63 || !_31 || !_95))) return (2);
+    if (output == 3 || (output == 1 /*может 2*/ && (!_63 || !_31 || !_95)))
+      return (2);
     _95--;
     _63--;
     _31--;

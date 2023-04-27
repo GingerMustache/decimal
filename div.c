@@ -6,15 +6,6 @@
 int s21_div(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
   int output = CONVERSATION_OK;
 
-  s21_decimal tmp_result = {0};
-  s21_decimal final_tmp_result = {0};
-  s21_decimal reminder = {1};
-  int power_of_value_2 = 0;
-  int check_reminder = 0;
-  int power_of_result = 0;
-  int power_of_1 = s21_get_power_of_decimal(value_1);
-  int power_of_2 = s21_get_power_of_decimal(value_2);
-
   if (!result) {
     output = CONVERSATION_ERROR;  // а что тут должно быть??
   } else if (s21_is_decimal_0(value_2)) {  // деление на 0
@@ -27,6 +18,15 @@ int s21_div(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
     output = CONVERSATION_OK;  // если числа и их степени одинаковы
     s21_set_dec_number_to_1(result);
   } else {
+    int flg_end_of_95_bit = 0;
+    s21_decimal tmp_result = {0};
+    s21_decimal final_tmp_result = {0};
+    s21_decimal reminder = {1};
+    int power_of_value_2 = 0;
+    int check_reminder = 0;
+    int power_of_result = 0;
+    int power_of_1 = s21_get_power_of_decimal(value_1);
+    int power_of_2 = s21_get_power_of_decimal(value_2);
     // if ((power_of_1 && power_of_2) || (power_of_1 || power_of_2)) {
     //   power_of_result = s21_normalize(&value_1, &value_2);  // нормализация
     // }
@@ -38,7 +38,7 @@ int s21_div(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
     s21_decimal tmp_1 = value_1;
     s21_decimal tmp_2 = value_2;
 
-    while (!s21_is_decimal_0(reminder) && power_of_result <= 27) {  // <=27
+    while (!s21_is_decimal_0(reminder) && power_of_result <= 20) {  // <=27
       s21_set_dec_number_to_0(&reminder);
       while (!check_reminder) {
         for (; s21_is_less(tmp_2, tmp_1); power_of_value_2++) {
@@ -66,12 +66,10 @@ int s21_div(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
         check_reminder = s21_is_less(reminder, value_2);
       }
       s21_add(final_tmp_result, tmp_result, &final_tmp_result);
-
+      // может быть переполнение
       if (!s21_is_decimal_0(reminder)) {
-        while (s21_is_less(reminder, tmp_2)) {
-          s21_mul_decimal_by_10(
-              &final_tmp_result);  // поставить ограничения либо в умножении
-                                   // ,либо тут
+        while (s21_is_less(reminder, tmp_2) && !flg_end_of_95_bit) {
+          flg_end_of_95_bit = s21_mul_decimal_by_10(&final_tmp_result);
           power_of_result++;  // не правильно работает
           s21_mul_decimal_by_10(&reminder);
         }
@@ -89,7 +87,7 @@ int s21_div(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
     // }
     power_of_result += power_of_1 - power_of_2;
     while (power_of_result < 0) {
-      s21_mul_decimal_by_10(
+      s21_mul_decimal_by_10(  // надо проверять эту строку
           &final_tmp_result);  // надо добавить флаг, что при возвращении 1
       power_of_result++;
     }

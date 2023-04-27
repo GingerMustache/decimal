@@ -74,7 +74,7 @@ void s21_from_unsigned_long_int_to_decimal(unsigned long int src,
 int get_float_exp_from_string(char *str, int *sign_of_float_power);
 int s21_get_power_of_decimal(s21_decimal src);
 void s21_div_decimal_by_10(s21_decimal *num);
-void s21_mul_decimal_by_10(s21_decimal *num);
+int s21_mul_decimal_by_10(s21_decimal *num);
 s21_decimal s21_decimal_get_inf(void);
 void s21_set_power_of_decimal(s21_decimal *src, int power);
 int s21_sign_handle(s21_decimal *value_1, s21_decimal *value_2,

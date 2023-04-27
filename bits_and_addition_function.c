@@ -72,9 +72,14 @@ void s21_div_decimal_by_10(s21_decimal *num) {
   }
 }
 
-void s21_mul_decimal_by_10(s21_decimal *num) {
+int s21_mul_decimal_by_10(s21_decimal *num) {
   s21_decimal decimal_10 = {10, 0, 0, 0};
-  s21_mul(*num, decimal_10, num);
+  int res = s21_mul(*num, decimal_10, num);
+  printf("res of  = %d\n", res);
+  if (!res)  // 0
+    return (0);
+  else
+    return (1);
 }
 
 int s21_get_power_of_decimal(s21_decimal src) {
