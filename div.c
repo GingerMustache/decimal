@@ -89,7 +89,8 @@ int s21_div(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
     // }
     power_of_result += power_of_1 - power_of_2;
     while (power_of_result < 0) {
-      s21_mul_decimal_by_10(&final_tmp_result);
+      s21_mul_decimal_by_10(
+          &final_tmp_result);  // надо добавить флаг, что при возвращении 1
       power_of_result++;
     }
     s21_set_power_of_decimal(&final_tmp_result, power_of_result);

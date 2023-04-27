@@ -1,8 +1,9 @@
 #include "s21_decimal.h"
-// добавить проверку и переполнения
+// походу надо переводить на биг децимал
+// добавить проверку на underflow
 // добавлена tmp ошибки из-за неё только могут быть
 int s21_mul(s21_decimal value_1, s21_decimal value_2, s21_decimal* result) {
-  int output = CONVERSATION_ERROR;
+  int output = CONVERSATION_OK;
 
   if (result) {
     int count_1 = 0, count_2 = 0;
@@ -48,15 +49,15 @@ int s21_mul(s21_decimal value_1, s21_decimal value_2, s21_decimal* result) {
         if (s21_get_bit(&value_2, index)) {
           step = value_1;
           output = s21_shift_bits(&step, index);
-          s21_add(step, tmp, &tmp);
+          s21_add(step, tmp, &tmp);  // можно пристроить output сюда
           s21_set_dec_number_to_0(&step);
         }
         index++;
       }
     }
+    *result = tmp;
     if (output == CONVERSATION_OK) {
       // output = CONVERSATION_OK;  // тут, до проверки на overflow
-      *result = tmp;
       // обрезает нули при необходимости
       if (power_of_1 && power_of_2) {
         s21_truncate_zero(result, abs(power_of_1 - power_of_2));
