@@ -22,6 +22,28 @@ void s21_set_sign_of_int_and_float_number(s21_decimal *dec_num, float num_1,
   }
 }
 
+// убрать в другие функции
+void s21_truncate_zero(s21_decimal *value, int count_zero) {
+  if (value) {
+    while (count_zero) {
+      s21_div_decimal_by_10(value);  // заменить после на нормальное деление
+      count_zero--;
+    }
+  }
+}
+
+void s21_cut_exp(s21_decimal *a, int exp) {
+  for (int i = exp; i > 0; i--) {
+    s21_div_decimal_by_10(a);  // заменить потом на нормальное деление
+  }
+  s21_set_power_of_decimal(a, 0);
+}
+
+int s21_get_bits(unsigned int bits, unsigned int num) {
+  unsigned int mask = 1 << num;
+  return (bits & mask) ? 1 : 0;
+}
+
 int s21_get_bit(s21_decimal *dec_num, int index) {
   int getRow = s21_get_row(index);
   int getCol = s21_get_col(index);
@@ -115,3 +137,12 @@ void s21_set_power_of_decimal(s21_decimal *src, int power) {
     s21_set_bits_from_int_to_decimal(power, src, 112);  // заполнение
   }
 }
+
+// для банковского округления --
+// формирует  decimal = 0.5
+s21_decimal s21_decimal_get_zerofive(void) {
+  s21_decimal result = {{0x5, 0x0, 0x0, 0x10000}};
+
+  return result;
+}
+int s21_decimal_even(s21_decimal value) { return (value.bits[0] & 1) != 1; }

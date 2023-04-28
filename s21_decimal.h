@@ -50,6 +50,8 @@ int s21_mul(s21_decimal value_1, s21_decimal value_2, s21_decimal *result);
 //------------------------Другие функции----------------------//
 int s21_truncate(s21_decimal value, s21_decimal *result);
 int s21_negate(s21_decimal value, s21_decimal *result);
+int s21_floor(s21_decimal value, s21_decimal *result);
+int s21_round(s21_decimal value, s21_decimal *result);
 
 //------------------------Сравнение----------------------//
 int s21_is_greater(s21_decimal num_1, s21_decimal num_2);
@@ -82,6 +84,12 @@ int s21_sign_handle(s21_decimal *value_1, s21_decimal *value_2,
 int s21_normalize(s21_decimal *num_1, s21_decimal *num_2);
 void s21_truncate_zero(s21_decimal *value, int count_zero);
 int s21_is_decimal_0(s21_decimal dec_num);
+void s21_cut_exp(s21_decimal *a, int exp);
+int s21_get_bits(unsigned int bits, unsigned int num);
+
+s21_decimal s21_decimal_get_zerofive(void);
+int s21_decimal_even(s21_decimal value);
+s21_decimal s21_round_banking(s21_decimal integral, s21_decimal fractional);
 
 //------------------------Сдвиги(вспомогательные)----------------------//
 int s21_shift_bits(s21_decimal *dec_num, int index);
