@@ -38,9 +38,9 @@ typedef struct {
 
 typedef struct {
   unsigned int bits[7]; /*
-                [1 - 3] - обычный децимал (0-95)
-                [4 - 6] - доп децимал (96 - 191)
-                [7]
+                [0 - 2] - обычный децимал (0-95)
+                [3 - 5] - доп децимал (96 - 191)
+                [6]
                 192 - 207 - not used
                 208 - 215 - scale
                 216 - 222 - not used
@@ -126,7 +126,7 @@ void s21_set_bit_0_big(s21_big_decimal *dec_num, int index);
 void s21_set_bit_1_big(s21_big_decimal *dec_num, int index);
 int s21_get_bit_big(s21_big_decimal *dec_num, int index);
 
-int s21_big_add(s21_decimal value_1, s21_decimal value_2,
+int s21_big_add(s21_big_decimal value_1, s21_big_decimal value_2,
                 s21_big_decimal *big_result);
 
 void rewrite_decimal_to_big(s21_big_decimal *big_decimal, s21_decimal decimal);
@@ -134,5 +134,7 @@ int s21_get_power_of_big_decimal(s21_big_decimal src);
 void s21_set_bits_from_int_to_big_decimal(int src, s21_big_decimal *dst,
                                           int which_int_part_to_fill);
 void s21_set_power_of_big_decimal(s21_big_decimal *src, int power);
+void s21_set_big_dec_number_to_0(s21_big_decimal *src_num);
+void s21_truncate_zero_big(s21_big_decimal *value, int count_zero);
 
 #endif  // _SRC_S21_DECIMAL_H_

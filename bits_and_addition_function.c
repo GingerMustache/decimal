@@ -70,6 +70,10 @@ void s21_set_dec_number_to_0(s21_decimal *src_num) {
   memset(&(src_num->bits), 0, sizeof(src_num->bits));
 }
 
+void s21_set_big_dec_number_to_0(s21_big_decimal *src_num) {
+  memset(&(src_num->bits), 0, sizeof(src_num->bits));
+}
+
 int s21_is_decimal_0(s21_decimal dec_num) {
   s21_decimal zero_decimal = {0};
   return s21_is_equal(zero_decimal, dec_num);
