@@ -126,6 +126,9 @@ void s21_set_bit_0_big(s21_big_decimal *dec_num, int index);
 void s21_set_bit_1_big(s21_big_decimal *dec_num, int index);
 int s21_get_bit_big(s21_big_decimal *dec_num, int index);
 
+int s21_big_add(s21_decimal value_1, s21_decimal value_2,
+                s21_big_decimal *big_result);
+
 void rewrite_decimal_to_big(s21_big_decimal *big_decimal, s21_decimal decimal);
 int s21_get_power_of_big_decimal(s21_big_decimal src);
 void s21_set_bits_from_int_to_big_decimal(int src, s21_big_decimal *dst,
