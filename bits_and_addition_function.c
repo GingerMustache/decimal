@@ -22,7 +22,6 @@ void s21_set_sign_of_int_and_float_number(s21_decimal *dec_num, float num_1,
   }
 }
 
-// убрать в другие функции
 void s21_truncate_zero(s21_decimal *value, int count_zero) {
   if (value) {
     while (count_zero) {
