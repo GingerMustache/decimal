@@ -152,5 +152,6 @@ void shift_bit_right_big(s21_big_decimal *value, int count, int number_shift);
 void shift_big_bit_left(s21_big_decimal *value, int count, int number_shift,
                         int end_shift);
 void twist_bit_big(s21_big_decimal *dec_num, int first, int second);
+int s21_normalize_big(s21_big_decimal *num_1, s21_big_decimal *num_2);
 
 #endif  // _SRC_S21_DECIMAL_H_

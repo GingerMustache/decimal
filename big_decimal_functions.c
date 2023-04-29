@@ -1,84 +1,33 @@
 #include "s21_decimal.h"
 
-int s21_big_mul(s21_big_decimal big_value_1, s21_big_decimal big_value_2,
-                s21_big_decimal *result) {
-  int output = CONVERSATION_OK;
+int s21_normalize_big(s21_big_decimal *num_1, s21_big_decimal *num_2) {
+  int power_num_1 = s21_get_power_of_big_decimal(*num_1);
+  int power_num_2 = s21_get_power_of_big_decimal(*num_2);
+  s21_set_power_of_big_decimal(num_1, 0);  // ставим степени чисел в 0
+  s21_set_power_of_big_decimal(num_2, 0);
+  s21_big_decimal bit_number_10 = {10, 0, 0, 0, 0, 0, 0};
+  // printf("\n-decimal_numbers from normalize-\n");
+  // printf("bit_num_10\n");
+  // s21_print_decimal_number(&bit_number_10);
+  // printf("1st\n");
+  // s21_print_decimal_number(num_1);
+  // printf("2nd\n");
+  // s21_print_decimal_number(num_2);
 
-  if (result) {
-    int count_1 = 0, count_2 = 0;
-    int index = 0;
-    // int sign_1 = s21_get_bit(&value_1, 223);
-    // int sign_2 = s21_get_bit(&value_2, 223);
-    s21_big_decimal step = {0};
-    s21_set_big_dec_number_to_0(result);
-    s21_big_decimal tmp = *result;
-    // s21_big_decimal buffer = {0};
-
-    // int power_of_result = 0;
-    // степень пропадает при вычислениях и появляется *result = tmp
-    // степепнь сохраняется  в нормализации
-    // int power_of_1 = s21_get_power_of_decimal(value_1);
-    // int power_of_2 = s21_get_power_of_decimal(value_2);
-    // s21_big_decimal big_value_1 = {0};
-    // s21_big_decimal big_value_2 = {0};
-    // rewrite_decimal_to_big(&big_value_1, value_1);
-    // rewrite_decimal_to_big(&big_value_2, value_2);
-    // int res_of_summ = 0; принимал s21_add
-
-    s21_set_bit_0_big(&big_value_2, 223);  // устанавливаем знаки в (+)
-    s21_set_bit_0_big(&big_value_1, 223);
-
-    // if ((power_of_1 && power_of_2) || (power_of_1 || power_of_2)) {
-    //   s21_normalize(&value_1, &value_2);  // нормализация
-    // }
-
-    while (index != 90) {  // надо посмотреть потом
-      count_1 += s21_get_bit_big(&big_value_1, index);
-      count_2 += s21_get_bit_big(&big_value_2, index);
-      index++;
+  if (power_num_1 < power_num_2) {
+    while (power_num_2 - power_num_1) {
+      s21_big_mul(*num_1, bit_number_10, num_1);
+      power_num_1++;
     }
-    index = 0;
-    // case 1, где меньше едииц на то и умножаем
-    if (count_1 < count_2) {
-      while (index != 191) {
-        if (s21_get_bit_big(&big_value_1, index)) {
-          step = big_value_2;
-          s21_shift_bits_big(&step, index);
-          s21_big_add(step, tmp, &tmp);
-          s21_set_big_dec_number_to_0(&step);
-        }
-        index++;
-      }
-    } else {
-      while (index != 191) {
-        if (s21_get_bit_big(&big_value_2, index)) {
-          step = big_value_1;
-          s21_shift_bits_big(&step, index);
-          s21_big_add(step, tmp, &tmp);
-          s21_set_big_dec_number_to_0(&step);
-        }
-        index++;
-      }
+    return (power_num_1);
+  } else if (power_num_2 < power_num_1) {
+    while (power_num_1 - power_num_2) {
+      s21_big_mul(*num_2, bit_number_10, num_2);
+      power_num_2++;
     }
-    *result = tmp;
-    if (output == CONVERSATION_OK) {
-      // output = CONVERSATION_OK;  // тут, до проверки на overflow
-      // обрезает нули при необходимости ??
-      // // добавь в функциюнормальное деление
-      // if (power_of_1 && power_of_2) {
-      //   s21_truncate_zero_big(result, abs(power_of_1 - power_of_2));
-      // }
-      // s21_set_power_of_big_decimal(
-      //     result,
-      //     power_of_1 + power_of_2);  // постановка степени
-      // if (sign_1 != sign_2) {        // постановка знака
-      //   s21_set_bit_1_big(result, 223);
-      // } else {
-      //   s21_set_bit_0_big(result, 223);
-      // }
-    }
+    return (power_num_2);
   }
-  return output;
+  return (power_num_1);
 }
 
 //------------------------Доп. функции----------------------//

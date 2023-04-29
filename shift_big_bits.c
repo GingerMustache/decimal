@@ -91,123 +91,6 @@ int check_index_shift_big(s21_big_decimal dec_num, int index) {
   return (0);  // 0 это ошибка
 }
 
-// следует добавить проверку на переполнение 95 бита
-
-// int s21_shift_159_big(s21_big_decimal *dec_num) {
-//   //   shift_big_bit_left(dec_num, 1, 5);
-//   dec_num->bits[5] = dec_num->bits[5] << 1;  // двигаем ряд выше
-//   twist_bit_big(dec_num, 159, 160);
-//   dec_num->bits[4] = dec_num->bits[4] << 1;  // двигаем нанешний ряд
-//   return (0);
-// }
-
-// int s21_shift_127_big(s21_big_decimal *dec_num, int *flg_159) {
-//   if (flg_159) {  //  не включен
-//     // dec_num->bits[5] = dec_num->bits[5] << 1;  // двигаем ряд выше
-//     // dec_num->bits[4] = dec_num->bits[4] << 1;  // двигаем ряд выше
-//     shift_big_bit_left(dec_num, 1, 4);
-//     flg_159 = 0;
-//   } else {
-//     twist_bit_big(dec_num, 127, 128);
-//     dec_num->bits[3] = dec_num->bits[3] << 1;  // двигаем нанешний ряд
-//   }
-//   return (0);
-// }
-
-// int s21_shift_95_big(s21_big_decimal *dec_num, int *flg_159, int *flg_127,
-//                      int *flg_95) {
-//   if (flg_159) {  // не включен
-//     shift_big_bit_left(dec_num, 1, 4);
-//     flg_159 = 0;
-//   }
-//   if (flg_127) {    // не вкл
-//     if (flg_159) {  //  не включен
-//       // dec_num->bits[5] = dec_num->bits[5] << 1;  // двигаем ряд выше
-//       // dec_num->bits[4] = dec_num->bits[4] << 1;  // двигаем ряд выше
-//       shift_big_bit_left(dec_num, 1, 3);
-//       twist_bit_big(dec_num, 95, 96);
-//       dec_num->bits[2] = dec_num->bits[2] << 1;
-//       flg_159 = 0;
-//       flg_127 = 0;
-//     } else {
-//       // dec_num->bits[5] = dec_num->bits[5] << 1;  // двигаем ряд выше
-//       // dec_num->bits[4] = dec_num->bits[4] << 1;  // двигаем ряд выше
-//       // dec_num->bits[3] = dec_num->bits[3] << 1;  // двигаем ряд выше
-//       dec_num->bits[3] = dec_num->bits[3] << 1;
-//       twist_bit_big(dec_num, 95, 96);
-//       dec_num->bits[2] = dec_num->bits[2] << 1;
-//       flg_127 = 0;
-//     }
-//   } else {
-//     if (flg_159) {  // не вкл
-//       shift_big_bit_left(dec_num, 1, 4);
-//       flg_159 = 0;
-//     }
-//     // 3 уже подвинут
-//     flg_127 = 0;
-//     twist_bit_big(dec_num, 95, 96);
-//     dec_num->bits[2] = dec_num->bits[2] << 1;  // двигаем нанешний ряд
-//     flg_95 = 0;
-//   }
-//   return (0);
-// }
-// // остановился сдесь =(
-
-// int s21_shift_63_big(s21_big_decimal *dec_num, int *flg_159, int *flg_127,
-//                      int *flg_95, int *flg_63) {
-//   if (flg_159) {  // не включен
-//     shift_big_bit_left(dec_num, 1, 4);
-//     flg_159 = 0;
-//   }
-//   if (flg_95) {
-//     shift_big_bit_left(dec_num, 1, 2);
-//     twist_bit_big(dec_num, 63, 64);
-//     dec_num->bits[1] = dec_num->bits[1] << 1;  // двигаем нанешний ряд
-//     if (flg_127) {
-//       shift_big_bit_left(dec_num, 1, 3);
-//       if (159)
-//         if (flg_159) {  //  не включен
-
-//           // dec_num->bits[5] = dec_num->bits[5] << 1;  // двигаем ряд выше
-//           // dec_num->bits[4] = dec_num->bits[4] << 1;  // двигаем ряд выше
-//           shift_big_bit_left(dec_num, 1, 3);
-//           dec_num->bits[2] = dec_num->bits[2] << 1;
-//           flg_159 = 0;
-//           flg_127 = 0;
-//         } else {
-//           // dec_num->bits[5] = dec_num->bits[5] << 1;  // двигаем ряд выше
-//           // dec_num->bits[4] = dec_num->bits[4] << 1;  // двигаем ряд выше
-//           // dec_num->bits[3] = dec_num->bits[3] << 1;  // двигаем ряд выше
-//           dec_num->bits[3] = dec_num->bits[3] << 1;
-//           twist_bit_big(dec_num, 95, 96);
-//           dec_num->bits[2] = dec_num->bits[2] << 1;
-//           flg_127 = 0;
-//         }
-//       // dec_num->bits[5] = dec_num->bits[5] << 1;  // двигаем ряд выше
-//       // dec_num->bits[4] = dec_num->bits[4] << 1;  // двигаем ряд выше
-//       // dec_num->bits[3] = dec_num->bits[3] << 1;  // двигаем ряд выше
-//       // dec_num->bits[2] = dec_num->bits[2] << 1;  // двигаем ряд выше
-//       shift_big_bit_left(dec_num, 1, 2);
-//     }
-//   }
-//   twist_bit_big(dec_num, 63, 64);
-//   dec_num->bits[1] = dec_num->bits[1] << 1;  // двигаем нанешний ряд
-//   return (0);
-// }
-
-// int s21_shift_31_big(s21_big_decimal *dec_num, int flg_63) {
-//   if (!flg_63) {  // если выше все отлично
-//     // dec_num->bits[5] = dec_num->bits[5] << 1;  // двигаем ряд выше
-//     // dec_num->bits[4] = dec_num->bits[4] << 1;  // двигаем ряд выше
-//     // dec_num->bits[3] = dec_num->bits[3] << 1;  // двигаем ряд выше
-//     // dec_num->bits[2] = dec_num->bits[2] << 1;  // двигаем ряд выше
-//     // dec_num->bits[1] = dec_num->bits[1] << 1;  // двигаем ряд выше
-//     shift_big_bit_left(dec_num, 1, 1);
-//   }
-//   twist_bit_big(dec_num, 31, 32);
-//   dec_num->bits[0] = dec_num->bits[0] << 1;  // двигаем нанешний ряд
-//   return (0);
-// }
 void twist_bit_big(s21_big_decimal *dec_num, int first, int second) {
   s21_set_bit_1_big(dec_num, second);
   s21_set_bit_0_big(dec_num, first);
@@ -302,11 +185,10 @@ int s21_shift_bits_big(s21_big_decimal *dec_num, int index) {
   int flg_95 = 1;
   int flg_63 = 1;
   int flg_31 = 1;
-  int flg_index = 1;  // надо убрать
   int flg_overlow = 1;
   s21_big_decimal tmp = *dec_num;  // вернуть при overflow
 
-  while (index && flg_index) {
+  while (index) {  // или index != -1
     if (s21_get_bit_big(dec_num, 191)) {
       return (0);
     }
@@ -365,30 +247,12 @@ int s21_shift_bits_big(s21_big_decimal *dec_num, int index) {
       }
     }
     flg_159 = 1;
+    flg_127 = 1;
     flg_95 = 1;
     flg_63 = 1;
     flg_31 = 1;
     index--;
   }
-  // if (s21_get_bit_big(dec_num, 159)) {  // 4
-  //   flg_159 = s21_shift_159_big(dec_num);
-  //   flg_191 = 0;
-  // }
-  // if (s21_get_bit_big(dec_num, 127)) {  // 3
-  //   flg_127 = s21_shift_127_big(dec_num, &flg_159);
-  // }
-  // if (s21_get_bit_big(dec_num, 95)) {  // 2
-  //   flg_95 = s21_shift_95_big(dec_num, &flg_159, &flg_127);
-  // }
-  // if (s21_get_bit_big(dec_num, 63)) {  // 1
-  //   flg_63 = s21_shift_63_big(dec_num, flg_95);
-  // }
-  // if (flg_191) shift_big_bit_left(dec_num, 1, 5);
-  // if (flg_159) shift_big_bit_left(dec_num, 1, 4);
-  // if (flg_127) shift_big_bit_left(dec_num, 1, 3);
-  // if (flg_95) shift_big_bit_left(dec_num, 1, 2);
-  // if (flg_63) shift_big_bit_left(dec_num, 1, 1);
-  // if (flg_31) shift_big_bit_left(dec_num, 1, 0);
   // ускорение, но надо ли оно?
   // if (flg_31 && flg_63) {
   //   if (check_index_shift_big(*dec_num, index) && flg_overlow_index) {
