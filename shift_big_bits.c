@@ -209,12 +209,13 @@ int check_index_shift_big(s21_big_decimal dec_num, int index) {
 //   return (0);
 // }
 void twist_bit_big(s21_big_decimal *dec_num, int first, int second) {
-  s21_set_bit_1_big(dec_num, first);
-  s21_set_bit_0_big(dec_num, second);
+  s21_set_bit_1_big(dec_num, second);
+  s21_set_bit_0_big(dec_num, first);
 }
 
-void shift_big_bit_left(s21_big_decimal *value, int count, int number_shift) {
-  for (; number_shift <= 5; number_shift++) {
+void shift_big_bit_left(s21_big_decimal *value, int count, int number_shift,
+                        int end_shift) {
+  for (; number_shift <= end_shift; number_shift++) {
     value->bits[number_shift] <<= count;
   }
 }
@@ -331,12 +332,37 @@ int s21_shift_bits_big(s21_big_decimal *dec_num, int index) {
       return (0);  // ошибка (overflow)
       *dec_num = tmp;
     } else {
-      if (flg_31) dec_num->bits[0] = dec_num->bits[0] << 1;
-      if (flg_63) dec_num->bits[1] = dec_num->bits[1] << 1;
-      if (flg_95) dec_num->bits[2] = dec_num->bits[2] << 1;
-      if (flg_127) dec_num->bits[3] = dec_num->bits[3] << 1;
-      if (flg_159) dec_num->bits[4] = dec_num->bits[4] << 1;
-      dec_num->bits[5] = dec_num->bits[5] << 1;
+      if (flg_31) {
+        shift_big_bit_left(dec_num, 1, 0, 1);
+        flg_31 = 0;
+      }
+      if (flg_63) {
+        if (flg_31)
+          shift_big_bit_left(dec_num, 1, 1, 2);
+        else
+          shift_big_bit_left(dec_num, 1, 2, 2);
+        flg_63 = 0;
+      }
+      if (flg_95) {
+        if (flg_63)
+          shift_big_bit_left(dec_num, 1, 2, 3);
+        else
+          shift_big_bit_left(dec_num, 1, 3, 3);
+        flg_95 = 0;
+      }
+      if (flg_127) {
+        if (flg_95)
+          shift_big_bit_left(dec_num, 1, 3, 4);
+        else
+          shift_big_bit_left(dec_num, 1, 4, 4);
+        flg_127 = 0;
+      }
+      if (flg_159) {
+        if (flg_127)
+          shift_big_bit_left(dec_num, 1, 4, 5);
+        else
+          shift_big_bit_left(dec_num, 1, 5, 5);
+      }
     }
     flg_159 = 1;
     flg_95 = 1;

@@ -155,22 +155,22 @@ int main(void) {
 
   // --------работа с deciimal--------
 
-  // int i = 0;
-  // while (i != 128) {
-  //   if (i == 95) {
-  //     s21_set_bit_1(&bit_number, i);  // число
-  //   }
-  //   if (i == 95) {
-  //     s21_set_bit_1(&bit_number_2, i);  // число
-  //   }
-  //   // if (i == 127) {
-  //   //   s21_set_bit_1(&bit_number, i);  // знак
-  //   // }
-  //   // if (i == 112) {
-  //   //   s21_set_bit_1(&bit_number_2, i);  // степень
-  //   // }
-  //   i++;
-  // }
+  int i = 0;
+  while (i != 128) {
+    if (i == 63) {
+      s21_set_bit_1(&bit_number, i);  // число
+    }
+    // if (i == 0) {
+    //   s21_set_bit_1(&bit_number_2, i);  // число
+    // }
+    // // if (i == 127) {
+    //   s21_set_bit_1(&bit_number, i);  // знак
+    // }
+    // if (i == 112) {
+    //   s21_set_bit_1(&bit_number_2, i);  // степень
+    // }
+    i++;
+  }
   // bit_number.bits[2] = bit_number.bits[2] << 31;
 
   // printf("Output = %d\n", s21_from_float_to_decimal(10.10, &bit_number));
