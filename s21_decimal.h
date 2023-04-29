@@ -128,6 +128,8 @@ int s21_get_bit_big(s21_big_decimal *dec_num, int index);
 
 int s21_big_add(s21_big_decimal value_1, s21_big_decimal value_2,
                 s21_big_decimal *big_result);
+int s21_big_mul(s21_big_decimal big_value_1, s21_big_decimal big_value_2,
+                s21_big_decimal *result);
 
 void rewrite_decimal_to_big(s21_big_decimal *big_decimal, s21_decimal decimal);
 int s21_get_power_of_big_decimal(s21_big_decimal src);
@@ -136,5 +138,18 @@ void s21_set_bits_from_int_to_big_decimal(int src, s21_big_decimal *dst,
 void s21_set_power_of_big_decimal(s21_big_decimal *src, int power);
 void s21_set_big_dec_number_to_0(s21_big_decimal *src_num);
 void s21_truncate_zero_big(s21_big_decimal *value, int count_zero);
+
+int s21_shift_bits_big(s21_big_decimal *dec_num, int index);
+int s21_shift_31_big(s21_big_decimal *dec_num, int *flg_63, int *flg_95,
+                     int *flg_127, int *flg_159, int *flg_overlow);
+int s21_shift_63_big(s21_big_decimal *dec_num, int *flg_95, int *flg_127,
+                     int *flg_159, int *flg_overlow);
+int s21_shift_95_big(s21_big_decimal *dec_num, int *flg_127, int *flg_159,
+                     int *flg_overlow);
+int s21_shift_127_big(s21_big_decimal *dec_num, int *flg_159, int *flg_overlow);
+int s21_shift_159_big(s21_big_decimal *dec_num);
+void shift_bit_right_big(s21_big_decimal *value, int count, int number_shift);
+void shift_big_bit_left(s21_big_decimal *value, int count, int number_shift);
+void twist_bit_big(s21_big_decimal *dec_num, int first, int second);
 
 #endif  // _SRC_S21_DECIMAL_H_
