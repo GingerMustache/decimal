@@ -153,5 +153,12 @@ void shift_big_bit_left(s21_big_decimal *value, int count, int number_shift,
                         int end_shift);
 void twist_bit_big(s21_big_decimal *dec_num, int first, int second);
 int s21_normalize_big(s21_big_decimal *num_1, s21_big_decimal *num_2);
+int s21_is_equal_big(s21_big_decimal num_1, s21_big_decimal num_2);
+int s21_is_decimal_0_big(s21_big_decimal dec_num);
+void s21_set_dec_number_to_1_big(s21_big_decimal *src_num);
+int s21_is_greater_big(s21_big_decimal num_1, s21_big_decimal num_2);
+int s21_is_less_big(s21_big_decimal num_1, s21_big_decimal num_2);
+int s21_is_less_or_equal_big(s21_big_decimal num_1, s21_big_decimal num_2);
+int s21_mul_decimal_by_10_big(s21_big_decimal *num);
 
 #endif  // _SRC_S21_DECIMAL_H_
