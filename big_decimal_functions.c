@@ -3,6 +3,84 @@
 // добавить обработку ошибок
 // проверить заполнение периодом и добавить его обработку
 // походу тут не нужна нормализация
+
+int s21_sub_big(s21_big_decimal value_1, s21_big_decimal value_2,
+                s21_big_decimal *result) {
+  int output = CONVERSATION_ERROR;
+  int sign_1 = s21_get_bit_big(&value_1, 127);
+  int sign_2 = s21_get_bit_big(&value_2, 127);
+  // output = s21_sign_handle(&value_1, &value_2, result, 1);
+
+  // if (output == 2) {
+  s21_set_bit_0_big(&value_1, 127);
+  s21_set_bit_0_big(&value_2, 127);
+  s21_big_decimal val_1 = {0};
+  s21_big_decimal val_2 = {0};
+  s21_big_decimal tmp = {0};
+  int index_bit = 0;
+  int i = 1;
+  int flag_bit_min = 0;
+  int bit_of_num_1 = 0;
+  int bit_of_num_2 = 0;
+  int power_of_result = 0;
+  int power_of_1 = s21_get_power_of_big_decimal(value_1);
+  int power_of_2 = s21_get_power_of_big_decimal(value_2);
+
+  if ((power_of_1 && power_of_2) || (power_of_1 || power_of_2)) {
+    power_of_result = s21_normalize_big(&value_1, &value_2);  // нормализация
+  }
+
+  if (s21_is_greater_or_equal_big(
+          value_1, value_2)) {  // поменя с is_greter на is_greater_or_equal
+    val_1 = value_1;
+    val_2 = value_2;
+    if (sign_1 == 1) s21_set_bit_1_big(&tmp, 127);
+  } else {
+    val_1 = value_2;
+    val_2 = value_1;
+    if ((sign_2 == 0 && sign_1 == 0)) s21_set_bit_1_big(&tmp, 127);
+    if ((sign_2 == 1 && sign_1 == 1)) s21_set_bit_0_big(&tmp, 127);
+  }
+
+  while (index_bit != 96) {
+    bit_of_num_1 = s21_get_bit_big(&val_1, index_bit);
+    bit_of_num_2 = s21_get_bit_big(&val_2, index_bit);
+
+    if (!bit_of_num_1 && !bit_of_num_2) {  // оба бита = 0
+      s21_set_bit_0_big(&tmp, index_bit);
+
+    } else if (bit_of_num_1 && !bit_of_num_2) {  // бит первого = 1, второго = 0
+      s21_set_bit_1_big(&tmp, index_bit);
+
+    } else if (!bit_of_num_1 && bit_of_num_2) {  // бит первого = 0, второго = 0
+      i = 1;  // с ее помощью смотрим следующии биты
+      s21_set_bit_0_big(&tmp, index_bit);
+      // цикл будет искать ближайший бит = 1
+      while (!flag_bit_min) {
+        if (s21_get_bit_big(&val_1, index_bit + i)) {
+          s21_set_bit_0_big(&val_1, index_bit + i);
+          flag_bit_min = 1;
+        } else {
+          s21_set_bit_1_big(&val_1, (index_bit + i));
+          i++;
+        }
+      }
+      s21_set_bit_1_big(&tmp, index_bit);
+      flag_bit_min = 0;
+
+    } else if (bit_of_num_1 && bit_of_num_2) {  // оба бита = 1
+      s21_set_bit_0_big(&tmp, index_bit);
+    }
+    index_bit++;
+  }
+  s21_set_power_of_big_decimal(&tmp, power_of_result);
+  *result = tmp;
+  output = CONVERSATION_OK;
+  // }
+
+  return output;
+}
+
 int s21_div_big(s21_big_decimal value_1, s21_big_decimal value_2,
                 s21_big_decimal *result) {
   int output = CONVERSATION_OK;
@@ -54,7 +132,7 @@ int s21_div_big(s21_big_decimal value_1, s21_big_decimal value_2,
           tmp_2 = value_2;
         } else {
           if (s21_is_less_or_equal_big(tmp_2, tmp_1)) {
-            s21_sub(tmp_1, tmp_2, &tmp_1);  // надо переписать вычитание
+            s21_sub_big(tmp_1, tmp_2, &tmp_1);  // надо переписать вычитание
             s21_set_bit_1_big(&tmp_result,
                               power_of_value_2);  // ставим бит степени
             tmp_2 = value_2;
@@ -87,11 +165,11 @@ int s21_div_big(s21_big_decimal value_1, s21_big_decimal value_2,
     // }
     power_of_result += power_of_1 - power_of_2;
     while (power_of_result < 0) {
-      s21_mul_decimal_by_10(  // надо проверять эту строку
+      s21_mul_decimal_by_10_big(  // надо проверять эту строку
           &final_tmp_result);  // надо добавить флаг, что при возвращении 1
       power_of_result++;
     }
-    s21_set_power_of_decimal(&final_tmp_result, power_of_result);
+    s21_set_power_of_big_decimal(&final_tmp_result, power_of_result);
     *result = final_tmp_result;
   }
 
@@ -261,6 +339,10 @@ int s21_is_less_big(s21_big_decimal num_1, s21_big_decimal num_2) {
 
 int s21_is_less_or_equal_big(s21_big_decimal num_1, s21_big_decimal num_2) {
   return s21_is_less_big(num_1, num_2) || s21_is_equal_big(num_1, num_2);
+}
+
+int s21_is_greater_or_equal_big(s21_big_decimal num_1, s21_big_decimal num_2) {
+  return s21_is_greater_big(num_1, num_2) || s21_is_equal_big(num_1, num_2);
 }
 
 int s21_mul_decimal_by_10_big(s21_big_decimal *num) {

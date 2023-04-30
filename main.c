@@ -173,8 +173,8 @@ int main(void) {
   // }
   // bit_number.bits[2] = bit_number.bits[2] << 31;
 
-  printf("Output = %d\n", s21_from_float_to_decimal(3.22, &bit_number));
-  printf("Output = %d\n", s21_from_float_to_decimal(2.2, &bit_number_2));
+  printf("Output = %d\n", s21_from_float_to_decimal(100, &bit_number));
+  printf("Output = %d\n", s21_from_float_to_decimal(2, &bit_number_2));
   // printf("децимал перед входом в функцию\n");
   // printf("\nfirst dec number\n");
   s21_print_decimal_number(&bit_number);
@@ -192,7 +192,7 @@ int main(void) {
   // printf("decimal result\n");
   // s21_print_decimal_number(&bit_number_result);
 
-  s21_big_mul(big_bit_number, big_bit_number_2, &big_bit_number_result);
+  s21_div_big(big_bit_number, big_bit_number_2, &big_bit_number_result);
   printf("big_decimal result\n");
   s21_print_big_decimal_number(&big_bit_number_result);
 

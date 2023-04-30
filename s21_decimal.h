@@ -130,6 +130,10 @@ int s21_big_add(s21_big_decimal value_1, s21_big_decimal value_2,
                 s21_big_decimal *big_result);
 int s21_big_mul(s21_big_decimal big_value_1, s21_big_decimal big_value_2,
                 s21_big_decimal *result);
+int s21_div_big(s21_big_decimal value_1, s21_big_decimal value_2,
+                s21_big_decimal *result);
+int s21_sub_big(s21_big_decimal value_1, s21_big_decimal value_2,
+                s21_big_decimal *result);
 
 void rewrite_decimal_to_big(s21_big_decimal *big_decimal, s21_decimal decimal);
 int s21_get_power_of_big_decimal(s21_big_decimal src);
@@ -156,9 +160,12 @@ int s21_normalize_big(s21_big_decimal *num_1, s21_big_decimal *num_2);
 int s21_is_equal_big(s21_big_decimal num_1, s21_big_decimal num_2);
 int s21_is_decimal_0_big(s21_big_decimal dec_num);
 void s21_set_dec_number_to_1_big(s21_big_decimal *src_num);
+
 int s21_is_greater_big(s21_big_decimal num_1, s21_big_decimal num_2);
 int s21_is_less_big(s21_big_decimal num_1, s21_big_decimal num_2);
 int s21_is_less_or_equal_big(s21_big_decimal num_1, s21_big_decimal num_2);
+int s21_is_greater_or_equal_big(s21_big_decimal num_1, s21_big_decimal num_2);
+
 int s21_mul_decimal_by_10_big(s21_big_decimal *num);
 
 #endif  // _SRC_S21_DECIMAL_H_
