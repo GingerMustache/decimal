@@ -96,6 +96,7 @@ int s21_div_big(s21_big_decimal value_1, s21_big_decimal value_2,
     output = CONVERSATION_OK;  // если числа и их степени одинаковы
     s21_set_dec_number_to_1_big(result);
   } else {
+    s21_set_big_dec_number_to_0(result);
     int flg_end_of_95_bit = 0;
     s21_big_decimal tmp_result = {0};
     s21_big_decimal final_tmp_result = {0};
