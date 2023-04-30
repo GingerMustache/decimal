@@ -143,7 +143,7 @@ int s21_div_big(s21_big_decimal value_1, s21_big_decimal value_2,
         reminder = tmp_1;
         check_reminder = s21_is_less_big(reminder, value_2);
       }
-      s21_big_add(final_tmp_result, tmp_result, &final_tmp_result);
+      s21_big_add(final_tmp_result, tmp_result, &final_tmp_result, 0);
       // может быть переполнение
       if (!s21_is_decimal_0_big(reminder)) {
         while (s21_is_less_big(reminder, tmp_2) && !flg_end_of_95_bit) {
@@ -418,11 +418,11 @@ s21_big_decimal s21_round_banking_big(s21_big_decimal integral,
       result = integral;
     } else {
       // Если целая часть нечетная, то увеличиваем её на 1
-      s21_big_add(integral, decimal_one, &result);
+      s21_big_add(integral, decimal_one, &result, 0);
     }
   } else if (s21_is_greater_big(fractional, zerofive)) {
     // Если дробная часть > 0.5, то увеличиваем целую часть на 1
-    s21_big_add(integral, decimal_one, &result);
+    s21_big_add(integral, decimal_one, &result, 0);
   } else {
     // Если дробная часть < 0.5, то оставляем целую часть без изменений
     result = integral;

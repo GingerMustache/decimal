@@ -123,12 +123,14 @@ int s21_get_bit_from_not_decimal(float src, int index);
 int s21_div(s21_decimal value_1, s21_decimal value_2, s21_decimal *result);
 
 //------------------------Работа с big_decimal----------------------//
+
+void s21_print_big_decimal_number(s21_big_decimal *num);
 void s21_set_bit_0_big(s21_big_decimal *dec_num, int index);
 void s21_set_bit_1_big(s21_big_decimal *dec_num, int index);
 int s21_get_bit_big(s21_big_decimal *dec_num, int index);
 
-int s21_big_add(s21_big_decimal value_1, s21_big_decimal value_2,
-                s21_big_decimal *big_result);
+int s21_big_add(s21_big_decimal big_value_1, s21_big_decimal big_value_2,
+                s21_big_decimal *big_result, int func);
 int s21_big_mul(s21_big_decimal big_value_1, s21_big_decimal big_value_2,
                 s21_big_decimal *result);
 int s21_div_big(s21_big_decimal value_1, s21_big_decimal value_2,
@@ -177,5 +179,7 @@ int s21_round_big(s21_big_decimal value, s21_big_decimal *result);
 
 int s21_mul_decimal_by_10_big(s21_big_decimal *num);
 int s21_div_decimal_by_10_big(s21_big_decimal *num);
+
+int check_big_decimal(s21_big_decimal big_tmp);
 
 #endif  // _SRC_S21_DECIMAL_H_

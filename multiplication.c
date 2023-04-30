@@ -97,6 +97,7 @@ int s21_big_mul(s21_big_decimal big_value_1, s21_big_decimal big_value_2,
   s21_set_big_dec_number_to_0(result);
   s21_big_decimal tmp = *result;
 
+  int count_1 = 0, count_2 = 0;
   // int power_of_result = 0;
   // степень пропадает при вычислениях и появляется *result = tmp
   // степепнь сохраняется  в нормализации
@@ -107,15 +108,35 @@ int s21_big_mul(s21_big_decimal big_value_1, s21_big_decimal big_value_2,
     s21_normalize_big(&big_value_1, &big_value_2);  // нормализация
   }
 
-  while (index != 192 && end_mul) {
-    if (s21_get_bit_big(&big_value_1, index)) {
-      step = big_value_2;
-      end_mul = s21_shift_bits_big(&step, index);
-      s21_big_add(step, tmp, &tmp);
-      s21_set_big_dec_number_to_0(&step);
-    }
+  while (index != 63) {  // проверка что на что умножать будет
+    count_1 += s21_get_bit_big(&big_value_1, index);
+    count_2 += s21_get_bit_big(&big_value_2, index);
     index++;
   }
+  index = 0;
+
+  if (count_1 < count_2) {
+    while (index != 192 && end_mul) {
+      if (s21_get_bit_big(&big_value_1, index)) {
+        step = big_value_2;
+        end_mul = s21_shift_bits_big(&step, index);
+        s21_big_add(step, tmp, &tmp, 0);
+        s21_set_big_dec_number_to_0(&step);
+      }
+      index++;
+    }
+  } else {
+    while (index != 192 && end_mul) {
+      if (s21_get_bit_big(&big_value_2, index)) {
+        step = big_value_1;
+        end_mul = s21_shift_bits_big(&step, index);
+        s21_big_add(step, tmp, &tmp, 0);
+        s21_set_big_dec_number_to_0(&step);
+      }
+      index++;
+    }
+  }
+
   *result = tmp;
 
   // обрезает нули при необходимости

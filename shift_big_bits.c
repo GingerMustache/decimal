@@ -115,6 +115,7 @@ int s21_shift_159_big(s21_big_decimal *dec_num) {
     dec_num->bits[5] = dec_num->bits[5] << 1;
     twist_bit_big(dec_num, 159, 160);
     dec_num->bits[4] = dec_num->bits[4] << 1;  // двигаем нанешний ряд
+    // s21_print_big_decimal_number(dec_num);
   }
   return (0);
 }
@@ -125,11 +126,13 @@ int s21_shift_127_big(s21_big_decimal *dec_num, int *flg_159,
     *flg_overlow = s21_shift_159_big(dec_num);
     twist_bit_big(dec_num, 127, 128);
     dec_num->bits[3] = dec_num->bits[3] << 1;
+    // s21_print_big_decimal_number(dec_num);
     *flg_159 = 0;
   } else {
     dec_num->bits[4] = dec_num->bits[4] << 1;
     twist_bit_big(dec_num, 127, 128);
     dec_num->bits[3] = dec_num->bits[3] << 1;  // двигаем нанешний ряд
+    // s21_print_big_decimal_number(dec_num);
   }
   return (0);
 }
@@ -140,11 +143,13 @@ int s21_shift_95_big(s21_big_decimal *dec_num, int *flg_127, int *flg_159,
     s21_shift_127_big(dec_num, flg_159, flg_overlow);
     twist_bit_big(dec_num, 95, 96);
     dec_num->bits[2] = dec_num->bits[2] << 1;
+    // s21_print_big_decimal_number(dec_num);
     *flg_127 = 0;
   } else {
     dec_num->bits[3] = dec_num->bits[3] << 1;
     twist_bit_big(dec_num, 95, 96);
     dec_num->bits[2] = dec_num->bits[2] << 1;  // двигаем нанешний ряд
+    // s21_print_big_decimal_number(dec_num);
   }
   return (0);
 }
@@ -155,11 +160,13 @@ int s21_shift_63_big(s21_big_decimal *dec_num, int *flg_95, int *flg_127,
     s21_shift_95_big(dec_num, flg_127, flg_159, flg_overlow);
     twist_bit_big(dec_num, 63, 64);
     dec_num->bits[1] = dec_num->bits[1] << 1;
+    // s21_print_big_decimal_number(dec_num);
     *flg_95 = 0;
   } else {
     dec_num->bits[2] = dec_num->bits[2] << 1;
     twist_bit_big(dec_num, 63, 64);
     dec_num->bits[1] = dec_num->bits[1] << 1;  // двигаем нанешний ряд
+    // s21_print_big_decimal_number(dec_num);
   }
   return (0);
 }
@@ -170,11 +177,13 @@ int s21_shift_31_big(s21_big_decimal *dec_num, int *flg_63, int *flg_95,
     s21_shift_63_big(dec_num, flg_95, flg_127, flg_159, flg_overlow);
     twist_bit_big(dec_num, 31, 32);
     dec_num->bits[0] = dec_num->bits[0] << 1;
+    // s21_print_big_decimal_number(dec_num);
     *flg_63 = 0;
   } else {
     dec_num->bits[1] = dec_num->bits[1] << 1;
     twist_bit_big(dec_num, 31, 32);
     dec_num->bits[0] = dec_num->bits[0] << 1;  // двигаем нанешний ряд
+    // s21_print_big_decimal_number(dec_num);
   }
   return (0);
 }
@@ -196,17 +205,17 @@ int s21_shift_bits_big(s21_big_decimal *dec_num, int index) {
       flg_31 = s21_shift_31_big(dec_num, &flg_63, &flg_95, &flg_127, &flg_159,
                                 &flg_overlow);
     }
-    if (s21_get_bit_big(dec_num, 63)) {
+    if (s21_get_bit_big(dec_num, 63) && flg_63) {
       flg_63 =
           s21_shift_63_big(dec_num, &flg_95, &flg_127, &flg_159, &flg_overlow);
     }
-    if (s21_get_bit_big(dec_num, 95)) {
+    if (s21_get_bit_big(dec_num, 95) && flg_95) {
       flg_95 = s21_shift_95_big(dec_num, &flg_127, &flg_159, &flg_overlow);
     }
-    if (s21_get_bit_big(dec_num, 127)) {
+    if (s21_get_bit_big(dec_num, 127) && flg_127) {
       flg_127 = s21_shift_127_big(dec_num, &flg_159, &flg_overlow);
     }
-    if (s21_get_bit_big(dec_num, 159)) {
+    if (s21_get_bit_big(dec_num, 159) && flg_159) {
       flg_159 = s21_shift_159_big(dec_num);
     }
 

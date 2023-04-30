@@ -157,12 +157,12 @@ int main(void) {
 
   int i = 0;
   while (i != 226) {
-    if (i == 95) {
+    if (i <= 95 && i != 0) {
       s21_set_bit_1_big(&big_bit_number, i);  // число
     }
-    if (i == 95) {
-      s21_set_bit_1_big(&big_bit_number_2, i);  // число
-    }
+    // if (i == 95 || i == 127) {
+    //   s21_set_bit_1_big(&big_bit_number_2, i);  // число
+    // }
     // // if (i == 127) {
     //   s21_set_bit_1(&bit_number, i);  // знак
     // }
@@ -174,7 +174,7 @@ int main(void) {
   // bit_number.bits[2] = bit_number.bits[2] << 31;
 
   // printf("Output = %d\n", s21_from_float_to_decimal(12.30, &bit_number));
-  // printf("Output = %d\n", s21_from_float_to_decimal(12.30, &bit_number_2));
+  printf("Output = %d\n", s21_from_float_to_decimal(10, &bit_number_2));
   // printf("децимал перед входом в функцию\n");
 
   // printf("\nfirst dec number\n");
@@ -184,12 +184,12 @@ int main(void) {
   s21_print_big_decimal_number(&big_bit_number);
 
   // printf("\nsecond dec number\n");
-  // s21_print_decimal_number(&bit_number_2);
-  // rewrite_decimal_to_big(&big_bit_number_2, bit_number_2);
+  s21_print_decimal_number(&bit_number_2);
+  rewrite_decimal_to_big(&big_bit_number_2, bit_number_2);
   printf("big_decimal_number second\n");
   s21_print_big_decimal_number(&big_bit_number_2);
 
-  s21_big_add(big_bit_number, big_bit_number_2, &big_bit_number_result);
+  s21_big_mul(big_bit_number, big_bit_number_2, &big_bit_number_result);
   printf("big_decimal result\n");
   s21_print_big_decimal_number(&big_bit_number_result);
 
