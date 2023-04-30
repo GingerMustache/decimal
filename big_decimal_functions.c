@@ -357,14 +357,60 @@ int s21_mul_decimal_by_10_big(s21_big_decimal *num) {
     return (1);
 }
 
-int s21_div_decimal_by_10_big(s21_big_decimal *num) {
-  s21_big_decimal decimal_10 = {10, 0, 0, 0, 0, 0, 0};
-  int res = s21_div_big(*num, decimal_10, num);
-  printf("res of  = %d\n", res);
-  if (!res)  // 0
-    return (0);
-  else
-    return (1);
+int s21_div_decimal_by_10_big(s21_big_decimal *value_1) {
+  s21_big_decimal value_2 = {10, 0, 0, 0, 0, 0, 0};
+
+  s21_big_decimal tmp_result = {0};
+  s21_big_decimal final_tmp_result = {0};
+  s21_big_decimal reminder = {1};
+  int power_of_value_2 = 0;
+  int check_reminder = 0;
+  int power_of_result = 0;
+  int power_of_1 = s21_get_power_of_big_decimal(*value_1);
+  int power_of_2 = s21_get_power_of_big_decimal(value_2);
+
+  s21_set_power_of_big_decimal(value_1, 0);
+  s21_set_power_of_big_decimal(&value_2, 0);
+  s21_big_decimal tmp_1 = *value_1;
+  s21_big_decimal tmp_2 = value_2;
+
+  s21_set_big_dec_number_to_0(&reminder);
+  while (!check_reminder) {
+    for (; s21_is_less_big(tmp_2, tmp_1); power_of_value_2++) {
+      shift_big_bit_left(&tmp_2, 1, 0, 5);
+      // сдвигаем влево tmp_2 пока он <= tmp_1
+    }
+    if (s21_is_greater_big(tmp_2, tmp_1)) {
+      shift_bit_right_big(&tmp_2, 1, 0);
+      power_of_value_2 -= 1;
+    }
+    if (power_of_value_2 < 0) {
+      //   shift_bit_left(&tmp_2, 1);
+      tmp_2 = value_2;
+    } else {
+      if (s21_is_less_or_equal_big(tmp_2, tmp_1)) {
+        s21_sub_big(tmp_1, tmp_2, &tmp_1);
+        s21_set_bit_1_big(&tmp_result,
+                          power_of_value_2);  // ставим бит степени
+        tmp_2 = value_2;
+      }
+    }
+
+    power_of_value_2 = 0;
+    reminder = tmp_1;
+    check_reminder = s21_is_less_big(reminder, value_2);
+  }
+  s21_big_add(final_tmp_result, tmp_result, &final_tmp_result, 0);
+
+  power_of_result += power_of_1 - power_of_2;
+  while (power_of_result < 0) {
+    s21_mul_decimal_by_10_big(  // надо проверять эту строку
+        &final_tmp_result);  // надо добавить флаг, что при возвращении 1
+    power_of_result++;
+  }
+  s21_set_power_of_big_decimal(&final_tmp_result, power_of_result);
+  *value_1 = final_tmp_result;
+  return (power_of_result);
 }
 
 int s21_round_big(s21_big_decimal value, s21_big_decimal *result) {
@@ -434,16 +480,17 @@ s21_big_decimal s21_round_banking_big(s21_big_decimal integral,
 
 int s21_truncate_big(s21_big_decimal value, s21_big_decimal *result) {
   int output = CONVERSATION_ERROR;
-
+  int power = 0;
   if (result) {
     output = CONVERSATION_OK;
-    int power = s21_get_power_of_big_decimal(value);
-    s21_set_power_of_big_decimal(&value, 0);
-    while (power) {
-      s21_div_decimal_by_10_big(
-          &value);  // заменить после на нормальное деление
-      power--;
+    power = s21_div_decimal_by_10_big(&value);
+    if (power) {
+      while (power - 1) {
+        s21_div_decimal_by_10_big(&value);
+        power--;
+      }
     }
+    s21_set_power_of_big_decimal(&value, 0);
     *result = value;
   }
   return output;

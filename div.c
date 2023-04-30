@@ -18,7 +18,7 @@ int s21_div(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
     output = CONVERSATION_OK;  // если числа и их степени одинаковы
     s21_set_dec_number_to_1(result);
   } else {
-    int flg_end_of_95_bit = 0;
+    // int flg_end_of_95_bit = 0;
     s21_decimal tmp_result = {0};
     s21_decimal final_tmp_result = {0};
     s21_decimal reminder = {1};
@@ -38,47 +38,48 @@ int s21_div(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
     s21_decimal tmp_1 = value_1;
     s21_decimal tmp_2 = value_2;
 
-    while (!s21_is_decimal_0(reminder) && power_of_result <= 20) {  // <=27
-      s21_set_dec_number_to_0(&reminder);
-      while (!check_reminder) {
-        for (; s21_is_less(tmp_2, tmp_1); power_of_value_2++) {
-          shift_bit_left(&tmp_2, 1);
-          // сдвигаем влево tmp_2 пока он <= tmp_1
-        }
-        if (s21_is_greater(tmp_2, tmp_1)) {
-          shift_bit_right(&tmp_2, 1);
-          power_of_value_2 -= 1;
-        }
-        if (power_of_value_2 < 0) {
-          //   shift_bit_left(&tmp_2, 1);
+    // while (!s21_is_decimal_0(reminder) && power_of_result <= 20) {  // <=27
+    s21_set_dec_number_to_0(&reminder);
+    while (!check_reminder) {
+      for (; s21_is_less(tmp_2, tmp_1); power_of_value_2++) {
+        shift_bit_left(&tmp_2, 1);
+        // сдвигаем влево tmp_2 пока он <= tmp_1
+      }
+      if (s21_is_greater(tmp_2, tmp_1)) {
+        shift_bit_right(&tmp_2, 1);
+        power_of_value_2 -= 1;
+      }
+      if (power_of_value_2 < 0) {
+        //   shift_bit_left(&tmp_2, 1);
+        tmp_2 = value_2;
+      } else {
+        if (s21_is_less_or_equal(tmp_2, tmp_1)) {
+          s21_sub(tmp_1, tmp_2, &tmp_1);
+          s21_set_bit_1(&tmp_result,
+                        power_of_value_2);  // ставим бит степени
           tmp_2 = value_2;
-        } else {
-          if (s21_is_less_or_equal(tmp_2, tmp_1)) {
-            s21_sub(tmp_1, tmp_2, &tmp_1);
-            s21_set_bit_1(&tmp_result,
-                          power_of_value_2);  // ставим бит степени
-            tmp_2 = value_2;
-          }
         }
-
-        power_of_value_2 = 0;
-        reminder = tmp_1;
-        check_reminder = s21_is_less(reminder, value_2);
       }
-      s21_add(final_tmp_result, tmp_result, &final_tmp_result);
-      // может быть переполнение
-      if (!s21_is_decimal_0(reminder)) {
-        while (s21_is_less(reminder, tmp_2) && !flg_end_of_95_bit) {
-          flg_end_of_95_bit = s21_mul_decimal_by_10(&final_tmp_result);
-          power_of_result++;  // не правильно работает
-          s21_mul_decimal_by_10(&reminder);
-        }
-        check_reminder = 0;
-        s21_set_dec_number_to_0(&tmp_result);
 
-        tmp_1 = reminder;
-      }
+      power_of_value_2 = 0;
+      reminder = tmp_1;
+      check_reminder = s21_is_less(reminder, value_2);
     }
+    s21_add(final_tmp_result, tmp_result, &final_tmp_result);
+    // может быть переполнение
+    // тут можно отсечку сделать для транкейт
+    // if (!s21_is_decimal_0(reminder)) {
+    //   while (s21_is_less(reminder, tmp_2) && !flg_end_of_95_bit) {
+    //     flg_end_of_95_bit = s21_mul_decimal_by_10(&final_tmp_result);
+    //     power_of_result++;  // не правильно работает
+    //     s21_mul_decimal_by_10(&reminder);
+    //   }
+    //   check_reminder = 0;
+    //   s21_set_dec_number_to_0(&tmp_result);
+
+    //   tmp_1 = reminder;
+    // }
+    // }
     // if (power_of_1 > power_of_2) {
     //   power_of_result -= power_of_1;  //??????? нужно больше тестов
     //   //   power_of_result /*был -*/ = power_of_1 - power_of_2;

@@ -178,7 +178,7 @@ int s21_decimal_even_big(s21_big_decimal value);
 int s21_round_big(s21_big_decimal value, s21_big_decimal *result);
 
 int s21_mul_decimal_by_10_big(s21_big_decimal *num);
-int s21_div_decimal_by_10_big(s21_big_decimal *num);
+int s21_div_decimal_by_10_big(s21_big_decimal *value_1);
 
 int check_big_decimal(s21_big_decimal big_tmp);
 

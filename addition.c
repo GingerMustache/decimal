@@ -8,12 +8,12 @@ int s21_add(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
   // int sign_2 = s21_get_bit(&value_2, 127);
   output = s21_sign_handle(&value_1, &value_2, result, 0);
 
-  s21_big_decimal big_value_1 = {0};
-  s21_big_decimal big_value_2 = {0};
-  s21_big_decimal big_result = {0};
-  rewrite_decimal_to_big(&big_value_1, value_1);
-  rewrite_decimal_to_big(&big_value_2, value_2);
-  s21_big_add(big_value_1, big_value_2, &big_result, 1);
+  // s21_big_decimal big_value_1 = {0};
+  // s21_big_decimal big_value_2 = {0};
+  // s21_big_decimal big_result = {0};
+  // rewrite_decimal_to_big(&big_value_1, value_1);
+  // rewrite_decimal_to_big(&big_value_2, value_2);
+  // s21_big_add(big_value_1, big_value_2, &big_result, 1);
 
   if (output == 2) {
     output = CONVERSATION_OK;

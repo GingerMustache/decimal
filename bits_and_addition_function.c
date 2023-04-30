@@ -100,7 +100,7 @@ void s21_div_decimal_by_10(s21_decimal *num) {
 int s21_mul_decimal_by_10(s21_decimal *num) {
   s21_decimal decimal_10 = {10, 0, 0, 0};
   int res = s21_mul(*num, decimal_10, num);
-  printf("res of  = %d\n", res);
+  // printf("res of  = %d\n", res);
   if (!res)  // 0
     return (0);
   else
