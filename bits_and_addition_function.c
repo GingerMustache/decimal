@@ -148,4 +148,5 @@ s21_decimal s21_decimal_get_zerofive(void) {
 
   return result;
 }
+
 int s21_decimal_even(s21_decimal value) { return (value.bits[0] & 1) != 1; }

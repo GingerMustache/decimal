@@ -64,6 +64,7 @@ int s21_truncate(s21_decimal value, s21_decimal *result);
 int s21_negate(s21_decimal value, s21_decimal *result);
 int s21_floor(s21_decimal value, s21_decimal *result);
 int s21_round(s21_decimal value, s21_decimal *result);
+s21_decimal s21_round_banking(s21_decimal integral, s21_decimal fractional);
 
 //------------------------Сравнение----------------------//
 int s21_is_greater(s21_decimal num_1, s21_decimal num_2);
@@ -157,15 +158,24 @@ void shift_big_bit_left(s21_big_decimal *value, int count, int number_shift,
                         int end_shift);
 void twist_bit_big(s21_big_decimal *dec_num, int first, int second);
 int s21_normalize_big(s21_big_decimal *num_1, s21_big_decimal *num_2);
-int s21_is_equal_big(s21_big_decimal num_1, s21_big_decimal num_2);
 int s21_is_decimal_0_big(s21_big_decimal dec_num);
 void s21_set_dec_number_to_1_big(s21_big_decimal *src_num);
 
+int s21_is_equal_big(s21_big_decimal num_1, s21_big_decimal num_2);
 int s21_is_greater_big(s21_big_decimal num_1, s21_big_decimal num_2);
 int s21_is_less_big(s21_big_decimal num_1, s21_big_decimal num_2);
 int s21_is_less_or_equal_big(s21_big_decimal num_1, s21_big_decimal num_2);
 int s21_is_greater_or_equal_big(s21_big_decimal num_1, s21_big_decimal num_2);
 
+int s21_truncate_big(s21_big_decimal value, s21_big_decimal *result);
+s21_big_decimal s21_round_banking_big(s21_big_decimal integral,
+                                      s21_big_decimal fractional);
+
+s21_big_decimal s21_decimal_get_zerofive_big(void);
+int s21_decimal_even_big(s21_big_decimal value);
+int s21_round_big(s21_big_decimal value, s21_big_decimal *result);
+
 int s21_mul_decimal_by_10_big(s21_big_decimal *num);
+int s21_div_decimal_by_10_big(s21_big_decimal *num);
 
 #endif  // _SRC_S21_DECIMAL_H_

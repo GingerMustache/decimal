@@ -120,10 +120,9 @@ int s21_big_mul(s21_big_decimal big_value_1, s21_big_decimal big_value_2,
 
   // обрезает нули при необходимости
   // // добавь в функцию нормальное деление
-  // надо написать деление для биг децимал
-  // if (power_of_1 && power_of_2) {
-  //   s21_truncate_zero_big(result, abs(power_of_1 - power_of_2));
-  // }
+  if (power_of_1 && power_of_2) {
+    s21_truncate_zero_big(result, abs(power_of_1 - power_of_2));
+  }
 
   s21_set_power_of_big_decimal(result,
                                power_of_1 + power_of_2);  // постановка степени

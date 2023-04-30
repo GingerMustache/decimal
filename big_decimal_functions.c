@@ -7,13 +7,13 @@
 int s21_sub_big(s21_big_decimal value_1, s21_big_decimal value_2,
                 s21_big_decimal *result) {
   int output = CONVERSATION_ERROR;
-  int sign_1 = s21_get_bit_big(&value_1, 127);
-  int sign_2 = s21_get_bit_big(&value_2, 127);
+  int sign_1 = s21_get_bit_big(&value_1, 223);
+  int sign_2 = s21_get_bit_big(&value_2, 223);
   // output = s21_sign_handle(&value_1, &value_2, result, 1);
 
   // if (output == 2) {
-  s21_set_bit_0_big(&value_1, 127);
-  s21_set_bit_0_big(&value_2, 127);
+  s21_set_bit_0_big(&value_1, 223);
+  s21_set_bit_0_big(&value_2, 223);
   s21_big_decimal val_1 = {0};
   s21_big_decimal val_2 = {0};
   s21_big_decimal tmp = {0};
@@ -34,12 +34,12 @@ int s21_sub_big(s21_big_decimal value_1, s21_big_decimal value_2,
           value_1, value_2)) {  // поменя с is_greter на is_greater_or_equal
     val_1 = value_1;
     val_2 = value_2;
-    if (sign_1 == 1) s21_set_bit_1_big(&tmp, 127);
+    if (sign_1 == 1) s21_set_bit_1_big(&tmp, 223);
   } else {
     val_1 = value_2;
     val_2 = value_1;
-    if ((sign_2 == 0 && sign_1 == 0)) s21_set_bit_1_big(&tmp, 127);
-    if ((sign_2 == 1 && sign_1 == 1)) s21_set_bit_0_big(&tmp, 127);
+    if ((sign_2 == 0 && sign_1 == 0)) s21_set_bit_1_big(&tmp, 223);
+    if ((sign_2 == 1 && sign_1 == 1)) s21_set_bit_0_big(&tmp, 223);
   }
 
   while (index_bit != 96) {
@@ -132,7 +132,7 @@ int s21_div_big(s21_big_decimal value_1, s21_big_decimal value_2,
           tmp_2 = value_2;
         } else {
           if (s21_is_less_or_equal_big(tmp_2, tmp_1)) {
-            s21_sub_big(tmp_1, tmp_2, &tmp_1);  // надо переписать вычитание
+            s21_sub_big(tmp_1, tmp_2, &tmp_1);
             s21_set_bit_1_big(&tmp_result,
                               power_of_value_2);  // ставим бит степени
             tmp_2 = value_2;
@@ -147,7 +147,8 @@ int s21_div_big(s21_big_decimal value_1, s21_big_decimal value_2,
       // может быть переполнение
       if (!s21_is_decimal_0_big(reminder)) {
         while (s21_is_less_big(reminder, tmp_2) && !flg_end_of_95_bit) {
-          flg_end_of_95_bit = s21_mul_decimal_by_10_big(&final_tmp_result);
+          flg_end_of_95_bit =
+              s21_mul_decimal_by_10_big(&final_tmp_result);  // чекни
           power_of_result++;  // не правильно работает
           s21_mul_decimal_by_10_big(&reminder);
         }
@@ -173,7 +174,7 @@ int s21_div_big(s21_big_decimal value_1, s21_big_decimal value_2,
     *result = final_tmp_result;
   }
 
-  return (output);
+  return (output);  // переделай вывод и глянь s21_div_by_10
 }
 
 int s21_normalize_big(s21_big_decimal *num_1, s21_big_decimal *num_2) {
@@ -262,7 +263,7 @@ void s21_set_power_of_big_decimal(s21_big_decimal *src, int power) {
 void s21_truncate_zero_big(s21_big_decimal *value, int count_zero) {
   if (value) {
     while (count_zero) {
-      //   s21_div_decimal_by_10(value);  // заменить после на нормальное
+      s21_div_decimal_by_10_big(value);  // заменить после на нормальное
       //   деление
       count_zero--;
     }
@@ -299,8 +300,8 @@ int s21_is_greater_big(s21_big_decimal num_1, s21_big_decimal num_2) {
   int res_1 = 0, res_2 = 0;
   int i = 95;
   int output = 0;  // 0 - false, 1 - true
-  int sign_1 = s21_get_bit_big(&num_1, 127);
-  int sign_2 = s21_get_bit_big(&num_2, 127);
+  int sign_1 = s21_get_bit_big(&num_1, 223);
+  int sign_2 = s21_get_bit_big(&num_2, 223);
   int power_of_1 = s21_get_power_of_big_decimal(num_1);
   int power_of_2 = s21_get_power_of_big_decimal(num_2);
 
@@ -353,6 +354,108 @@ int s21_mul_decimal_by_10_big(s21_big_decimal *num) {
     return (0);
   else
     return (1);
+}
+
+int s21_div_decimal_by_10_big(s21_big_decimal *num) {
+  s21_big_decimal decimal_10 = {10, 0, 0, 0, 0, 0, 0};
+  int res = s21_div_big(*num, decimal_10, num);
+  printf("res of  = %d\n", res);
+  if (!res)  // 0
+    return (0);
+  else
+    return (1);
+}
+
+int s21_round_big(s21_big_decimal value, s21_big_decimal *result) {
+  int output = CONVERSATION_OK;
+
+  if (!result) {
+    // Если указатель на decimal является NULL
+    output = CONVERSATION_ERROR;
+  } else {
+    // В остальных случаях округляем
+    s21_set_big_dec_number_to_0(result);
+    // int sign = s21_decimal_get_sign(value);
+    int sign = s21_get_bit_big(&value, 223);
+    s21_big_decimal fractional;
+    s21_big_decimal value_unsigned_truncated;
+    // Убираем знак
+    s21_big_decimal value_unsigned = value;
+    s21_set_bit_0_big(&value_unsigned, 223);
+    // Убираем дробную часть числа
+    s21_truncate_big(value_unsigned, &value_unsigned_truncated);
+
+    // Считаем убранную дробную часть числа
+    s21_sub_big(value_unsigned, value_unsigned_truncated, &fractional);
+
+    // Производим округление, исходя из дробной части числа
+    value_unsigned_truncated =
+        s21_round_banking_big(value_unsigned_truncated, fractional);
+
+    *result = value_unsigned_truncated;
+    // Возвращаем знак
+    // s21_decimal_set_sign(result, sign);
+    if (sign) {  // постановка знака
+      s21_set_bit_1_big(result, 223);
+    } else {
+      s21_set_bit_0_big(result, 223);
+    }
+  }
+
+  return output;
+}
+
+s21_big_decimal s21_round_banking_big(s21_big_decimal integral,
+                                      s21_big_decimal fractional) {
+  s21_big_decimal zerofive = s21_decimal_get_zerofive_big();
+  s21_big_decimal result;
+  s21_big_decimal decimal_one = {1};
+
+  if (s21_is_equal_big(fractional, zerofive)) {
+    // Если дробная часть ровно 0.5
+    if (s21_decimal_even_big(integral)) {
+      // Если целая часть четная, то оставляем её
+      result = integral;
+    } else {
+      // Если целая часть нечетная, то увеличиваем её на 1
+      s21_big_add(integral, decimal_one, &result);
+    }
+  } else if (s21_is_greater_big(fractional, zerofive)) {
+    // Если дробная часть > 0.5, то увеличиваем целую часть на 1
+    s21_big_add(integral, decimal_one, &result);
+  } else {
+    // Если дробная часть < 0.5, то оставляем целую часть без изменений
+    result = integral;
+  }
+
+  return result;
+}
+
+int s21_truncate_big(s21_big_decimal value, s21_big_decimal *result) {
+  int output = CONVERSATION_ERROR;
+
+  if (result) {
+    output = CONVERSATION_OK;
+    int power = s21_get_power_of_big_decimal(value);
+    s21_set_power_of_big_decimal(&value, 0);
+    while (power) {
+      s21_div_decimal_by_10_big(
+          &value);  // заменить после на нормальное деление
+      power--;
+    }
+    *result = value;
+  }
+  return output;
+}
+
+s21_big_decimal s21_decimal_get_zerofive_big(void) {
+  s21_big_decimal result = {{0x5, 0x0, 0x0, 0x0, 0x0, 0x0, 0x10000}};
+
+  return result;
+}
+
+int s21_decimal_even_big(s21_big_decimal value) {
+  return (value.bits[0] & 1) != 1;
 }
 
 //------------------------Управление битами----------------------//
