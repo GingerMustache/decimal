@@ -126,7 +126,7 @@ void s21_set_dec_number_to_1_big(s21_big_decimal *src_num) {
 
 int s21_is_greater_big(s21_big_decimal num_1, s21_big_decimal num_2) {
   int res_1 = 0, res_2 = 0;
-  int i = 95;
+  int i = 191;
   int output = 0;  // 0 - false, 1 - true
   int sign_1 = s21_get_bit_big(&num_1, 223);
   int sign_2 = s21_get_bit_big(&num_2, 223);
@@ -208,8 +208,8 @@ int s21_div_decimal_by_10_big(s21_big_decimal *value_1) {
   while (!check_reminder) {
     for (; s21_is_less_big(tmp_2, tmp_1); power_of_value_2++) {
       if ((power_of_value_2 > 27 && power_of_value_2 < 31) ||
-          (power_of_value_2 > 58 &&
-           power_of_value_2 < 62) ||  // неправильно делает переход
+          (power_of_value_2 > 59 &&
+           power_of_value_2 < 63) ||  // неправильно делает переход
           (power_of_value_2 > 91 && power_of_value_2 < 95) ||
           (power_of_value_2 > 123 && power_of_value_2 < 127) ||
           (power_of_value_2 > 155 && power_of_value_2 < 159) ||
@@ -218,8 +218,8 @@ int s21_div_decimal_by_10_big(s21_big_decimal *value_1) {
         prev_value = tmp_2;
         s21_big_mul(tmp_2, _2, &tmp_2);
       } else {
-        shift_big_bit_left(&tmp_2, 1, 0, 5);
         prev_value = tmp_2;
+        shift_big_bit_left(&tmp_2, 1, 0, 5);
       }
       s21_print_big_decimal_number(&tmp_2);
       // сдвигаем влево tmp_2 пока он <= tmp_1
