@@ -160,7 +160,7 @@ int s21_sub_big(s21_big_decimal value_1, s21_big_decimal value_2,
     if ((sign_2 == 1 && sign_1 == 1)) s21_set_bit_0_big(&tmp, 223);
   }
 
-  while (index_bit != 96) {
+  while (index_bit != 191) {
     bit_of_num_1 = s21_get_bit_big(&val_1, index_bit);
     bit_of_num_2 = s21_get_bit_big(&val_2, index_bit);
 

@@ -221,6 +221,7 @@ int s21_div_decimal_by_10_big(s21_big_decimal *value_1) {
         prev_value = tmp_2;
         shift_big_bit_left(&tmp_2, 1, 0, 5);
       }
+      // s21_print_big_decimal_number(&tmp_1);
       // s21_print_big_decimal_number(&tmp_2);
       // сдвигаем влево tmp_2 пока он <= tmp_1
     }
@@ -280,15 +281,15 @@ int s21_round_big(s21_big_decimal value, s21_big_decimal *result) {
     s21_set_bit_0_big(&value_unsigned, 223);
     // Убираем дробную часть числа
     s21_truncate_big(value_unsigned, &value_unsigned_truncated);
-    s21_print_big_decimal_number(&value_unsigned_truncated);
+    // s21_print_big_decimal_number(&value_unsigned_truncated);
     // Считаем убранную дробную часть числа
     s21_sub_big(value_unsigned, value_unsigned_truncated, &fractional);
-    s21_print_big_decimal_number(&fractional);
+    // s21_print_big_decimal_number(&fractional);
 
     // Производим округление, исходя из дробной части числа
     value_unsigned_truncated =
         s21_round_banking_big(value_unsigned_truncated, fractional);
-    s21_print_big_decimal_number(&fractional);
+    // s21_print_big_decimal_number(&fractional);
 
     *result = value_unsigned_truncated;
     // Возвращаем знак
