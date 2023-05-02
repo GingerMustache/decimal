@@ -160,9 +160,9 @@ int main(void) {
 
   // --------работа с deciimal--------
 
-  int i = 93;
+  int i = 1;
   while (i != 226) {
-    if (i == 95) {
+    if (i <= 95) {
       s21_set_bit_1_big(&big_bit_number, i);  // число
     }
     // if (i == 95 || i == 127) {
@@ -179,7 +179,7 @@ int main(void) {
   // bit_number.bits[2] = bit_number.bits[2] << 31;
 
   // printf("Output = %d\n", s21_from_float_to_decimal(10, &bit_number));
-  printf("Output = %d\n", s21_from_float_to_decimal(10, &bit_number_2));
+  printf("Output = %d\n", s21_from_float_to_decimal(0.4, &bit_number_2));
   // printf("децимал перед входом в функцию\n");
 
   // printf("\nfirst dec number\n");
@@ -200,8 +200,8 @@ int main(void) {
   // printf("\nbit_res\n");
   // s21_print_decimal_number(&bit_number_result);
 
-  printf("res of big_func = %d\n",
-         s21_big_mul(big_bit_number, big_bit_number_2, &big_bit_number_result));
+  printf("res of big_func = %d\n", s21_big_add(big_bit_number, big_bit_number_2,
+                                               &big_bit_number_result, 1));
   //  s21_div_decimal_by_10_big(&big_bit_number));
   // s21_truncate_big(big_bit_number_result, &big_bit_number_result_2);
   printf("big_decimal result\n");
