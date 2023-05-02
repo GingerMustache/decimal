@@ -177,7 +177,7 @@ int s21_is_greater_or_equal_big(s21_big_decimal num_1, s21_big_decimal num_2) {
 int s21_mul_decimal_by_10_big(s21_big_decimal *num) {
   s21_big_decimal decimal_10 = {10, 0, 0, 0, 0, 0, 0};
   int res = s21_big_mul(*num, decimal_10, num);
-  printf("res of  = %d\n", res);
+  // printf("res of  = %d\n", res);
   if (!res)  // 0
     return (0);
   else
@@ -280,13 +280,15 @@ int s21_round_big(s21_big_decimal value, s21_big_decimal *result) {
     s21_set_bit_0_big(&value_unsigned, 223);
     // Убираем дробную часть числа
     s21_truncate_big(value_unsigned, &value_unsigned_truncated);
-
+    s21_print_big_decimal_number(&value_unsigned_truncated);
     // Считаем убранную дробную часть числа
     s21_sub_big(value_unsigned, value_unsigned_truncated, &fractional);
+    s21_print_big_decimal_number(&fractional);
 
     // Производим округление, исходя из дробной части числа
     value_unsigned_truncated =
         s21_round_banking_big(value_unsigned_truncated, fractional);
+    s21_print_big_decimal_number(&fractional);
 
     *result = value_unsigned_truncated;
     // Возвращаем знак
