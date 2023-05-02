@@ -152,16 +152,36 @@ int s21_div_big(s21_big_decimal value_1, s21_big_decimal value_2,
     s21_set_power_of_big_decimal(&value_2, 0);
     s21_big_decimal tmp_1 = value_1;
     s21_big_decimal tmp_2 = value_2;
+    s21_big_decimal prev_value = {0};
+    s21_big_decimal _2 = {2, 0, 0, 0, 0, 0, 0};
 
-    while (!s21_is_decimal_0_big(reminder) && power_of_result <= 20) {  // <=27
+    while (!s21_is_decimal_0_big(reminder) && power_of_result <= 27) {  // <=27
       s21_set_big_dec_number_to_0(&reminder);
       while (!check_reminder) {
         for (; s21_is_less_big(tmp_2, tmp_1); power_of_value_2++) {
-          shift_big_bit_left(&tmp_2, 1, 0, 5);
+          if ((power_of_value_2 > 27 && power_of_value_2 < 31) ||
+              (power_of_value_2 > 59 &&
+               power_of_value_2 < 63) ||  // неправильно делает переход
+              (power_of_value_2 > 91 && power_of_value_2 < 95) ||
+              (power_of_value_2 > 123 && power_of_value_2 < 127) ||
+              (power_of_value_2 > 155 && power_of_value_2 < 159) ||
+              (power_of_value_2 > 187 && power_of_value_2 < 191)) {
+            // может умножение на 2 пихнуть?
+            prev_value = tmp_2;
+            s21_big_mul(tmp_2, _2, &tmp_2);
+          } else {
+            prev_value = tmp_2;
+            shift_big_bit_left(&tmp_2, 1, 0, 5);
+          }
+          // s21_print_big_decimal_number(&tmp_2);
           // сдвигаем влево tmp_2 пока он <= tmp_1
         }
         if (s21_is_greater_big(tmp_2, tmp_1)) {
-          shift_bit_right_big(&tmp_2, 1, 0);
+          if (power_of_value_2 > 27) {
+            tmp_2 = prev_value;
+          } else {
+            shift_bit_right_big(&tmp_2, 1, 0);
+          }
           power_of_value_2 -= 1;
         }
         if (power_of_value_2 < 0) {

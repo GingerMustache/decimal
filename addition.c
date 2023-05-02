@@ -93,6 +93,8 @@ int s21_big_add(s21_big_decimal big_value_1, s21_big_decimal big_value_2,
   int power_of_result = 0;
 
   s21_big_decimal big_tmp = {0};
+  s21_big_decimal big_10 = {10, 0, 0, 0, 0, 0, 0};
+  ;
 
   if ((power_of_1 && power_of_2) || (power_of_1 || power_of_2)) {
     power_of_result =
@@ -137,7 +139,7 @@ int s21_big_add(s21_big_decimal big_value_1, s21_big_decimal big_value_2,
       *big_result = big_tmp;
     } else if (power_of_result) {
       while (power_of_result || rewrite != 3) {
-        s21_div_decimal_by_10_big(&big_tmp);
+        s21_div_big(big_tmp, big_10, &big_tmp);
         s21_round_big(big_tmp, &big_tmp);
         rewrite = check_big_decimal(big_tmp);
         power_of_result--;
