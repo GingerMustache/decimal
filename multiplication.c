@@ -115,7 +115,7 @@ int s21_big_mul(s21_big_decimal big_value_1, s21_big_decimal big_value_2,
   }
   index = 0;
 
-  if (count_1 < count_2) {
+  if (count_1 < count_2) {  // <
     while (index != 192 && end_mul) {
       if (s21_get_bit_big(&big_value_1, index)) {
         step = big_value_2;
