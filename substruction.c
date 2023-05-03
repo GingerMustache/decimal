@@ -55,15 +55,15 @@ int s21_sub(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
     s21_decimal val_1 = {0};
     s21_decimal val_2 = {0};
     s21_decimal tmp = {0};
-    int index_bit = 0;
-    int i = 1;
-    int flag_bit_min = 0;
-    int bit_of_num_1 = 0;
-    int bit_of_num_2 = 0;
-    int power_of_result = 0;
-    int power_of_1 = s21_get_power_of_decimal(value_1);
-    int power_of_2 = s21_get_power_of_decimal(value_2);
-    int big_decimal_output = 0;
+    // int index_bit = 0;
+    // int i = 1;
+    // int flag_bit_min = 0;
+    // int bit_of_num_1 = 0;
+    // int bit_of_num_2 = 0;
+    // int power_of_result = 0;
+    // int power_of_1 = s21_get_power_of_decimal(value_1);
+    // int power_of_2 = s21_get_power_of_decimal(value_2);
+    // int big_decimal_output = 0;
 
     // if ((power_of_1 && power_of_2) || (power_of_1 || power_of_2)) {
     //   power_of_result = s21_normalize(&value_1, &value_2);  // нормализация
@@ -81,13 +81,16 @@ int s21_sub(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
       if ((sign_2 == 1 && sign_1 == 1)) s21_set_bit_0(&tmp, 127);
     }
 
-    s21_big_decimal big_value_1 = {0};
-    s21_big_decimal big_value_2 = {0};
-    s21_big_decimal big_result = {0};
-    rewrite_decimal_to_big(&big_value_1, value_1);
-    rewrite_decimal_to_big(&big_value_2, value_2);
+    // s21_big_decimal big_value_1 = {0};
+    // s21_big_decimal big_value_2 = {0};
+    // s21_big_decimal big_result = {0};
+    // rewrite_decimal_to_big(&big_value_1, value_1);
+    // rewrite_decimal_to_big(&big_value_2, value_2);
 
-    big_decimal_output = s21_big_add(big_value_1, big_value_2, &big_result, 1);
+    // big_decimal_output = s21_big_add(big_value_1, big_value_2, &big_result,
+    // 1);
+    (void)val_1;
+    (void)val_2;
 
     //   while (index_bit != 96) {
     //     bit_of_num_1 = s21_get_bit(&val_1, index_bit);
@@ -157,6 +160,20 @@ int s21_sub_big(s21_big_decimal value_1, s21_big_decimal value_2,
     power_of_result = s21_normalize_big(&value_1, &value_2);  // нормализация
   }
 
+  if (s21_is_greater_or_equal_big(value_1, value_2)) {
+    val_1 = value_1;
+    val_2 = value_2;
+    // if (sign_1 == 1) s21_set_bit_1_big(&tmp, 127);
+  } else {
+    val_1 = value_2;
+    val_2 = value_1;
+    // if ((sign_2 == 0 && sign_1 == 0)) s21_set_bit_1(&tmp, 127);
+    // if ((sign_2 == 1 && sign_1 == 1)) s21_set_bit_0(&tmp, 127);
+  }
+
+  (void)val_1;
+  (void)val_2;
+
   while (index_bit != 191) {
     bit_of_num_1 = s21_get_bit_big(&val_1, index_bit);
     bit_of_num_2 = s21_get_bit_big(&val_2, index_bit);
@@ -195,11 +212,22 @@ int s21_sub_big(s21_big_decimal value_1, s21_big_decimal value_2,
     if (rewrite == 3) {
       *result = tmp;
     } else if (power_of_result) {
-      while (power_of_result || rewrite != 3) {
+      while (power_of_result && rewrite != 3) {
+        // s21_print_big_decimal_number(&tmp);
         s21_div_big(tmp, big_10, &tmp);
         // s21_print_big_decimal_number(&tmp);
         s21_round_big(tmp, &tmp);
-        // s21_print_big_decimal_number(&big_tmp);
+        /*
+          При делении 0.00000000000000000002 / 2000000000 =
+          1999999999.99999999999999999998
+          оригинальный ответ уходит за 95 бит
+          Если использовать раунд то он выдает округление до
+          2000000000.0000000000000000000
+          Если использовать div_10 то он выдает округление до
+          s21_div_decimal_by_10_big(&tmp);
+          1999999999.9999999999999999999
+        */
+        // s21_print_big_decimal_number(&tmp);
         rewrite = check_big_decimal(tmp);
         power_of_result--;
       }

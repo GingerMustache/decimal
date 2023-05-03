@@ -112,7 +112,7 @@ int s21_big_add(s21_big_decimal big_value_1, s21_big_decimal big_value_2,
     if (rewrite == 3) {
       *big_result = big_tmp;
     } else if (power_of_result) {
-      while (power_of_result || rewrite != 3) {
+      while (power_of_result && rewrite != 3) {  // сменил ||, как в вычитании
         s21_div_big(big_tmp, big_10, &big_tmp);
         // s21_print_big_decimal_number(&big_tmp);
         s21_round_big(big_tmp, &big_tmp);
