@@ -189,7 +189,7 @@ int s21_div_big(s21_big_decimal value_1, s21_big_decimal value_2,
           tmp_2 = value_2;
         } else {
           if (s21_is_less_or_equal_big(tmp_2, tmp_1)) {
-            s21_sub_big(tmp_1, tmp_2, &tmp_1);
+            s21_sub_big(tmp_1, tmp_2, &tmp_1, 0);  // чекни потом
             s21_set_bit_1_big(&tmp_result,
                               power_of_value_2);  // ставим бит степени
             tmp_2 = value_2;

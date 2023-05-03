@@ -250,7 +250,7 @@ int s21_div_decimal_by_10_big(s21_big_decimal *value_1) {
       tmp_2 = value_2;
     } else {
       if (s21_is_less_or_equal_big(tmp_2, tmp_1)) {
-        s21_sub_big(tmp_1, tmp_2, &tmp_1);
+        s21_sub_big(tmp_1, tmp_2, &tmp_1, 0);
         s21_set_bit_1_big(&tmp_result,
                           power_of_value_2);  // ставим бит степени
         tmp_2 = value_2;
@@ -295,7 +295,7 @@ int s21_round_big(s21_big_decimal value, s21_big_decimal *result) {
     s21_truncate_big(value_unsigned, &value_unsigned_truncated);
     // s21_print_big_decimal_number(&value_unsigned_truncated);
     // Считаем убранную дробную часть числа
-    s21_sub_big(value_unsigned, value_unsigned_truncated, &fractional);
+    s21_sub_big(value_unsigned, value_unsigned_truncated, &fractional, 0);
     // s21_print_big_decimal_number(&fractional);
 
     // Производим округление, исходя из дробной части числа

@@ -137,7 +137,7 @@ int s21_big_mul(s21_big_decimal big_value_1, s21_big_decimal big_value_2,
 int s21_div_big(s21_big_decimal value_1, s21_big_decimal value_2,
                 s21_big_decimal *result);
 int s21_sub_big(s21_big_decimal value_1, s21_big_decimal value_2,
-                s21_big_decimal *result);
+                s21_big_decimal *result, int func);
 
 void rewrite_decimal_to_big(s21_big_decimal *big_decimal, s21_decimal decimal);
 void rewrite_from_big_decimal_to_decimal(s21_big_decimal big_decimal,

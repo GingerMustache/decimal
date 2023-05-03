@@ -1,5 +1,4 @@
 #include "s21_decimal.h"
-// походу надо переводить на биг децимал
 // добавить проверку на underflow
 // добавлена tmp ошибки из-за неё только могут быть
 int s21_mul(s21_decimal value_1, s21_decimal value_2, s21_decimal* result) {
