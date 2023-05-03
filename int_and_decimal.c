@@ -58,7 +58,7 @@ int s21_from_decimal_to_int(s21_decimal src, int *dst) {
       if (output == CONVERSATION_OK) {
         *dst = buffer;
       }
-      printf("buffer = %lld\n", buffer);  // delete
+      // printf("buffer = %lld\n", buffer);  // delete
 
       output = CONVERSATION_OK;
     }

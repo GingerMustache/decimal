@@ -23,7 +23,7 @@ int s21_normalize_big(s21_big_decimal *num_1, s21_big_decimal *num_2) {
       s21_big_mul(*num_1, bit_number_10, num_1);
       power_num_1++;
     }
-    s21_print_big_decimal_number(num_1);
+    // s21_print_big_decimal_number(num_1);
     return (power_num_1);
   } else if (power_num_2 < power_num_1) {
     while (power_num_1 - power_num_2) {
@@ -47,6 +47,20 @@ void rewrite_decimal_to_big(s21_big_decimal *big_decimal, s21_decimal decimal) {
     }
   }
   s21_set_power_of_big_decimal(big_decimal, power_of_decimal);
+}
+
+void rewrite_from_big_decimal_to_decimal(s21_big_decimal big_decimal,
+                                         s21_decimal *decimal) {
+  int power_of_decimal = s21_get_power_of_big_decimal(big_decimal);
+
+  for (int i = 0; i != 96; i++) {
+    if (s21_get_bit_big(&big_decimal, i)) {
+      s21_set_bit_1(decimal, i);
+    } else {
+      s21_set_bit_0(decimal, i);
+    }
+  }
+  s21_set_power_of_decimal(decimal, power_of_decimal);
 }
 
 int s21_get_power_of_big_decimal(s21_big_decimal src) {
@@ -208,13 +222,11 @@ int s21_div_decimal_by_10_big(s21_big_decimal *value_1) {
   while (!check_reminder) {
     for (; s21_is_less_big(tmp_2, tmp_1); power_of_value_2++) {
       if ((power_of_value_2 > 27 && power_of_value_2 < 31) ||
-          (power_of_value_2 > 59 &&
-           power_of_value_2 < 63) ||  // неправильно делает переход
+          (power_of_value_2 > 59 && power_of_value_2 < 63) ||
           (power_of_value_2 > 91 && power_of_value_2 < 95) ||
           (power_of_value_2 > 123 && power_of_value_2 < 127) ||
           (power_of_value_2 > 155 && power_of_value_2 < 159) ||
           (power_of_value_2 > 187 && power_of_value_2 < 191)) {
-        // может умножение на 2 пихнуть?
         prev_value = tmp_2;
         s21_big_mul(tmp_2, _2, &tmp_2);
       } else {

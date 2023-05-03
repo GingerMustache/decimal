@@ -87,6 +87,7 @@ int s21_inverse_bit(s21_decimal *dec_num, int index) {
 
 int s21_get_float_bit(int num, int index) { return (num & (1 << index)) != 0; };
 
+// надо переписать, как для big_decimal сделано
 void s21_div_decimal_by_10(s21_decimal *num) {
   unsigned long long rem = 0, tmp;
   for (int i = 2; i >= 0; i--) {
@@ -125,6 +126,11 @@ s21_decimal s21_decimal_get_inf(void) {
   s21_decimal result = {{0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0x7FFFFFFF}};
 
   return result;
+}
+
+int s21_is_max_decimal(s21_decimal num) {
+  s21_decimal over = {0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0};
+  return s21_is_equal(num, over);
 }
 
 void s21_set_dec_number_to_1(s21_decimal *src_num) {

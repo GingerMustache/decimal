@@ -103,6 +103,7 @@ int s21_get_bits(unsigned int bits, unsigned int num);
 s21_decimal s21_decimal_get_zerofive(void);
 int s21_decimal_even(s21_decimal value);
 s21_decimal s21_round_banking(s21_decimal integral, s21_decimal fractional);
+int s21_is_max_decimal(s21_decimal num);
 
 //------------------------Сдвиги(вспомогательные)----------------------//
 int s21_shift_bits(s21_decimal *dec_num, int index);
@@ -139,6 +140,8 @@ int s21_sub_big(s21_big_decimal value_1, s21_big_decimal value_2,
                 s21_big_decimal *result);
 
 void rewrite_decimal_to_big(s21_big_decimal *big_decimal, s21_decimal decimal);
+void rewrite_from_big_decimal_to_decimal(s21_big_decimal big_decimal,
+                                         s21_decimal *decimal);
 int s21_get_power_of_big_decimal(s21_big_decimal src);
 void s21_set_bits_from_int_to_big_decimal(int src, s21_big_decimal *dst,
                                           int which_int_part_to_fill);
