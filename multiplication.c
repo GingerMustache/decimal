@@ -98,19 +98,23 @@ int s21_big_mul(s21_big_decimal big_value_1, s21_big_decimal big_value_2,
   s21_big_decimal step = {0};
   s21_set_big_dec_number_to_0(result);
   s21_big_decimal tmp = *result;
-  s21_big_decimal big_10 = {10, 0, 0, 0, 0, 0, 0};
+  s21_big_decimal big_10 = {10, 0, 0, 0, 0, 0, 0};  // не удаляq
 
   int count_1 = 0, count_2 = 0;
-  // степень пропадает при вычислениях и появляется *result = tmp
-  // степепнь сохраняется  в нормализации
+
   int power_of_1 = s21_get_power_of_big_decimal(big_value_1);
   int power_of_2 = s21_get_power_of_big_decimal(big_value_2);
   int power_of_result = power_of_1 + power_of_2;
+  int power_norm = 0;
+  int flg_div = 1;
+
+  s21_big_decimal fractional = {0};
+  s21_big_decimal value_unsigned_truncated = {0};
 
   if ((power_of_1 && power_of_2) || (power_of_1 || power_of_2)) {
-    s21_normalize_big(&big_value_1, &big_value_2);  // нормализация
+    power_norm = s21_normalize_big(&big_value_1, &big_value_2);  // нормализация
   }
-
+  (void)power_norm;
   while (index != 63) {  // проверка что на что умножать будет
     count_1 += s21_get_bit_big(&big_value_1, index);
     count_2 += s21_get_bit_big(&big_value_2, index);
@@ -118,7 +122,7 @@ int s21_big_mul(s21_big_decimal big_value_1, s21_big_decimal big_value_2,
   }
   index = 0;
 
-  if (count_1 < count_2) {  // <
+  if (count_1 < count_2) {
     while (index != 192 && output) {
       if (s21_get_bit_big(&big_value_1, index)) {
         step = big_value_2;
@@ -140,16 +144,12 @@ int s21_big_mul(s21_big_decimal big_value_1, s21_big_decimal big_value_2,
     }
   }
 
-  // *result = tmp;
-
-  // обрезает нули при необходимости
-  // // добавь в функцию нормальное деление
-
   // if (sign_1 != sign_2) {        // постановка знака
   //   s21_set_bit_1_big(result, 223);
   // } else {
   //   s21_set_bit_0_big(result, 223);
   // }
+
   if (func == 1) {
     // s21_print_big_decimal_number(&big_tmp);
     int rewrite = check_big_decimal(tmp);
@@ -163,19 +163,29 @@ int s21_big_mul(s21_big_decimal big_value_1, s21_big_decimal big_value_2,
     } else if (power_of_result) {
       while (power_of_result && rewrite != 3) {  // сменил ||, как в вычитании
         s21_div_big(tmp, big_10, &tmp);
-        s21_print_big_decimal_number(&tmp);
-        s21_round_big(tmp, &tmp);
-        s21_print_big_decimal_number(&tmp);
+        // s21_print_big_decimal_number(&tmp);
         rewrite = check_big_decimal(tmp);
+        if (rewrite != 3) {
+          // s21_round_big(tmp, &tmp);
+          // замена round
+          s21_truncate_big(tmp, &value_unsigned_truncated);
+          s21_sub_big(tmp, value_unsigned_truncated, &fractional, 0);
+          tmp = s21_round_banking_big(value_unsigned_truncated, fractional);
+
+          // s21_print_big_decimal_number(&tmp);
+          rewrite = check_big_decimal(tmp);
+        }
         power_of_result--;
+        flg_div = 0;
       }
       if (!power_of_result && rewrite != 3) {
         output = CONVERSATION_BIG;
       } else {
         output = CONVERSATION_OK;
         *result = tmp;
-        if (power_of_1 && power_of_2) {  // было &&
+        if (power_of_1 && power_of_2 && flg_div) {  // было &&
           s21_truncate_zero_big(result, abs(power_of_1 - power_of_2));
+          // s21_print_big_decimal_number(&tmp);
         }
       }
     } else {
@@ -184,7 +194,8 @@ int s21_big_mul(s21_big_decimal big_value_1, s21_big_decimal big_value_2,
     // пока не понял надо ли
     // постановка степени
     if (power_of_result <= 28) {
-      s21_set_power_of_big_decimal(result, power_of_result);
+      s21_set_power_of_big_decimal(result, power_of_1 + power_of_2);
+      // s21_set_power_of_big_decimal(result, power_of_result);
       output = CONVERSATION_OK;
     } else {
       // можно для деления что то подставить
