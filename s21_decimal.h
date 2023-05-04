@@ -184,5 +184,6 @@ int s21_mul_decimal_by_10_big(s21_big_decimal *num);
 int s21_div_decimal_by_10_big(s21_big_decimal *value_1);
 
 int check_big_decimal(s21_big_decimal big_tmp);
+int count_ones(s21_big_decimal v_1, s21_big_decimal v_2);
 
 #endif  // _SRC_S21_DECIMAL_H_

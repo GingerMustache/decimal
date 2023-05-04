@@ -98,23 +98,21 @@ int s21_big_mul(s21_big_decimal big_value_1, s21_big_decimal big_value_2,
   s21_big_decimal step = {0};
   s21_set_big_dec_number_to_0(result);
   s21_big_decimal tmp = *result;
-  s21_big_decimal big_10 = {10, 0, 0, 0, 0, 0, 0};  // не удаляq
-
+  // s21_big_decimal big_10 = {10, 0, 0, 0, 0, 0, 0};  // не удаляq
   int count_1 = 0, count_2 = 0;
-
   int power_of_1 = s21_get_power_of_big_decimal(big_value_1);
   int power_of_2 = s21_get_power_of_big_decimal(big_value_2);
   int power_of_result = power_of_1 + power_of_2;
-  int power_norm = 0;
+  int power = 0;
   int flg_div = 1;
 
   s21_big_decimal fractional = {0};
   s21_big_decimal value_unsigned_truncated = {0};
+  power = count_ones(big_value_1, big_value_2);
 
   if ((power_of_1 && power_of_2) || (power_of_1 || power_of_2)) {
-    power_norm = s21_normalize_big(&big_value_1, &big_value_2);  // нормализация
+    s21_normalize_big(&big_value_1, &big_value_2);  // нормализация
   }
-  (void)power_norm;
   while (index != 63) {  // проверка что на что умножать будет
     count_1 += s21_get_bit_big(&big_value_1, index);
     count_2 += s21_get_bit_big(&big_value_2, index);
@@ -162,7 +160,9 @@ int s21_big_mul(s21_big_decimal big_value_1, s21_big_decimal big_value_2,
       }
     } else if (power_of_result) {
       while (power_of_result && rewrite != 3) {  // сменил ||, как в вычитании
-        s21_div_big(tmp, big_10, &tmp);
+
+        // s21_div_big(tmp, big_10, &tmp);
+        s21_div_decimal_by_10_big(&tmp);
         // s21_print_big_decimal_number(&tmp);
         rewrite = check_big_decimal(tmp);
         if (rewrite != 3) {
@@ -193,8 +193,8 @@ int s21_big_mul(s21_big_decimal big_value_1, s21_big_decimal big_value_2,
     }
     // пока не понял надо ли
     // постановка степени
-    if (power_of_result <= 28) {
-      s21_set_power_of_big_decimal(result, power_of_1 + power_of_2);
+    if (power_of_1 + power_of_2 - power <= 28) {
+      s21_set_power_of_big_decimal(result, power_of_1 + power_of_2 - power);
       // s21_set_power_of_big_decimal(result, power_of_result);
       output = CONVERSATION_OK;
     } else {
@@ -207,3 +207,29 @@ int s21_big_mul(s21_big_decimal big_value_1, s21_big_decimal big_value_2,
   }
   return output;  // при заполнении всего биг_децимал вернет 0
 }
+
+int count_ones(s21_big_decimal v_1, s21_big_decimal v_2) {
+  int count_sum = 0;
+  int v1_95 = 95;
+  int v2_95 = 95;
+  while (!s21_get_bit_big(&v_1, v1_95)) {
+    v1_95--;
+  }
+  while (!s21_get_bit_big(&v_2, v2_95)) {
+    v2_95--;
+  }
+  count_sum = v1_95 + v2_95;
+  if (count_sum >= 95)
+    return (count_sum - 95);
+  else
+    return (0);
+}
+
+/*
+    работает
+    1234.567 * 0.00000000000000000000000006 = 1001011010110100001110 и степень
+
+    проверить
+    95 * на нули о обычные числа
+    дюбые переполнения
+*/
