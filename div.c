@@ -168,7 +168,7 @@ int s21_div_big(s21_big_decimal value_1, s21_big_decimal value_2,
               (power_of_value_2 > 187 && power_of_value_2 < 191)) {
             // может умножение на 2 пихнуть?
             prev_value = tmp_2;
-            s21_big_mul(tmp_2, _2, &tmp_2);
+            s21_big_mul(tmp_2, _2, &tmp_2, 0);
           } else {
             prev_value = tmp_2;
             shift_big_bit_left(&tmp_2, 1, 0, 5);

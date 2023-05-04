@@ -20,14 +20,14 @@ int s21_normalize_big(s21_big_decimal *num_1, s21_big_decimal *num_2) {
 
   if (power_num_1 < power_num_2) {
     while (power_num_2 - power_num_1) {
-      s21_big_mul(*num_1, bit_number_10, num_1);
+      s21_big_mul(*num_1, bit_number_10, num_1, 0);
       power_num_1++;
     }
     // s21_print_big_decimal_number(num_1);
     return (power_num_1);
   } else if (power_num_2 < power_num_1) {
     while (power_num_1 - power_num_2) {
-      s21_big_mul(*num_2, bit_number_10, num_2);
+      s21_big_mul(*num_2, bit_number_10, num_2, 0);
       power_num_2++;
     }
     return (power_num_2);
@@ -190,7 +190,9 @@ int s21_is_greater_or_equal_big(s21_big_decimal num_1, s21_big_decimal num_2) {
 
 int s21_mul_decimal_by_10_big(s21_big_decimal *num) {
   s21_big_decimal decimal_10 = {10, 0, 0, 0, 0, 0, 0};
-  int res = s21_big_mul(*num, decimal_10, num);
+  int res =
+      s21_big_mul(*num, decimal_10, num,
+                  0);  // переписываю умнлжение, надо чекнуть потом условие
   // printf("res of  = %d\n", res);
   if (!res)  // 0
     return (0);
@@ -228,7 +230,7 @@ int s21_div_decimal_by_10_big(s21_big_decimal *value_1) {
           (power_of_value_2 > 155 && power_of_value_2 < 159) ||
           (power_of_value_2 > 187 && power_of_value_2 < 191)) {
         prev_value = tmp_2;
-        s21_big_mul(tmp_2, _2, &tmp_2);
+        s21_big_mul(tmp_2, _2, &tmp_2, 0);
       } else {
         prev_value = tmp_2;
         shift_big_bit_left(&tmp_2, 1, 0, 5);
