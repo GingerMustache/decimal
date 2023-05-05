@@ -162,7 +162,7 @@ int main(void) {
 
   int i = 0;
   while (i != 226) {
-    if (i <= 93) {
+    if (i <= 95) {
       s21_set_bit_1_big(&big_bit_number, i);  // число
     }
     // if (i <= 92) {

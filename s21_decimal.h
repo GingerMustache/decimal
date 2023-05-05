@@ -147,7 +147,7 @@ void s21_set_bits_from_int_to_big_decimal(int src, s21_big_decimal *dst,
                                           int which_int_part_to_fill);
 void s21_set_power_of_big_decimal(s21_big_decimal *src, int power);
 void s21_set_big_dec_number_to_0(s21_big_decimal *src_num);
-void s21_truncate_zero_big(s21_big_decimal *value);
+int s21_truncate_zero_big(s21_big_decimal *value);
 
 int s21_shift_bits_big(s21_big_decimal *dec_num, int index);
 int s21_shift_31_big(s21_big_decimal *dec_num, int *flg_63, int *flg_95,
