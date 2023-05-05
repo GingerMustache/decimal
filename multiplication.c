@@ -111,6 +111,7 @@ int s21_big_mul(s21_big_decimal big_value_1, s21_big_decimal big_value_2,
 
   s21_big_decimal fractional = {0};
   s21_big_decimal value_unsigned_truncated = {0};
+  if (func == 1) power = count_ones(big_value_1, big_value_2);
 
   if ((power_of_1 && power_of_2) || (power_of_1 || power_of_2)) {
     s21_normalize_big(&big_value_1, &big_value_2);  // нормализация
@@ -151,7 +152,6 @@ int s21_big_mul(s21_big_decimal big_value_1, s21_big_decimal big_value_2,
   // }
 
   if (func == 1) {
-    power = count_ones(big_value_1, big_value_2);
     // s21_print_big_decimal_number(&big_tmp);
     int rewrite = check_big_decimal(tmp);
     if (rewrite == 3) {
@@ -186,9 +186,10 @@ int s21_big_mul(s21_big_decimal big_value_1, s21_big_decimal big_value_2,
       } else {
         output = CONVERSATION_OK;
         *result = tmp;
+        s21_print_big_decimal_number(result);
         if (power_of_1 || power_of_2) {  // было &&
           s21_truncate_zero_big(result);
-          // s21_print_big_decimal_number(&tmp);
+          s21_print_big_decimal_number(result);
         }
       }
     } else {
@@ -255,5 +256,7 @@ int count_ones(s21_big_decimal v_1, s21_big_decimal v_2) {
     проверить
     95 * на нули о обычные числа
     дюбые переполнения
+    умножение на 0
+    не работает то что сейчас в main
 
 */
