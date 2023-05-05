@@ -162,7 +162,7 @@ int main(void) {
 
   // int i = 0;
   // while (i != 226) {
-  //   if (i <= 95) {
+  //   if (i == 1 || i == 3) {
   //     s21_set_bit_1_big(&big_bit_number, i);  // число
   //   }
   //   // if (i <= 92) {
@@ -177,25 +177,25 @@ int main(void) {
   //   i++;
   // }
 
-  // s21_set_power_of_big_decimal(&big_bit_number, );
+  // s21_set_power_of_big_decimal(&big_bit_number, 2);
   // s21_set_power_of_decimal(&bit_number_2, 26);
 
-  printf("Output = %d\n", s21_from_float_to_decimal(1234.567, &bit_number));
+  printf("Output = %d\n", s21_from_float_to_decimal(123456.7, &bit_number));
 
   // не работает из за транкета, я
   // его ограничел и пупа вылезла
-  printf("Output = %d\n",
-         s21_from_float_to_decimal(0.0000000000000000000000006, &bit_number_2));
+  printf("Output = %d\n", s21_from_float_to_decimal(
+                              0.0000000000000000000000000006, &bit_number_2));
   // printf("децимал перед входом в функцию\n");
 
-  printf("\nfirst dec number\n");
-  s21_print_decimal_number(&bit_number);
+  // printf("\nfirst dec number\n");
+  // s21_print_decimal_number(&bit_number);
   rewrite_decimal_to_big(&big_bit_number, bit_number);
   printf("\nbig_decimal_number first\n");
   s21_print_big_decimal_number(&big_bit_number);
 
-  printf("\nsecond dec number\n");
-  s21_print_decimal_number(&bit_number_2);
+  // printf("\nsecond dec number\n");
+  // s21_print_decimal_number(&bit_number_2);
   rewrite_decimal_to_big(&big_bit_number_2, bit_number_2);
   printf("big_decimal_number second\n");
   s21_print_big_decimal_number(&big_bit_number_2);

@@ -102,14 +102,31 @@ void s21_set_power_of_big_decimal(s21_big_decimal *src, int power) {
   }
 }
 
-void s21_truncate_zero_big(s21_big_decimal *value, int count_zero) {
+void s21_truncate_zero_big(s21_big_decimal *value) {
+  s21_big_decimal reminder = {0};
+  s21_big_decimal zero_num = {0};
+  s21_big_decimal one_num = {1};
+  s21_big_decimal tmp = {0};
   if (value) {
-    while (count_zero) {
-      s21_div_decimal_by_10_big(value);  // заменить после на нормальное
-      //   деление
-      count_zero--;
+    while (s21_is_equal_big(reminder, zero_num)) {
+      tmp = *value;
+      s21_div_decimal_by_10_big(value, &reminder);
+      // s21_print_big_decimal_number(&reminder);
+      // s21_print_big_decimal_number(value);
+    }
+    *value = tmp;
+    if (s21_is_equal_big(reminder, one_num)) {
+      s21_sub_big(*value, one_num, value, 0);
+      s21_set_big_dec_number_to_0(&reminder);
+      while (s21_is_equal_big(reminder, zero_num)) {
+        tmp = *value;
+        s21_div_decimal_by_10_big(value, &reminder);
+        // s21_print_big_decimal_number(&reminder);
+        // s21_print_big_decimal_number(value);
+      }
     }
   }
+  *value = tmp;
 }
 
 int s21_is_equal_big(s21_big_decimal num_1, s21_big_decimal num_2) {
@@ -201,7 +218,8 @@ int s21_mul_decimal_by_10_big(s21_big_decimal *num) {
 }
 
 // прообраз деления,но с остатком
-int s21_div_decimal_by_10_big(s21_big_decimal *value_1) {
+int s21_div_decimal_by_10_big(s21_big_decimal *value_1,
+                              s21_big_decimal *out_reminder) {
   s21_big_decimal value_2 = {10, 0, 0, 0, 0, 0, 0};
   s21_big_decimal _2 = {2, 0, 0, 0, 0, 0, 0};
   s21_big_decimal prev_value = {0};
@@ -262,14 +280,14 @@ int s21_div_decimal_by_10_big(s21_big_decimal *value_1) {
     power_of_value_2 = 0;
     reminder = tmp_1;
     check_reminder = s21_is_less_big(reminder, value_2);
+    *out_reminder = reminder;
   }
   s21_big_add(final_tmp_result, tmp_result, &final_tmp_result, 0);
   // s21_print_big_decimal_number(&tmp_result);
 
   power_of_result += power_of_1 - power_of_2;
   while (power_of_result < 0) {
-    s21_mul_decimal_by_10_big(  // надо проверять эту строку
-        &final_tmp_result);  // надо добавить флаг, что при возвращении 1
+    s21_mul_decimal_by_10_big(&final_tmp_result);
     power_of_result++;
   }
   s21_set_power_of_big_decimal(&final_tmp_result, power_of_result);
@@ -347,12 +365,13 @@ s21_big_decimal s21_round_banking_big(s21_big_decimal integral,
 int s21_truncate_big(s21_big_decimal value, s21_big_decimal *result) {
   int output = CONVERSATION_ERROR;
   int power = 0;
+  s21_big_decimal reminder = {0};
   if (result) {
     output = CONVERSATION_OK;
-    power = s21_div_decimal_by_10_big(&value);
+    power = s21_div_decimal_by_10_big(&value, &reminder);
     if (power) {
       while (power - 1) {
-        s21_div_decimal_by_10_big(&value);
+        s21_div_decimal_by_10_big(&value, &reminder);
         power--;
       }
     }

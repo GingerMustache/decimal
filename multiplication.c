@@ -98,13 +98,16 @@ int s21_big_mul(s21_big_decimal big_value_1, s21_big_decimal big_value_2,
   s21_big_decimal step = {0};
   s21_set_big_dec_number_to_0(result);
   s21_big_decimal tmp = *result;
+  s21_big_decimal garbage = {0};
   // s21_big_decimal big_10 = {10, 0, 0, 0, 0, 0, 0};  // не удаляq
   int count_1 = 0, count_2 = 0;
   int power_of_1 = s21_get_power_of_big_decimal(big_value_1);
   int power_of_2 = s21_get_power_of_big_decimal(big_value_2);
   int power_of_result = power_of_1 + power_of_2;
+  // power больше 1, когда кличество значаящих единиц в двух меожителя
+  // превосходи 95 бит
   int power = 0;
-  int flg_div = 1;
+  // int flg_div = 1;
 
   s21_big_decimal fractional = {0};
   s21_big_decimal value_unsigned_truncated = {0};
@@ -156,35 +159,35 @@ int s21_big_mul(s21_big_decimal big_value_1, s21_big_decimal big_value_2,
       // нужна проверка на степень
       // убираем нули
       if (power_of_1 || power_of_2) {  // было &&
-        s21_truncate_zero_big(result, abs(power_of_1 - power_of_2));
+        s21_truncate_zero_big(result);
       }
     } else if (power_of_result) {
       while (power_of_result && rewrite != 3) {  // сменил ||, как в вычитании
 
         // s21_div_big(tmp, big_10, &tmp);
-        s21_div_decimal_by_10_big(&tmp);
+        s21_div_decimal_by_10_big(&tmp, &garbage);
         // s21_print_big_decimal_number(&tmp);
         rewrite = check_big_decimal(tmp);
-        if (rewrite != 3) {
-          // s21_round_big(tmp, &tmp);
-          // замена round
-          s21_truncate_big(tmp, &value_unsigned_truncated);
-          s21_sub_big(tmp, value_unsigned_truncated, &fractional, 0);
-          tmp = s21_round_banking_big(value_unsigned_truncated, fractional);
+        // if (rewrite != 3) {
+        // s21_round_big(tmp, &tmp);
+        // замена round
+        s21_truncate_big(tmp, &value_unsigned_truncated);
+        s21_sub_big(tmp, value_unsigned_truncated, &fractional, 0);
+        tmp = s21_round_banking_big(value_unsigned_truncated, fractional);
 
-          // s21_print_big_decimal_number(&tmp);
-          rewrite = check_big_decimal(tmp);
-        }
+        // s21_print_big_decimal_number(&tmp);
+        rewrite = check_big_decimal(tmp);
+        // }
         power_of_result--;
-        flg_div = 0;
+        // flg_div = 0;
       }
       if (!power_of_result && rewrite != 3) {
         output = CONVERSATION_BIG;
       } else {
         output = CONVERSATION_OK;
         *result = tmp;
-        if (power_of_1 && power_of_2 && flg_div) {  // было &&
-          s21_truncate_zero_big(result, abs(power_of_1 - power_of_2));
+        if (power_of_1 || power_of_2) {  // было &&
+          s21_truncate_zero_big(result);
           // s21_print_big_decimal_number(&tmp);
         }
       }
@@ -232,4 +235,5 @@ int count_ones(s21_big_decimal v_1, s21_big_decimal v_2) {
     проверить
     95 * на нули о обычные числа
     дюбые переполнения
+
 */
