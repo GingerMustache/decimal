@@ -117,7 +117,7 @@ int main(void) {
   // ---------работа с int------------
 
   // s21_from_int_to_decimal(123456789, &bit_number);
-  // s21_from_int_to_decimal(123456789, &bit_number_2);
+  s21_from_int_to_decimal(2000000000, &bit_number_2);
   // s21_from_int_to_decimal(2, &bit_number_3);
   // dst = s21_sub(bit_number, bit_number_2, &bit_number_result);
   // dst = s21_add(bit_number, bit_number_2, &bit_number_result);
@@ -180,10 +180,10 @@ int main(void) {
   // s21_set_power_of_big_decimal(&big_bit_number, 8);
   // s21_set_power_of_decimal(&bit_number_2, 26);
 
-  printf("Output = %d\n", s21_from_float_to_decimal(
-                              0.0000000000000000000000000005, &bit_number));
+  printf("Output = %d\n",
+         s21_from_float_to_decimal(0.00000000000000000002, &bit_number));
 
-  printf("Output = %d\n", s21_from_float_to_decimal(10.678, &bit_number_2));
+  // printf("Output = %d\n", s21_from_float_to_decimal(10.678, &bit_number_2));
   // printf("децимал перед входом в функцию\n");
 
   // printf("\nfirst dec number\n");

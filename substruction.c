@@ -265,6 +265,10 @@ int s21_sub_big(s21_big_decimal value_1, s21_big_decimal value_2,
         power_of_result--;
         if (power_of_1 || power_of_2) {
           power_of_result -= s21_truncate_zero_big(&tmp);
+          while (power_of_result < 0) {
+            s21_mul_decimal_by_10_big(&tmp);
+            power_of_result++;
+          }
         }
         rewrite = check_big_decimal(tmp);
       }
