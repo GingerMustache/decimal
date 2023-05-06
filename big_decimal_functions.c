@@ -106,9 +106,11 @@ int s21_truncate_zero_big(s21_big_decimal *value) {
   int output = 0;
   s21_big_decimal reminder = {0};
   s21_big_decimal zero_num = {0};
-  // s21_big_decimal one_num = {1};
   s21_big_decimal tmp = {0};
-  if (value) {
+  if (s21_is_equal_big(*value, zero_num)) {
+    output = 1;
+  } else {
+    // s21_big_decimal one_num = {1};
     while (s21_is_equal_big(reminder, zero_num)) {
       tmp = *value;
       s21_div_decimal_by_10_big(value, &reminder);

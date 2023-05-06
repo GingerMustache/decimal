@@ -98,23 +98,24 @@ int s21_big_mul(s21_big_decimal big_value_1, s21_big_decimal big_value_2,
   s21_big_decimal step = {0};
   s21_set_big_dec_number_to_0(result);
   s21_big_decimal tmp = *result;
-  s21_big_decimal garbage = {0};
-  // s21_big_decimal big_10 = {10, 0, 0, 0, 0, 0, 0};  // не удаляq
+  // s21_big_decimal garbage = {0};
+  s21_big_decimal big_10 = {10, 0, 0, 0, 0, 0, 0};  // не удаляq
   int count_1 = 0, count_2 = 0;
   int power_of_1 = s21_get_power_of_big_decimal(big_value_1);
   int power_of_2 = s21_get_power_of_big_decimal(big_value_2);
   int power_of_result = power_of_1 + power_of_2;
   // power больше 1, когда кличество значаящих единиц в двух меожителя
   // превосходи 95 бит
-  int power = 0;
+  // int power = 0;
   // int flg_div = 1;
 
   s21_big_decimal fractional = {0};
   s21_big_decimal value_unsigned_truncated = {0};
-  if (func == 1) power = count_ones(big_value_1, big_value_2);
+  // if (func == 1) power = count_ones(big_value_1, big_value_2);
 
-  if ((power_of_1 && power_of_2) || (power_of_1 || power_of_2)) {
+  if ((power_of_1 || power_of_2)) {
     s21_normalize_big(&big_value_1, &big_value_2);  // нормализация
+    power_of_result += abs(power_of_1 - power_of_2);
   }
   while (index != 63) {  // проверка что на что умножать будет
     count_1 += s21_get_bit_big(&big_value_1, index);
@@ -144,7 +145,6 @@ int s21_big_mul(s21_big_decimal big_value_1, s21_big_decimal big_value_2,
       index++;
     }
   }
-
   // if (sign_1 != sign_2) {        // постановка знака
   //   s21_set_bit_1_big(result, 223);
   // } else {
@@ -154,23 +154,24 @@ int s21_big_mul(s21_big_decimal big_value_1, s21_big_decimal big_value_2,
   if (func == 1) {
     // s21_print_big_decimal_number(&big_tmp);
     // s21_truncate_zero_big(&tmp);
-    s21_print_big_decimal_number(&tmp);
 
+    if (power_of_1 || power_of_2) {  // было &&
+      power_of_result -= s21_truncate_zero_big(&tmp);
+      s21_print_big_decimal_number(&tmp);
+    }
+    s21_print_big_decimal_number(&tmp);
     int rewrite = check_big_decimal(tmp);
     if (rewrite == 3) {
       *result = tmp;
       // нужна проверка на степень
       // убираем нули
-      if (power_of_1 || power_of_2) {  // было &&
-        s21_truncate_zero_big(result);
-      }
     } else if (power_of_result) {
       while (power_of_result && rewrite != 3) {  // сменил ||, как в вычитании
-
-        // s21_div_big(tmp, big_10, &tmp);
-        s21_div_decimal_by_10_big(&tmp, &garbage);
+        // s21_set_power_of_big_decimal(&tmp, power_of_result);
+        s21_div_big(tmp, big_10, &tmp);
+        // s21_div_decimal_by_10_big(&tmp, &garbage);
         s21_print_big_decimal_number(&tmp);
-        // rewrite = check_big_decimal(tmp);
+        rewrite = check_big_decimal(tmp);
         // if (rewrite != 3) {
         // s21_round_big(tmp, &tmp);
         // замена round
@@ -178,11 +179,11 @@ int s21_big_mul(s21_big_decimal big_value_1, s21_big_decimal big_value_2,
         s21_sub_big(tmp, value_unsigned_truncated, &fractional, 0);
         tmp = s21_round_banking_big(value_unsigned_truncated, fractional);
 
-        s21_print_big_decimal_number(&tmp);
-        rewrite = check_big_decimal(tmp);
+        // s21_print_big_decimal_number(&tmp);
         // }
-        power_of_result--;
         // flg_div = 0;
+        power_of_result--;
+        rewrite = check_big_decimal(tmp);
       }
       if (!power_of_result && rewrite != 3) {
         output = CONVERSATION_BIG;
@@ -190,19 +191,16 @@ int s21_big_mul(s21_big_decimal big_value_1, s21_big_decimal big_value_2,
         output = CONVERSATION_OK;
         *result = tmp;
         // s21_print_big_decimal_number(result);
-        if (power_of_1 || power_of_2) {  // было &&
-          s21_truncate_zero_big(result);
-          s21_print_big_decimal_number(result);
-        }
+        // if (power_of_1 || power_of_2) {  // было &&
+        //   s21_truncate_zero_big(result);
+        //   s21_print_big_decimal_number(result);
+        // }
       }
     } else {
       return (output = CONVERSATION_BIG);
     }
-    // пока не понял надо ли
-    // постановка степени
-    if (power_of_1 + power_of_2 - power <= 28) {
-      s21_set_power_of_big_decimal(result, power_of_1 + power_of_2 - power);
-      // s21_set_power_of_big_decimal(result, power_of_result);
+    if (power_of_result <= 28) {
+      s21_set_power_of_big_decimal(result, power_of_result);
       output = CONVERSATION_OK;
     } else {
       // можно для деления что то подставить
@@ -215,22 +213,22 @@ int s21_big_mul(s21_big_decimal big_value_1, s21_big_decimal big_value_2,
   return output;  // при заполнении всего биг_децимал вернет 0
 }
 
-int count_ones(s21_big_decimal v_1, s21_big_decimal v_2) {
-  int count_sum = 0;
-  int v1_95 = 95;
-  int v2_95 = 95;
-  while (!s21_get_bit_big(&v_1, v1_95)) {
-    v1_95--;
-  }
-  while (!s21_get_bit_big(&v_2, v2_95)) {
-    v2_95--;
-  }
-  count_sum = v1_95 + v2_95;
-  if (count_sum >= 96)
-    return (count_sum - 96);
-  else
-    return (0);
-}
+// int count_ones(s21_big_decimal v_1, s21_big_decimal v_2) {
+//   int count_sum = 0;
+//   int v1_95 = 95;
+//   int v2_95 = 95;
+//   while (!s21_get_bit_big(&v_1, v1_95)) {
+//     v1_95--;
+//   }
+//   while (!s21_get_bit_big(&v_2, v2_95)) {
+//     v2_95--;
+//   }
+//   count_sum = v1_95 + v2_95;
+//   if (count_sum >= 96)
+//     return (count_sum - 96);
+//   else
+//     return (0);
+// }
 
 // int count_ones(s21_big_decimal v_1, s21_big_decimal v_2) {
 //   int count_sum = 0;
@@ -252,17 +250,16 @@ int count_ones(s21_big_decimal v_1, s21_big_decimal v_2) {
 //   else
 //     return (0);
 // }
+
 /*
     работает
-     1234.567 * 0.00000000000000000000000006 = 1001011010110100001110 и степень
-    если убрать в транкейт_зеро условие, то не работает, в результате этого
-    умножение в конце идет куча нолей и 1 в округлении и все идет криво
-     95, 90 бит и 0.06^10 и любая приемлемая степень
+    1234.567 * 0.00000000000000000000000006
+    0
+    95, 90, 83, 70, 50 бит и 0.06^10 и любая приемлемая степень
 
     проверить
     95 * на нули о обычные числа
     дюбые переполнения
-    умножение на 0
     не работает то что сейчас в main
 
 */

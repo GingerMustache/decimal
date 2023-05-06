@@ -162,7 +162,7 @@ int main(void) {
 
   int i = 0;
   while (i != 226) {
-    if (i <= 95) {
+    if (i <= 50) {
       s21_set_bit_1_big(&big_bit_number, i);  // число
     }
     // if (i <= 92) {
@@ -177,7 +177,7 @@ int main(void) {
     i++;
   }
 
-  // s21_set_power_of_big_decimal(&big_bit_number, 2);
+  s21_set_power_of_big_decimal(&big_bit_number, 8);
   // s21_set_power_of_decimal(&bit_number_2, 26);
 
   // printf("Output = %d\n", s21_from_float_to_decimal(123456.7, &bit_number));
@@ -185,7 +185,7 @@ int main(void) {
   // не работает из за транкета, я
   // его ограничел и пупа вылезла
   printf("Output = %d\n",
-         s21_from_float_to_decimal(0.00000000006, &bit_number_2));
+         s21_from_float_to_decimal(0.000000000008, &bit_number_2));
   // printf("децимал перед входом в функцию\n");
 
   // printf("\nfirst dec number\n");
