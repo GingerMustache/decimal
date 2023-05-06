@@ -4,36 +4,13 @@
 int s21_mul(s21_decimal value_1, s21_decimal value_2, s21_decimal* result) {
   int output = CONVERSATION_OK;
 
-  // int count_1 = 0, count_2 = 0;
-  // int index = 0;
   int sign_1 = s21_get_bit(&value_1, 127);
   int sign_2 = s21_get_bit(&value_2, 127);
   s21_set_dec_number_to_0(result);
   int result_of_big_decimal = 0;
-  // int power_of_result = 0;
-  // s21_decimal tmp = *result;
-  // s21_decimal step = {0};
-  // int power_of_result = 0;
-  // степень пропадает при вычислениях и появляется *result = tmp
-  // степепнь сохраняется  в нормализации
-  // int power_of_1 = s21_get_power_of_decimal(value_1);
-  // int power_of_2 = s21_get_power_of_decimal(value_2);
-  // int res_of_summ = 0; принимал s21_add
 
   s21_set_bit_0(&value_2, 127);  // устанавливаем знаки в (+)
   s21_set_bit_0(&value_1, 127);
-
-  // лучше сделать в биг_децимал
-  // if ((power_of_1 && power_of_2) || (power_of_1 || power_of_2)) {
-  //   s21_normalize(&value_1, &value_2);  // нормализация
-  // }
-
-  // while (index != 63) {  // проверка что на что умножать будет
-  //   count_1 += s21_get_bit(&value_1, index);
-  //   count_2 += s21_get_bit(&value_2, index);
-  //   index++;
-  // }
-  // index = 0;
 
   s21_big_decimal big_value_1 = {0};
   s21_big_decimal big_value_2 = {0};
@@ -56,54 +33,19 @@ int s21_mul(s21_decimal value_1, s21_decimal value_2, s21_decimal* result) {
     }
   }
 
-  // можно учесть умножение на 0 сразу
-
-  // case 1, где меньше едииц на то и умножаем
-  //   if (count_1 < count_2) {
-  //     while (index != 96 && output == 0) {
-  //       if (s21_get_bit(&value_1, index)) {
-  //         step = value_2;
-  //         output = s21_shift_bits(&step, index);
-  //         s21_add(step, tmp, &tmp);
-  //         s21_set_dec_number_to_0(&step);
-  //       }
-  //       index++;
-  //     }
-  //   } else {
-  //     while (index != 96 && output == 0) {
-  //       if (s21_get_bit(&value_2, index)) {
-  //         step = value_1;
-  //         output = s21_shift_bits(&step, index);
-  //         s21_add(step, tmp, &tmp);  // можно пристроить output сюда
-  //         s21_set_dec_number_to_0(&step);
-  //       }
-  //       index++;
-  //     }
-  //   }
-  //   *result = tmp;
-  //   if (output == CONVERSATION_OK) {
-  //     // output = CONVERSATION_OK;  // тут, до проверки на overflow
-  //     // обрезает нули при необходимости
-  //     if (power_of_1 && power_of_2) {
-  //       s21_truncate_zero(result, abs(power_of_1 - power_of_2));
-  //     }
-  //     s21_set_power_of_decimal(result,
-  //                              power_of_1 + power_of_2);  // постановка
-  //                              степени
   if (sign_1 != sign_2) {  // постановка знака
     s21_set_bit_1(result, 127);
   } else {
     s21_set_bit_0(result, 127);
   }
-  //   }
-  // }
+
   return output;
 }
 
 //------------------------Умножение big_decimal----------------------//
 
-// func - переменная показывающая откуда пришел вызов функции, если 1 из
-// умножния, если нет то откуда угодно
+// func - переменная показывающая необходимо ли использовать функционал
+// переполнения
 int s21_big_mul(s21_big_decimal big_value_1, s21_big_decimal big_value_2,
                 s21_big_decimal* result, int func) {
   int index = 0;
@@ -117,6 +59,7 @@ int s21_big_mul(s21_big_decimal big_value_1, s21_big_decimal big_value_2,
   int power_of_2 = s21_get_power_of_big_decimal(big_value_2);
   int power_of_result = power_of_1 + power_of_2;
 
+  // для банковского округления
   s21_big_decimal fractional = {0};
   s21_big_decimal value_unsigned_truncated = {0};
 
@@ -158,16 +101,13 @@ int s21_big_mul(s21_big_decimal big_value_1, s21_big_decimal big_value_2,
   if (func == 1) {
     if (power_of_1 || power_of_2) {
       power_of_result -= s21_truncate_zero_big(&tmp);
-      // s21_print_big_decimal_number(&tmp);
     }
-    // s21_print_big_decimal_number(&tmp);
     int rewrite = check_big_decimal(tmp);
     if (rewrite == 3) {
       *result = tmp;
     } else if (power_of_result) {
       while (power_of_result && rewrite != 3) {
         s21_div_big(tmp, big_10, &tmp);
-        // s21_print_big_decimal_number(&tmp);
         rewrite = check_big_decimal(tmp);
 
         s21_truncate_big(tmp, &value_unsigned_truncated);

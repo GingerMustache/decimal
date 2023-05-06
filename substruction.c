@@ -151,9 +151,8 @@ int s21_sub(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
 }
 
 //------------------------Вычитание big_decimal----------------------//
-// func - переменная показывающая откуда пришел вызов функции, если 1 из
-// вычитания, если нет то откуда угодно
-// завтра доделай
+// func - переменная показывающая необходимо ли использовать функционал
+// переполнения
 int s21_sub_big(s21_big_decimal value_1, s21_big_decimal value_2,
                 s21_big_decimal *result, int func) {
   int output = CONVERSATION_OK;

@@ -160,10 +160,10 @@ int main(void) {
 
   // --------работа с deciimal--------
 
-  int i = 0;
+  int i = 1;
   while (i != 226) {
     if (i <= 95) {
-      s21_set_bit_1_big(&big_bit_number, i);  // число
+      s21_set_bit_1(&bit_number, i);  // число
     }
     // if (i <= 92) {
     //   s21_set_bit_1(&bit_number_2, i);  // число
@@ -180,7 +180,7 @@ int main(void) {
   // s21_set_power_of_big_decimal(&big_bit_number, 8);
   // s21_set_power_of_decimal(&bit_number_2, 26);
 
-  printf("Output = %d\n", s21_from_float_to_decimal(1234.567, &bit_number));
+  printf("Output = %d\n", s21_from_float_to_decimal(0.6, &bit_number_2));
 
   // не работает из за транкета, я
   // его ограничел и пупа вылезла
@@ -206,7 +206,7 @@ int main(void) {
   // printf("\nbit_res\n");
 
   printf("res of func = %d\n",
-         s21_mul(bit_number, bit_number_2, &bit_number_result));
+         s21_add(bit_number, bit_number_2, &bit_number_result));
   //  s21_div_decimal_by_10_big(&big_bit_number));
   // s21_truncate_big(big_bit_number_result, &big_bit_number_result_2);
   // printf("%d", count_ones(big_bit_number, big_bit_number_2));
