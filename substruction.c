@@ -44,6 +44,7 @@ int s21_sub(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
   int output = CONVERSATION_ERROR;
   // int sign_1 = s21_get_bit(&value_1, 127);
   // int sign_2 = s21_get_bit(&value_2, 127);
+  // int sign_res = 0;
   output = s21_sign_handle(&value_1, &value_2, result, 1);
 
   if (output == 2) {
@@ -234,33 +235,21 @@ int s21_sub_big(s21_big_decimal value_1, s21_big_decimal value_2,
   }
 
   if (func == 1) {
-    s21_print_big_decimal_number(&tmp);
+    // s21_print_big_decimal_number(&tmp);
     int rewrite = check_big_decimal(tmp);
     if (rewrite == 3) {
       *result = tmp;
     } else if (power_of_result) {
       while (power_of_result && rewrite != 3) {
-        s21_print_big_decimal_number(&tmp);
+        // s21_print_big_decimal_number(&tmp);
         s21_div_big(tmp, big_10, &tmp);
         s21_print_big_decimal_number(&tmp);
-        // s21_round_big(tmp, &tmp);
+
         s21_truncate_big(tmp, &value_unsigned_truncated);
         s21_sub_big(tmp, value_unsigned_truncated, &fractional, 1);
-        s21_print_big_decimal_number(&tmp);
+        // s21_print_big_decimal_number(&tmp);
         tmp = s21_round_banking_big(value_unsigned_truncated, fractional);
-        // надо предусмотреть отрицательную степень
-        s21_print_big_decimal_number(&tmp);
 
-        /*
-          При делении 0.00000000000000000002 / 2000000000 =
-          1999999999.99999999999999999998
-          оригинальный ответ уходит за 95 бит
-          Если использовать раунд то он выдает округление до
-          2000000000.0000000000000000000
-          Если использовать div_10 то он выдает округление до
-          s21_div_decimal_by_10_big(&tmp);
-          1999999999.9999999999999999999
-        */
         // s21_print_big_decimal_number(&tmp);
         power_of_result--;
         if (power_of_1 || power_of_2) {
@@ -298,3 +287,15 @@ int s21_sub_big(s21_big_decimal value_1, s21_big_decimal value_2,
 
   return output;
 }
+
+/*
+  Максимум decimal ..335
+    работает при
+      95 битах без 1 в начале - 10.678, округляет до ..323
+      95 битах целых - 0.6 и 0.4 правильно округляетв меньшую и большую сторону
+      1234567891 - 0.0000000000003 в ответе 13ая степень
+      1234567891 - 0.000000000000000000000003 (степень 24, с 28 тоже работает) в
+        ответе число округленно  без степени, транкейте все рубит, но число
+  правильное
+
+*/
