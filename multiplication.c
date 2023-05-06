@@ -186,7 +186,7 @@ int s21_big_mul(s21_big_decimal big_value_1, s21_big_decimal big_value_2,
         rewrite = check_big_decimal(tmp);
       }
       if (!power_of_result && rewrite != 3) {
-        output = CONVERSATION_BIG;
+        return (output = CONVERSATION_BIG);
       } else {
         output = CONVERSATION_OK;
         *result = tmp;
@@ -253,13 +253,10 @@ int s21_big_mul(s21_big_decimal big_value_1, s21_big_decimal big_value_2,
 
 /*
     работает
-    1234.567 * 0.00000000000000000000000006
+    1234.567 * 0.00000000000000000000000008
     0
     95, 90, 83, 70, 50 бит и 0.06^10 и любая приемлемая степень
-
-    проверить
-    95 * на нули о обычные числа
-    дюбые переполнения
-    не работает то что сейчас в main
+    0.0000000000000008 * 12.34
+    95 *  на обычные числа
 
 */
