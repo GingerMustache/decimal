@@ -1,6 +1,5 @@
 #include "s21_decimal.h"
-// добавить проверку на underflow
-// добавлена tmp ошибки из-за неё только могут быть
+// нужны тесты
 int s21_mul(s21_decimal value_1, s21_decimal value_2, s21_decimal* result) {
   int output = CONVERSATION_OK;
 

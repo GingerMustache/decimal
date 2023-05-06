@@ -40,7 +40,6 @@ int s21_sign_handle(s21_decimal *value_1, s21_decimal *value_2,
   return output;
 }
 
-// вычисления скорее всего переедут в биг decimal
 int s21_sub(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
   int output = CONVERSATION_ERROR;
   // int sign_1 = s21_get_bit(&value_1, 127);
@@ -159,6 +158,7 @@ int s21_sub_big(s21_big_decimal value_1, s21_big_decimal value_2,
 
   int sign_1 = s21_get_bit_big(&value_1, 223);
   int sign_2 = s21_get_bit_big(&value_2, 223);
+  int sign_res = 0;
 
   s21_set_bit_0_big(&value_1, 223);
   s21_set_bit_0_big(&value_2, 223);
@@ -166,6 +166,9 @@ int s21_sub_big(s21_big_decimal value_1, s21_big_decimal value_2,
   s21_big_decimal val_2 = {0};
   s21_big_decimal tmp = {0};
   s21_big_decimal big_10 = {10, 0, 0, 0, 0, 0, 0};
+
+  s21_big_decimal fractional = {0};
+  s21_big_decimal value_unsigned_truncated = {0};
 
   int index_bit = 0;
   int i = 1;
@@ -184,13 +187,15 @@ int s21_sub_big(s21_big_decimal value_1, s21_big_decimal value_2,
     val_1 = value_1;
     val_2 = value_2;
     // постановка знака
-    if (sign_1 == 1) s21_set_bit_1_big(&tmp, 223);
+    if (sign_1 == 1) sign_res = 1;  // s21_set_bit_1_big(&tmp, 223);
   } else {
     val_1 = value_2;
     val_2 = value_1;
     // постановка знака
-    if ((sign_2 == 0 && sign_1 == 0)) s21_set_bit_1_big(&tmp, 223);
-    if ((sign_2 == 1 && sign_1 == 1)) s21_set_bit_0_big(&tmp, 223);
+    // s21_set_bit_1_big(&tmp, 223);
+    if ((sign_2 == 0 && sign_1 == 0)) sign_res = 1;
+    // s21_set_bit_0_big(&tmp, 223);
+    if ((sign_2 == 1 && sign_1 == 1)) sign_res = 0;
   }
 
   // (void)val_1;
@@ -229,16 +234,23 @@ int s21_sub_big(s21_big_decimal value_1, s21_big_decimal value_2,
   }
 
   if (func == 1) {
-    // s21_print_big_decimal_number(&big_tmp);
+    s21_print_big_decimal_number(&tmp);
     int rewrite = check_big_decimal(tmp);
     if (rewrite == 3) {
       *result = tmp;
     } else if (power_of_result) {
       while (power_of_result && rewrite != 3) {
-        // s21_print_big_decimal_number(&tmp);
+        s21_print_big_decimal_number(&tmp);
         s21_div_big(tmp, big_10, &tmp);
-        // s21_print_big_decimal_number(&tmp);
-        s21_round_big(tmp, &tmp);
+        s21_print_big_decimal_number(&tmp);
+        // s21_round_big(tmp, &tmp);
+        s21_truncate_big(tmp, &value_unsigned_truncated);
+        s21_sub_big(tmp, value_unsigned_truncated, &fractional, 1);
+        s21_print_big_decimal_number(&tmp);
+        tmp = s21_round_banking_big(value_unsigned_truncated, fractional);
+        // надо предусмотреть отрицательную степень
+        s21_print_big_decimal_number(&tmp);
+
         /*
           При делении 0.00000000000000000002 / 2000000000 =
           1999999999.99999999999999999998
@@ -250,8 +262,11 @@ int s21_sub_big(s21_big_decimal value_1, s21_big_decimal value_2,
           1999999999.9999999999999999999
         */
         // s21_print_big_decimal_number(&tmp);
-        rewrite = check_big_decimal(tmp);
         power_of_result--;
+        if (power_of_1 || power_of_2) {
+          power_of_result -= s21_truncate_zero_big(&tmp);
+        }
+        rewrite = check_big_decimal(tmp);
       }
       if (!power_of_result && rewrite != 3) {
         output = CONVERSATION_BIG;
@@ -265,6 +280,9 @@ int s21_sub_big(s21_big_decimal value_1, s21_big_decimal value_2,
 
     if (output == CONVERSATION_OK)
       s21_set_power_of_big_decimal(result, power_of_result);
+    if (sign_res) s21_set_bit_1_big(result, 223);
+    if (!sign_res) s21_set_bit_0_big(result, 223);
+
   } else {
     *result = tmp;
   }

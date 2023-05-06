@@ -112,20 +112,15 @@ int s21_big_add(s21_big_decimal big_value_1, s21_big_decimal big_value_2,
     index++;
   }
   if (func == 1) {
-    s21_print_big_decimal_number(&big_tmp);
     int rewrite = check_big_decimal(big_tmp);
     if (rewrite == 3) {
       *big_result = big_tmp;
     } else if (power_of_result) {
       while (power_of_result && rewrite != 3) {
         s21_div_big(big_tmp, big_10, &big_tmp);
-        s21_print_big_decimal_number(&big_tmp);
-        // s21_round_big(big_tmp, &big_tmp);
         s21_truncate_big(big_tmp, &value_unsigned_truncated);
         s21_sub_big(big_tmp, value_unsigned_truncated, &fractional, 1);
-        s21_print_big_decimal_number(&big_tmp);
         big_tmp = s21_round_banking_big(value_unsigned_truncated, fractional);
-        s21_print_big_decimal_number(&big_tmp);
         rewrite = check_big_decimal(big_tmp);
         power_of_result--;
       }
@@ -147,7 +142,7 @@ int s21_big_add(s21_big_decimal big_value_1, s21_big_decimal big_value_2,
 
   return output;
 }
-
+// функция используется не во всей арифметики
 int check_big_decimal(s21_big_decimal big_tmp) {
   int rewrite = 0;
   s21_big_decimal zero_dec = {0};
