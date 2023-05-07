@@ -116,8 +116,8 @@ int main(void) {
 
   // ---------работа с int------------
 
-  // s21_from_int_to_decimal(1234567891, &bit_number);  // 10
-  // s21_from_int_to_decimal(2000000000, &bit_number_2);
+  // s21_from_int_to_decimal(6, &bit_number);  // 10
+  // s21_from_int_to_decimal(4, &bit_number_2);
   // s21_from_int_to_decimal(2, &bit_number_3);
   // dst = s21_sub(bit_number, bit_number_2, &bit_number_result);
   // dst = s21_add(bit_number, bit_number_2, &bit_number_result);
@@ -160,14 +160,14 @@ int main(void) {
 
   // --------работа с deciimal--------
 
-  int i = 1;
+  int i = 0;
   while (i != 226) {
-    if (i <= 80) {
-      s21_set_bit_1_big(&big_bit_number, i);  // число
+    if (i <= 95) {
+      s21_set_bit_1(&bit_number, i);  // число
     }
-    if (i <= 92) {
-      s21_set_bit_1_big(&big_bit_number_2, i);  // число
-    }
+    // if (i <= 10) {
+    //   s21_set_bit_1(&bit_number_2, i);  // число
+    // }
     // // if (i == 127) {
     //   s21_set_bit_1(&bit_number, i);  // знак
     // }
@@ -177,43 +177,41 @@ int main(void) {
     i++;
   }
 
-  s21_set_power_of_big_decimal(&big_bit_number_2, 28);
+  // s21_set_power_of_big_decimal(&big_bit_number_2, 28);
   // s21_set_power_of_decimal(&bit_number_2, 26);
 
-  // printf("Output = %d\n",
-  //  s21_from_float_to_decimal(0.00000000000000000002, &bit_number));
+  // printf("Output = %d\n", s21_from_float_to_decimal(-2, &bit_number));
 
-  // printf("Output = %d\n", s21_from_float_to_decimal(
-  //                             0.000003, &bit_number_2));
+  printf("Output = %d\n", s21_from_float_to_decimal(0.4, &bit_number_2));
   // printf("децимал перед входом в функцию\n");
 
-  // printf("\nfirst dec number\n");
-  // s21_print_decimal_number(&bit_number);
+  printf("\nfirst dec number\n");
+  s21_print_decimal_number(&bit_number);
   // rewrite_decimal_to_big(&big_bit_number, bit_number);
-  printf("\nbig_decimal_number first\n");
-  s21_print_big_decimal_number(&big_bit_number);
+  // printf("\nbig_decimal_number first\n");
+  // s21_print_big_decimal_number(&big_bit_number);
 
-  // printf("\nsecond dec number\n");
-  // s21_print_decimal_number(&bit_number_2);
+  printf("\nsecond dec number\n");
+  s21_print_decimal_number(&bit_number_2);
   // rewrite_decimal_to_big(&big_bit_number_2, bit_number_2);
-  printf("big_decimal_number second\n");
-  s21_print_big_decimal_number(&big_bit_number_2);
+  // printf("big_decimal_number second\n");
+  // s21_print_big_decimal_number(&big_bit_number_2);
 
   // s21_truncate_big(big_bit_number, &big_bit_number_result);
   // s21_round_big(big_bit_number, &big_bit_number_result);
 
   // printf("\nbit_res\n");
 
-  printf("res of func = %d\n", s21_sub_big(big_bit_number, big_bit_number_2,
-                                           &big_bit_number_result, 1));
+  printf("res of func = %d\n",
+         s21_sub(bit_number, bit_number_2, &bit_number_result));
   //  s21_div_decimal_by_10_big(&big_bit_number));
   // s21_truncate_big(big_bit_number_result, &big_bit_number_result_2);
   // printf("%d", count_ones(big_bit_number, big_bit_number_2));
 
   printf("decimal result\n");
-  s21_print_big_decimal_number(&big_bit_number_result);
+  // s21_print_big_decimal_number(&big_bit_number_result);
   // printf("decimal result\n");
-  // s21_print_decimal_number(&bit_number_result);
+  s21_print_decimal_number(&bit_number_result);
 
   // s21_round_big(big_bit_number_2, &big_bit_number_result_2);
   // printf("big_decimal result_2\n");
