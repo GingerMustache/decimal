@@ -155,6 +155,7 @@ int s21_div_big(s21_big_decimal value_1, s21_big_decimal value_2,
     s21_big_decimal tmp_2 = value_2;
     s21_big_decimal prev_value = {0};
     s21_big_decimal _2 = {2, 0, 0, 0, 0, 0, 0};
+    // переехал снизу из за него могут быть ошибки
     power_of_result += power_of_1 - power_of_2;  //  чекни если -
 
     while (!s21_is_decimal_0_big(reminder) && rewrite == 3) {  // <=27
