@@ -112,7 +112,9 @@ int s21_div(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
         404440 / 4.4
         0.00000000000000000000000002 / 2 26 и дальше степени
         0.00000000000000000002 / 2000000000 - ошибка SMALL
-        0.003 / 11111111
+        0.003 / 11111111 и наоборот
+        12 / 0.002 == 6000
+        80ый бит / 0.00002 = ошибка BIG
 
     не верно
 */
@@ -176,7 +178,7 @@ int s21_div_big(s21_big_decimal value_1, s21_big_decimal value_2,
             prev_value = tmp_2;
             shift_big_bit_left(&tmp_2, 1, 0, 5);
           }
-          s21_print_big_decimal_number(&tmp_2);
+          // s21_print_big_decimal_number(&tmp_2);
           // сдвигаем влево tmp_2 пока он <= tmp_1
         }
         if (s21_is_greater_big(tmp_2, tmp_1)) {
@@ -204,7 +206,7 @@ int s21_div_big(s21_big_decimal value_1, s21_big_decimal value_2,
         check_reminder = s21_is_less_big(reminder, value_2);
       }
       s21_big_add(final_tmp_result, tmp_result, &final_tmp_result, 0);
-      s21_print_big_decimal_number(&final_tmp_result);
+      // s21_print_big_decimal_number(&final_tmp_result);
       // может быть переполнение
       if (!s21_is_decimal_0_big(reminder)) {
         while (s21_is_less_big(reminder, tmp_2) &&
@@ -213,11 +215,20 @@ int s21_div_big(s21_big_decimal value_1, s21_big_decimal value_2,
           tmp_result = final_tmp_result;
           s21_mul_decimal_by_10_big(&final_tmp_result);  // чекни
           rewrite = check_big_decimal(final_tmp_result);
-          if (rewrite == 3 && power_of_result <= 27) {
+          if (rewrite == 3) {
             power_of_result++;
             s21_mul_decimal_by_10_big(&reminder);
           } else {
             final_tmp_result = tmp_result;
+            s21_big_decimal garbege = {0};
+            while (power_of_result > 28) {
+              s21_div_decimal_by_10_big(&final_tmp_result, &garbege);
+              power_of_result--;
+              rewrite = check_big_decimal(final_tmp_result);
+              if (rewrite != 3 && power_of_result == 28) {
+                output = CONVERSATION_SMALL;
+              }
+            }
             rewrite = 0;
           }
         }
@@ -233,16 +244,22 @@ int s21_div_big(s21_big_decimal value_1, s21_big_decimal value_2,
     // } else if (power_of_1 < power_of_2) {
     //   power_of_result += power_of_1 - power_of_2;
     // }
+
     while (power_of_result < 0) {
-      s21_mul_decimal_by_10_big(  // надо проверять эту строку
-          &final_tmp_result);  // надо добавить флаг, что при возвращении 1
+      s21_mul_decimal_by_10_big(&final_tmp_result);
       power_of_result++;
     }
-    if (power_of_result > 28) {
-      output = CONVERSATION_SMALL;
-    } else {
+    rewrite = check_big_decimal(final_tmp_result);
+    if (rewrite != 3 && power_of_result == 0) {
+      return (output = CONVERSATION_BIG);
+    }
+    // if (power_of_result > 28) {
+    //   output = CONVERSATION_SMALL;
+    if (output == CONVERSATION_OK && power_of_result <= 28) {
       s21_set_power_of_big_decimal(&final_tmp_result, power_of_result);
       *result = final_tmp_result;
+    } else {
+      output = CONVERSATION_SMALL;  // не точно
     }
   }
 
