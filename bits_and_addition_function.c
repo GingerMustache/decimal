@@ -85,7 +85,8 @@ int s21_inverse_bit(s21_decimal *dec_num, int index) {
   return dec_num->bits[getRow] ^= (1 << getCol);
 }
 
-int s21_get_float_bit(int num, int index) { return (num & (1 << index)) != 0; };
+// int s21_get_float_bit(int num, int index) { return (num & (1 << index)) != 0;
+// };
 
 // надо переписать, как для big_decimal сделано
 void s21_div_decimal_by_10(s21_decimal *num) {

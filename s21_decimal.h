@@ -80,7 +80,7 @@ void s21_set_sign_of_int_and_float_number(s21_decimal *dec_num, float num_1,
 void s21_set_dec_number_to_0(s21_decimal *src_num);
 void s21_set_dec_number_to_1(s21_decimal *src_num);
 void s21_print_decimal_number(s21_decimal *num);
-int s21_get_float_bit(int num, int index);
+// int s21_get_float_bit(int num, int index);
 int s21_rewrite_float_bits_to_buff(s21_decimal *buff, float val);
 void s21_set_bits_from_int_to_decimal(int src, s21_decimal *dst,
                                       int which_int_part_to_fill);
