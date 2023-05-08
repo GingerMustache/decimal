@@ -17,10 +17,11 @@ int s21_mul(s21_decimal value_1, s21_decimal value_2, s21_decimal* result) {
   rewrite_decimal_to_big(&big_value_1, value_1);
   rewrite_decimal_to_big(&big_value_2, value_2);
 
+  // умнжение на 0
   if (s21_is_equal_big(big_value_1, big_result) ||
       s21_is_equal_big(big_value_2, big_result)) {
     output = CONVERSATION_OK;
-  } else {
+  } else {  // остальные случаи
     result_of_big_decimal =
         s21_big_mul(big_value_1, big_value_2, &big_result, 1);
     if (!result_of_big_decimal) {
