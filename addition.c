@@ -9,18 +9,19 @@ int s21_add(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
 
   if (output == 2) {
     // если хоть один максимум и второй не 0 -> на выход
-    if (s21_is_max_decimal(value_1) || s21_is_max_decimal(value_2)) {
-      if (!s21_is_max_decimal(value_1) && s21_is_equal(value_2, zero_decimal)) {
-        return (output = CONVERSATION_BIG);
-      } else if (!s21_is_max_decimal(value_2) &&
-                 s21_is_equal(value_1, zero_decimal)) {
-        return (output = CONVERSATION_BIG);
-      } else {
-        output = CONVERSATION_OK;
-      }
-    } else {
-      output = CONVERSATION_OK;
-    }
+    // if (s21_is_max_decimal(value_1) || s21_is_max_decimal(value_2)) {
+    //   if (!s21_is_max_decimal(value_1) && s21_is_equal(value_2,
+    //   zero_decimal)) {
+    //     return (output = CONVERSATION_BIG);
+    //   } else if (!s21_is_max_decimal(value_2) &&
+    //              s21_is_equal(value_1, zero_decimal)) {
+    //     return (output = CONVERSATION_BIG);
+    //   } else {
+    //     output = CONVERSATION_OK;
+    //   }
+    // } else {
+    //   output = CONVERSATION_OK;
+    // }
     if (output == CONVERSATION_OK) {
       s21_set_dec_number_to_0(result);
       int big_decimal_output = 0;
