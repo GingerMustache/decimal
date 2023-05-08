@@ -157,3 +157,26 @@ s21_decimal s21_decimal_get_zerofive(void) {
 }
 
 int s21_decimal_even(s21_decimal value) { return (value.bits[0] & 1) != 1; }
+
+int s21_normalize(s21_decimal *num_1, s21_decimal *num_2) {
+  int power_num_1 = s21_get_power_of_decimal(*num_1);
+  int power_num_2 = s21_get_power_of_decimal(*num_2);
+  s21_set_power_of_decimal(num_1, 0);  // ставим степени чисел в 0
+  s21_set_power_of_decimal(num_2, 0);
+  s21_decimal bit_number_10 = {10, 0, 0, 0};
+
+  if (power_num_1 < power_num_2) {
+    while (power_num_2 - power_num_1) {
+      s21_mul(*num_1, bit_number_10, num_1);
+      power_num_1++;
+    }
+    return (power_num_1);
+  } else if (power_num_2 < power_num_1) {
+    while (power_num_1 - power_num_2) {
+      s21_mul(*num_2, bit_number_10, num_2);
+      power_num_2++;
+    }
+    return (power_num_2);
+  }
+  return (power_num_1);
+}

@@ -1,27 +1,27 @@
 #include "s21_decimal.h"
 
-int s21_normalize(s21_decimal *num_1, s21_decimal *num_2) {
-  int power_num_1 = s21_get_power_of_decimal(*num_1);
-  int power_num_2 = s21_get_power_of_decimal(*num_2);
-  s21_set_power_of_decimal(num_1, 0);  // ставим степени чисел в 0
-  s21_set_power_of_decimal(num_2, 0);
-  s21_decimal bit_number_10 = {10, 0, 0, 0};
+// int s21_normalize(s21_decimal *num_1, s21_decimal *num_2) {
+//   int power_num_1 = s21_get_power_of_decimal(*num_1);
+//   int power_num_2 = s21_get_power_of_decimal(*num_2);
+//   s21_set_power_of_decimal(num_1, 0);  // ставим степени чисел в 0
+//   s21_set_power_of_decimal(num_2, 0);
+//   s21_decimal bit_number_10 = {10, 0, 0, 0};
 
-  if (power_num_1 < power_num_2) {
-    while (power_num_2 - power_num_1) {
-      s21_mul(*num_1, bit_number_10, num_1);
-      power_num_1++;
-    }
-    return (power_num_1);
-  } else if (power_num_2 < power_num_1) {
-    while (power_num_1 - power_num_2) {
-      s21_mul(*num_2, bit_number_10, num_2);
-      power_num_2++;
-    }
-    return (power_num_2);
-  }
-  return (power_num_1);
-}
+//   if (power_num_1 < power_num_2) {
+//     while (power_num_2 - power_num_1) {
+//       s21_mul(*num_1, bit_number_10, num_1);
+//       power_num_1++;
+//     }
+//     return (power_num_1);
+//   } else if (power_num_2 < power_num_1) {
+//     while (power_num_1 - power_num_2) {
+//       s21_mul(*num_2, bit_number_10, num_2);
+//       power_num_2++;
+//     }
+//     return (power_num_2);
+//   }
+//   return (power_num_1);
+// }
 
 void s21_print_decimal_number(s21_decimal *num) {
   int count = 31;
@@ -93,7 +93,7 @@ void s21_print_big_decimal_number(s21_big_decimal *num) {
 }
 
 int main(void) {
-  s21_decimal bit_number = {0};
+  s21_decimal bit_number = {{235, 0, 0, 0}};
   s21_decimal bit_number_2 = {0};
   s21_decimal bit_number_3 = {0};
   s21_decimal bit_number_result = {0};
@@ -107,7 +107,9 @@ int main(void) {
 
   // ---------работа с int------------
 
-  // s21_from_int_to_decimal(12, &bit_number);  // 10
+  // printf("output = %d\n", s21_from_int_to_decimal(0, &bit_number));
+  printf("output = %d\n", s21_from_decimal_to_int(bit_number, &dst));
+  printf("dst = %d\n", dst);
   // s21_from_int_to_decimal(1111111, &bit_number_2);
   // s21_from_int_to_decimal(2, &bit_number_3);
   // dst = s21_sub(bit_number, bit_number_2, &bit_number_result);
@@ -148,9 +150,9 @@ int main(void) {
   // s21_set_power_of_big_decimal(&big_bit_number_2, 28);
   // s21_set_power_of_decimal(&bit_number_2, 26);
 
-  printf("Output = %d\n", s21_from_float_to_decimal(12, &bit_number));
+  // printf("Output = %d\n", s21_from_float_to_decimal(12, &bit_number));
 
-  printf("Output = %d\n", s21_from_float_to_decimal(-2, &bit_number_2));
+  // printf("Output = %d\n", s21_from_float_to_decimal(-2, &bit_number_2));
   // printf("децимал перед входом в функцию\n");
 
   printf("\nfirst dec number\n");
@@ -159,8 +161,8 @@ int main(void) {
   // printf("\nbig_decimal_number first\n");
   // s21_print_big_decimal_number(&big_bit_number);
 
-  printf("\nsecond dec number\n");
-  s21_print_decimal_number(&bit_number_2);
+  // printf("\nsecond dec number\n");
+  // s21_print_decimal_number(&bit_number_2);
   // rewrite_decimal_to_big(&big_bit_number_2, bit_number_2);
   // printf("big_decimal_number second\n");
   // s21_print_big_decimal_number(&big_bit_number_2);
@@ -170,16 +172,16 @@ int main(void) {
 
   // printf("\nbit_res\n");
 
-  printf("res of func = %d\n",
-         s21_div(bit_number, bit_number_2, &bit_number_result));
+  // printf("res of func = %d\n",
+  //        s21_div(bit_number, bit_number_2, &bit_number_result));
   //  s21_div_decimal_by_10_big(&big_bit_number));
   // s21_truncate_big(big_bit_number_result, &big_bit_number_result_2);
   // printf("%d", count_ones(big_bit_number, big_bit_number_2));
 
-  printf("decimal result\n");
+  // printf("decimal result\n");
   // s21_print_big_decimal_number(&big_bit_number_result);
   // printf("decimal result\n");
-  s21_print_decimal_number(&bit_number_result);
+  // s21_print_decimal_number(&bit_number_result);
 
   // -----------работа с float-----------
 

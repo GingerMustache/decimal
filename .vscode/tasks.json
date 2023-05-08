@@ -1,0 +1,25 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "shell",
+			"label": "build",
+			"command": "gcc",
+			"args": [
+				"-g",
+				"-fprofile-arcs",
+				"-ftest-coverage",
+				"-lgcov",
+				"-o",
+				"${fileDirname}/${fileBasenameNoExtension}",
+				"${a.out}"
+			],
+			"options": {
+				"cwd": "${workspaceFolder}"
+			},
+			"problemMatcher": [
+				"$gcc"
+			]
+		}
+	]
+}

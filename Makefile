@@ -8,7 +8,7 @@ OBJ_FILES := $(C_FILES:.c=.o)
 ifeq ($(OS), Darwin)
 	TEST_LIBS = -lcheck -lrt -pthread -lsubunit -L/usr/lib/x86_64-linux-gnu/libsubunit.so -L/usr/lib/x86_64-linux-gnu/libcheck.a -lm
 else
-	TEST_LIBS = -lcheck -lgcov 
+	TEST_LIBS = -lcheck -L /usr/bin/
 endif
 
 

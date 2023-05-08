@@ -86,7 +86,7 @@ int s21_from_float_to_decimal(float src, s21_decimal *dst) {
     output = CONVERSATION_ERROR;
   } else {
     s21_set_dec_number_to_0(dst);  // обнуление dst
-    printf("Исходное число: %.6E\n", src);
+    // printf("Исходное число: %.6E\n", src);
     s21_set_sign_of_int_and_float_number(dst, src, CASE_OF_DECIMAL);
     src = fabsf(src);
 
@@ -124,7 +124,7 @@ int s21_from_float_to_decimal(float src, s21_decimal *dst) {
         lenght_of_buffer--;
       }
 
-      printf("Строка без точки: %ld\n", result);
+      // printf("Строка без точки: %ld\n", result);
       if (zero_scale == 0) {
         if (sign_of_float_power == 1 && scale_of_float > 6) {
           scale = 0;
@@ -144,13 +144,13 @@ int s21_from_float_to_decimal(float src, s21_decimal *dst) {
       output = CONVERSATION_ERROR;
     }
   }
-  printf("Строка идущая в decimal: %ld\n", result);
+  // printf("Строка идущая в decimal: %ld\n", result);
   if (scale <= 28 && output == CONVERSATION_OK) {
     s21_from_unsigned_long_int_to_decimal(result, dst);
     s21_set_bits_from_int_to_decimal(scale, dst, 112);
-    printf("децимал после обработкой\n");
-    s21_print_decimal_number(dst);
-    printf("scale = %d\n", scale);
+    // printf("децимал после обработкой\n");
+    // s21_print_decimal_number(dst);
+    // printf("scale = %d\n", scale);
     return (output);
   } else {
     s21_set_dec_number_to_0(dst);

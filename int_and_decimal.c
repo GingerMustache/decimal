@@ -53,14 +53,14 @@ int s21_from_decimal_to_int(s21_decimal src, int *dst) {
 
       if (buffer > MAX_INT || buffer < MIN_INT) {
         output = CONVERSATION_ERROR;
+      } else {
+        output = CONVERSATION_OK;
       }
 
       if (output == CONVERSATION_OK) {
-        *dst = buffer;
+        *dst = (int)buffer;
       }
       // printf("buffer = %lld\n", buffer);  // delete
-
-      output = CONVERSATION_OK;
     }
   }
 
