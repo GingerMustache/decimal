@@ -146,10 +146,13 @@ int main(void) {
   //   // }
   //   i++;
   // }
-  s21_decimal first = {{0, 0, 0, 0b10000000000000000000000000000000}};
-  s21_decimal second = {{0, 0, 0, 0b00000000000000000000000000000000}};
-  printf("%d", s21_is_less(first, second));
-
+  // s21_decimal src1, src2;
+  // int origin;
+  // src1 = -545454512454545.35265454545645;
+  // src2 = -5.352654545456454545645464;
+  s21_decimal first = {{4412, 5675, 1254, 0b10000000000111000000000000000000}};
+  s21_decimal second = {{4412, 5675, 1254, 0b00000000000000000000000000000000}};
+  printf("%d", s21_is_equal(first, second));
   // s21_set_power_of_big_decimal(&big_bit_number_2, 28);
   // s21_set_power_of_decimal(&bit_number_2, 26);
 

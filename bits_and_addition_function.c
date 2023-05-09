@@ -126,6 +126,7 @@ int s21_get_power_of_decimal(s21_decimal src) {
     index++;
     scale++;
   }
+  if (result > 28) result = 0;
   return result;
 }
 

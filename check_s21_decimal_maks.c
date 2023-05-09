@@ -1700,15 +1700,17 @@ END_TEST
 // }
 // END_TEST
 
+// 0b10000000 11111111 0000000000000000
+
 START_TEST(s21_is_equalal_4_sign) {
-  s21_decimal first = {{4412, 5675, 1254, 0b10110100111111110010000000000011}};
-  s21_decimal second = {{4412, 5675, 1254, 0b01110100000000000010000111111110}};
+  s21_decimal first = {{4412, 5675, 1254, 0b10000000000111000000000000000000}};
+  s21_decimal second = {{4412, 5675, 1254, 0b00000000000000000000000000000000}};
   ck_assert_int_eq(s21_is_equal(first, second), 0);
 }
 END_TEST
 
 START_TEST(s21_is_equalal_5_sign) {
-  s21_decimal first = {{4412, 5675, 1254, 0b00110100111111110010000000000011}};
+  s21_decimal first = {{4412, 5675, 1254, 0b00110100111111110000000000000000}};
   s21_decimal second = {{4412, 5675, 1254, 0b11110100000000000010000111111110}};
   ck_assert_int_eq(s21_is_equal(first, second), 0);
 }

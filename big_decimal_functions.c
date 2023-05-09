@@ -10,13 +10,6 @@ int s21_normalize_big(s21_big_decimal *num_1, s21_big_decimal *num_2) {
   s21_set_power_of_big_decimal(num_1, 0);  // ставим степени чисел в 0
   s21_set_power_of_big_decimal(num_2, 0);
   s21_big_decimal bit_number_10 = {10, 0, 0, 0, 0, 0, 0};
-  // printf("\n-decimal_numbers from normalize-\n");
-  // printf("bit_num_10\n");
-  // s21_print_decimal_number(&bit_number_10);
-  // printf("1st\n");
-  // s21_print_decimal_number(num_1);
-  // printf("2nd\n");
-  // s21_print_decimal_number(num_2);
 
   if (power_num_1 < power_num_2) {
     while (power_num_2 - power_num_1) {
@@ -110,26 +103,11 @@ int s21_truncate_zero_big(s21_big_decimal *value) {
   if (s21_is_equal_big(*value, zero_num)) {
     output = 1;
   } else {
-    // s21_big_decimal one_num = {1};
     while (s21_is_equal_big(reminder, zero_num)) {
       tmp = *value;
       s21_div_decimal_by_10_big(value, &reminder);
-      // s21_print_big_decimal_number(&reminder);
-      // s21_print_big_decimal_number(value);
       output++;
     }
-    // *value = tmp;
-    // if (s21_is_equal_big(reminder, one_num)) {
-    //   s21_sub_big(*value, one_num, value, 0);
-    //   s21_set_big_dec_number_to_0(&reminder);
-    //   while (s21_is_equal_big(reminder, zero_num)) {
-    //     tmp = *value;
-    //     s21_div_decimal_by_10_big(value, &reminder);
-    //     // s21_print_big_decimal_number(&reminder);
-    //     // s21_print_big_decimal_number(value);
-    //     output++;
-    //   }
-    // }
   }
   *value = tmp;
   return (output - 1);
@@ -148,6 +126,7 @@ int s21_is_equal_big(s21_big_decimal num_1, s21_big_decimal num_2) {
            num_1.bits[2] == num_2.bits[2] && num_1.bits[3] == num_2.bits[3] &&
            num_1.bits[4] == num_2.bits[4] && num_1.bits[5] == num_2.bits[5] &&
            num_1.bits[6] == num_2.bits[6];
+
   return output;
 }
 
@@ -165,36 +144,23 @@ int s21_is_greater_big(s21_big_decimal num_1, s21_big_decimal num_2) {
   int res_1 = 0, res_2 = 0;
   int i = 191;
   int output = 0;  // 0 - false, 1 - true
-  int sign_1 = s21_get_bit_big(&num_1, 223);
-  int sign_2 = s21_get_bit_big(&num_2, 223);
   int power_of_1 = s21_get_power_of_big_decimal(num_1);
   int power_of_2 = s21_get_power_of_big_decimal(num_2);
 
   if ((power_of_1 && power_of_2) || (power_of_1 || power_of_2)) {
     s21_normalize_big(&num_1, &num_2);  // нормализация
   }
-  if (sign_1 < sign_2) {
-    output = 1;
-  } else if (sign_1 > sign_2) {
-    output = 0;
-  } else {
-    while (res_1 == res_2 && i != -1) {
-      res_1 = s21_get_bit_big(&num_1, i);
-      res_2 = s21_get_bit_big(&num_2, i);
-      i--;
-    }
-    if (sign_1 == 0 && sign_2 == 0) {  // если числа положительные
-      if (res_1 > res_2)
-        output = 1;
-      else
-        output = 0;
-    } else {  // если числа отрицательные
-      if (res_1 < res_2)
-        output = 1;
-      else
-        output = 0;
-    }
+
+  while (res_1 == res_2 && i != -1) {
+    res_1 = s21_get_bit_big(&num_1, i);
+    res_2 = s21_get_bit_big(&num_2, i);
+    i--;
   }
+
+  if (res_1 > res_2)
+    output = 1;
+  else
+    output = 0;
 
   return output;
 }
@@ -303,40 +269,27 @@ int s21_div_decimal_by_10_big(s21_big_decimal *value_1,
 
 int s21_round_big(s21_big_decimal value, s21_big_decimal *result) {
   int output = CONVERSATION_OK;
+  s21_set_big_dec_number_to_0(result);
+  // int sign = s21_decimal_get_sign(value);
+  int sign = s21_get_bit_big(&value, 223);
+  s21_big_decimal fractional = {0};
+  s21_big_decimal value_unsigned_truncated = {0};
+  // Убираем знак
+  s21_big_decimal value_unsigned = value;
+  s21_set_bit_0_big(&value_unsigned, 223);
+  s21_truncate_big(value_unsigned, &value_unsigned_truncated);
+  // s21_print_big_decimal_number(&value_unsigned_truncated);
+  s21_sub_big(value_unsigned, value_unsigned_truncated, &fractional, 0);
+  // s21_print_big_decimal_number(&fractional);
+  value_unsigned_truncated =
+      s21_round_banking_big(value_unsigned_truncated, fractional);
 
-  if (!result) {
-    // Если указатель на decimal является NULL
-    output = CONVERSATION_ERROR;
+  *result = value_unsigned_truncated;
+  // s21_decimal_set_sign(result, sign);
+  if (sign) {  // постановка знака
+    s21_set_bit_1_big(result, 223);
   } else {
-    // В остальных случаях округляем
-    s21_set_big_dec_number_to_0(result);
-    // int sign = s21_decimal_get_sign(value);
-    int sign = s21_get_bit_big(&value, 223);
-    s21_big_decimal fractional = {0};
-    s21_big_decimal value_unsigned_truncated = {0};
-    // Убираем знак
-    s21_big_decimal value_unsigned = value;
-    s21_set_bit_0_big(&value_unsigned, 223);
-    // Убираем дробную часть числа
-    s21_truncate_big(value_unsigned, &value_unsigned_truncated);
-    // s21_print_big_decimal_number(&value_unsigned_truncated);
-    // Считаем убранную дробную часть числа
-    s21_sub_big(value_unsigned, value_unsigned_truncated, &fractional, 0);
-    // s21_print_big_decimal_number(&fractional);
-
-    // Производим округление, исходя из дробной части числа
-    value_unsigned_truncated =
-        s21_round_banking_big(value_unsigned_truncated, fractional);
-    // s21_print_big_decimal_number(&fractional);
-
-    *result = value_unsigned_truncated;
-    // Возвращаем знак
-    // s21_decimal_set_sign(result, sign);
-    if (sign) {  // постановка знака
-      s21_set_bit_1_big(result, 223);
-    } else {
-      s21_set_bit_0_big(result, 223);
-    }
+    s21_set_bit_0_big(result, 223);
   }
 
   return output;
@@ -349,19 +302,14 @@ s21_big_decimal s21_round_banking_big(s21_big_decimal integral,
   s21_big_decimal decimal_one = {1};
 
   if (s21_is_equal_big(fractional, zerofive)) {
-    // Если дробная часть ровно 0.5
     if (s21_decimal_even_big(integral)) {
-      // Если целая часть четная, то оставляем её
       result = integral;
     } else {
-      // Если целая часть нечетная, то увеличиваем её на 1
       s21_big_add(integral, decimal_one, &result, 0);
     }
   } else if (s21_is_greater_big(fractional, zerofive)) {
-    // Если дробная часть > 0.5, то увеличиваем целую часть на 1
     s21_big_add(integral, decimal_one, &result, 0);
   } else {
-    // Если дробная часть < 0.5, то оставляем целую часть без изменений
     result = integral;
   }
 
