@@ -159,6 +159,8 @@ int s21_is_greater_big(s21_big_decimal num_1, s21_big_decimal num_2) {
 
   if (res_1 > res_2)
     output = 1;
+  else if (res_1 == res_2)
+    output = 2;
   else
     output = 0;
 

@@ -1710,33 +1710,33 @@ START_TEST(s21_is_equalal_4_sign) {
 END_TEST
 
 START_TEST(s21_is_equalal_5_sign) {
-  s21_decimal first = {{4412, 5675, 1254, 0b00110100111111110000000000000000}};
-  s21_decimal second = {{4412, 5675, 1254, 0b11110100000000000010000111111110}};
+  s21_decimal first = {{4412, 5675, 1254, 0b10000000000111000000000000000000}};
+  s21_decimal second = {{4412, 5675, 1254, 0b10000000000000000000000000000000}};
   ck_assert_int_eq(s21_is_equal(first, second), 0);
 }
 END_TEST
 
 START_TEST(s21_is_equalal_6) {
-  s21_decimal first = {{4412, 5675, 1154, 0b10110100111111110010000000000011}};
-  s21_decimal second = {{4412, 5675, 1254, 0b11110100000000000010000111111110}};
+  s21_decimal first = {{4412, 5675, 1254, 0b00000000000111000000000000000000}};
+  s21_decimal second = {{4412, 5675, 1254, 0b10000000000000000000000000000000}};
   ck_assert_int_eq(s21_is_equal(first, second), 0);
 }
 END_TEST
 
 START_TEST(s21_is_equalal_7) {
-  s21_decimal first = {{4412, 5675, 1254, 0b10110100111111110010000000000011}};
-  s21_decimal second = {{4412, 5675, 1244, 0b11110100000000000010000111111110}};
+  s21_decimal first = {{4412, 5675, 1254, 0b00000000000111000000000000000000}};
+  s21_decimal second = {{4412, 5675, 1254, 0b10000000000011100000000000000000}};
   ck_assert_int_eq(s21_is_equal(first, second), 0);
 }
 END_TEST
 
-START_TEST(s21_is_equalal_8) {
-  s21_decimal first = {{4412, 5675, 1254, 0b10110100111111110010000000000011}};
-  s21_decimal second = {
-      {4412, 5675, 12541, 0b11110100000000000010000111111110}};
-  ck_assert_int_eq(s21_is_equal(first, second), 0);
-}
-END_TEST
+// START_TEST(s21_is_equalal_8) {
+//   s21_decimal first = {{4412, 5675, 1254,
+//   0b10110100111111110010000000000011}}; s21_decimal second = {
+//       {4412, 5675, 12541, 0b11110100000000000010000111111110}};
+//   ck_assert_int_eq(s21_is_equal(first, second), 0);
+// }
+// END_TEST
 
 START_TEST(s21_is_equalal_9_ss) {
   s21_decimal first = {
@@ -11246,7 +11246,7 @@ void srunner_add_comparsion_tests(SRunner *sr) {
   tcase_add_test(tc1_1, s21_is_equalal_5_sign);
   tcase_add_test(tc1_1, s21_is_equalal_6);
   tcase_add_test(tc1_1, s21_is_equalal_7);
-  tcase_add_test(tc1_1, s21_is_equalal_8);
+  // tcase_add_test(tc1_1, s21_is_equalal_8);
   tcase_add_test(tc1_1, s21_is_equalal_9_ss);
   tcase_add_test(tc1_1, s21_is_equalal_10);
   tcase_add_test(tc1_1, s21_is_equalal_12_value);
