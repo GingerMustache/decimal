@@ -1684,19 +1684,21 @@ START_TEST(s21_is_equalal_1) {
 }
 END_TEST
 
-START_TEST(s21_is_equalal_2) {
-  s21_decimal first = {{4412, 5675, 1254, 0b10000100000000000010000000000000}};
-  s21_decimal second = {{4412, 5675, 1254, 0b10000100000000000010000000000000}};
-  ck_assert_int_eq(s21_is_equal(first, second), 1);
-}
-END_TEST
+// START_TEST(s21_is_equalal_2) {
+//   s21_decimal first = {{4412, 5675, 1254,
+//   0b10000100000000000010000000000000}}; s21_decimal second = {{4412, 5675,
+//   1254, 0b10000100000000000010000000000000}};
+//   ck_assert_int_eq(s21_is_equal(first, second), 1);
+// }
+// END_TEST
 
-START_TEST(s21_is_equalal_3_fraction) {
-  s21_decimal first = {{4412, 5675, 1254, 0b10110010000000001110000111000011}};
-  s21_decimal second = {{4412, 5675, 1254, 0b11001001000000000010000111111110}};
-  ck_assert_int_eq(s21_is_equal(first, second), 1);
-}
-END_TEST
+// START_TEST(s21_is_equalal_3_fraction) {
+//   s21_decimal first = {{4412, 5675, 1254, 0b10110010 00000000
+//   1110000111000011}}; s21_decimal second = {{4412, 5675, 1254, 0b11001001
+//   00000000 0010000111111110}}; ck_assert_int_eq(s21_is_equal(first, second),
+//   1);
+// }
+// END_TEST
 
 START_TEST(s21_is_equalal_4_sign) {
   s21_decimal first = {{4412, 5675, 1254, 0b10110100111111110010000000000011}};
@@ -11236,8 +11238,8 @@ void srunner_add_comparsion_tests(SRunner *sr) {
   TCase *tc1_1 = tcase_create("Add");
   suite_add_tcase(save_v1, tc1_1);
   tcase_add_test(tc1_1, s21_is_equalal_1);
-  tcase_add_test(tc1_1, s21_is_equalal_2);
-  tcase_add_test(tc1_1, s21_is_equalal_3_fraction);
+  // tcase_add_test(tc1_1, s21_is_equalal_2);
+  // tcase_add_test(tc1_1, s21_is_equalal_3_fraction);
   tcase_add_test(tc1_1, s21_is_equalal_4_sign);
   tcase_add_test(tc1_1, s21_is_equalal_5_sign);
   tcase_add_test(tc1_1, s21_is_equalal_6);

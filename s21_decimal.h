@@ -79,7 +79,7 @@ void s21_set_sign_of_int_and_float_number(s21_decimal *dec_num, float num_1,
                                           int case_of_type);
 void s21_set_dec_number_to_0(s21_decimal *src_num);
 void s21_set_dec_number_to_1(s21_decimal *src_num);
-// void s21_print_decimal_number(s21_decimal *num);
+void s21_print_decimal_number(s21_decimal *num);
 // int s21_get_float_bit(int num, int index);
 int s21_rewrite_float_bits_to_buff(s21_decimal *buff, float val);
 void s21_set_bits_from_int_to_decimal(int src, s21_decimal *dst,
@@ -125,7 +125,7 @@ int s21_div(s21_decimal value_1, s21_decimal value_2, s21_decimal *result);
 
 //------------------------Работа с big_decimal----------------------//
 
-// void s21_print_big_decimal_number(s21_big_decimal *num);
+void s21_print_big_decimal_number(s21_big_decimal *num);
 void s21_set_bit_0_big(s21_big_decimal *dec_num, int index);
 void s21_set_bit_1_big(s21_big_decimal *dec_num, int index);
 int s21_get_bit_big(s21_big_decimal *dec_num, int index);
