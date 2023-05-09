@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS = -std=c11 -Wall -Wextra -Werror -pedantic -Wno-gnu-binary-literal
+CFLAGS = -std=c11 -Wall -Wextra -Werror -pedantic -Wno-gnu-binary-literal -fprofile-arcs -ftest-coverage
 LIBS = s21_decimal.a
 TESTS = check_s21_decimal
 C_FILES := $(wildcard *.c)
