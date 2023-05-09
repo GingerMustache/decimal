@@ -8,7 +8,7 @@ int s21_div(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
 
   if (s21_is_decimal_0(value_2)) {  // деление на 0
     output = CONVERSATION_DIV_ZERO;
-    *result = s21_decimal_get_inf();
+    s21_set_dec_number_to_0(result);
   } else if (s21_is_decimal_0(value_1)) {
     output = CONVERSATION_OK;  // если первое число 0
     s21_set_dec_number_to_0(result);

@@ -48,6 +48,11 @@ typedef struct {
                  */
 } s21_big_decimal;
 
+// typedef union {
+//   int ui;
+//   float fl;
+// } floatbits;
+
 //------------------------Конверторы----------------------//
 int s21_from_int_to_decimal(int src, s21_decimal *dst);
 int s21_from_decimal_to_int(s21_decimal src, int *dst);

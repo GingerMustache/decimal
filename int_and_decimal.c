@@ -2,7 +2,7 @@
 
 void s21_set_bits_from_int_to_decimal(int src, s21_decimal *dst,
                                       int which_int_part_to_fill) {
-  int exp = 0;
+  unsigned int exp = 0;
   src = fabs((double)src);
   while (src >= pow(2, exp)) exp++;
   while (src) {

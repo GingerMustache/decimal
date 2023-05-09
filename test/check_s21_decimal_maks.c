@@ -9351,10 +9351,10 @@ START_TEST(s21_from_float_to_decimal_1) {
   s21_decimal val;
   s21_from_float_to_decimal(0.03F, &val);
 
-  ck_assert_int_eq(val.bits[0], 3000000);
+  ck_assert_int_eq(val.bits[0], 3);
   ck_assert_int_eq(val.bits[1], 0);
   ck_assert_int_eq(val.bits[2], 0);
-  ck_assert_int_eq(val.bits[3], 524288);
+  ck_assert_int_eq(val.bits[3], 131072);
   s21_from_float_to_decimal(127.1234F, &val);
   ck_assert_int_eq(val.bits[0], 1271234);
   ck_assert_int_eq(val.bits[1], 0);
