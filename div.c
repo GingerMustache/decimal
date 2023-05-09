@@ -16,6 +16,7 @@ int s21_div(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
     output = CONVERSATION_OK;  // если числа и их степени одинаковы
     s21_set_dec_number_to_1(result);
   } else {
+    s21_set_dec_number_to_0(result);
     // берем знаки
     int sign_1 = s21_get_bit(&value_1, 127);
     int sign_2 = s21_get_bit(&value_2, 127);
@@ -113,11 +114,11 @@ int s21_div_big(s21_big_decimal value_1, s21_big_decimal value_2,
             // возможно надо предусмотреть выход за 191 бит
             prev_value = tmp_2;
             s21_big_mul(tmp_2, _2, &tmp_2, 0);
-            s21_print_big_decimal_number(&tmp_2);
+            // s21_print_big_decimal_number(&tmp_2);
           } else {
             prev_value = tmp_2;
             shift_big_bit_left(&tmp_2, 1, 0, 5);
-            s21_print_big_decimal_number(&tmp_2);
+            // s21_print_big_decimal_number(&tmp_2);
           }
           // сдвигаем влево tmp_2 пока он <= tmp_1
         }
