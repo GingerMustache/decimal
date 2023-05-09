@@ -6,7 +6,13 @@ int s21_get_col(int bit) { return bit % 32; }
 void s21_set_sign_of_int_and_float_number(s21_decimal *dec_num, float num_1,
                                           int case_of_type) {
   if (case_of_type == 1) {
-    if ((int)num_1 < 0) dec_num->bits[3] |= (1 << 31);
+    if ((int)num_1 < 0) {
+      if (num_1 != INT_MIN) {
+        dec_num->bits[3] |= (1 << 31);
+      } else {
+        dec_num->bits[3] |= (0 << 31);
+      }
+    }
   } else {
     long int i = two_32 / 2;
     int float_in_32bit = *(int *)&num_1;

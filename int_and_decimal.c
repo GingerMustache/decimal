@@ -21,7 +21,13 @@ int s21_from_int_to_decimal(int src, s21_decimal *dst) {
   if (dst) {
     output = CONVERSATION_OK;
     s21_set_dec_number_to_0(dst);
-    s21_set_sign_of_int_and_float_number(dst, src, CASE_OF_INT);
+    if ((int)src < 0) {
+      if (src != INT_MIN) {
+        dst->bits[3] |= (1 << 31);
+      } else {
+        dst->bits[3] |= (0 << 31);
+      }
+    }
     s21_set_bits_from_int_to_decimal(src, dst, 0);
   }
   return output;

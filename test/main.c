@@ -146,14 +146,9 @@ int main(void) {
   //   // }
   //   i++;
   // }
-  s21_decimal result;
-  int src = -2147483647;
-  // origin.bits[0] = 0b01111111111111111111111111111111;
-  // origin.bits[1] = 0b00000000000000000000000000000000;
-  // origin.bits[2] = 0b00000000000000000000000000000000;
-  // origin.bits[3] = 0b00000000000000000000000000000000;
-  // int result_error = 0;
-  printf("%d\n", s21_from_int_to_decimal(src, &result));
+  s21_decimal first = {{0, 0, 0, 0b10000000000000000000000000000000}};
+  s21_decimal second = {{0, 0, 0, 0b00000000000000000000000000000000}};
+  printf("%d", s21_is_less(first, second));
 
   // s21_set_power_of_big_decimal(&big_bit_number_2, 28);
   // s21_set_power_of_decimal(&bit_number_2, 26);
@@ -188,7 +183,7 @@ int main(void) {
   // printf("decimal result\n");
   // s21_print_big_decimal_number(&big_bit_number_result);
   // printf("decimal result\n");
-  s21_print_decimal_number(&result);
+  // s21_print_decimal_number(&result);
 
   // -----------работа с float-----------
 
