@@ -148,7 +148,7 @@ int s21_div_big(s21_big_decimal value_1, s21_big_decimal value_2,
 
       // нужен ли тут функционал переполнения для всех функций?
       if (!s21_is_decimal_0_big(reminder)) {
-        while (s21_is_less_big(reminder, tmp_2) && rewrite == 3) {
+        while (s21_is_less_big(reminder, tmp_2) == 1 && rewrite == 3) {
           tmp_result = final_tmp_result;
           s21_mul_decimal_by_10_big(&final_tmp_result);
           rewrite = check_big_decimal(final_tmp_result);

@@ -2,94 +2,94 @@
 // все возникшие ошибки могут быть из за добавления сдвигов влво и вправо !!
 // добавил flg_overflow_mul и все, что с ним связано
 
-int check_index_shift_big(s21_big_decimal dec_num, int index) {
-  int output = 0;
-  int _31 = 31;
-  int _63 = 63;
-  int _95 = 95;
-  int _127 = 127;
-  int _159 = 159;
-  int _191 = 191;
+// int check_index_shift_big(s21_big_decimal dec_num, int index) {
+//   int output = 0;
+//   int _31 = 31;
+//   int _63 = 63;
+//   int _95 = 95;
+//   int _127 = 127;
+//   int _159 = 159;
+//   int _191 = 191;
 
-  int get_63 = 0;
-  int get_31 = 0;
-  int get_95 = 0;
-  int get_127 = 0;
-  int get_159 = 0;
-  int get_191 = 0;
+//   int get_63 = 0;
+//   int get_31 = 0;
+//   int get_95 = 0;
+//   int get_127 = 0;
+//   int get_159 = 0;
+//   int get_191 = 0;
 
-  while (_31 > -1) {
-    if (get_63 != 2) get_63 = s21_get_bit_big(&dec_num, _63);
-    if (get_31 != 2) get_31 = s21_get_bit_big(&dec_num, _31);
-    if (get_95 != 2) get_95 = s21_get_bit_big(&dec_num, _95);
-    if (get_127 != 2) get_63 = s21_get_bit_big(&dec_num, _63);
-    if (get_159 != 2) get_31 = s21_get_bit_big(&dec_num, _31);
-    if (get_191 != 2) get_95 = s21_get_bit_big(&dec_num, _95);
+//   while (_31 > -1) {
+//     if (get_63 != 2) get_63 = s21_get_bit_big(&dec_num, _63);
+//     if (get_31 != 2) get_31 = s21_get_bit_big(&dec_num, _31);
+//     if (get_95 != 2) get_95 = s21_get_bit_big(&dec_num, _95);
+//     if (get_127 != 2) get_63 = s21_get_bit_big(&dec_num, _63);
+//     if (get_159 != 2) get_31 = s21_get_bit_big(&dec_num, _31);
+//     if (get_191 != 2) get_95 = s21_get_bit_big(&dec_num, _95);
 
-    if (index + _31 >= 31) {
-      if (get_191 == 1) {
-        if (_191 + index > 191) {
-          return (0);
-        } else {
-          output++;
-          get_191 = 2;
-        }
-      }
+//     if (index + _31 >= 31) {
+//       if (get_191 == 1) {
+//         if (_191 + index > 191) {
+//           return (0);
+//         } else {
+//           output++;
+//           get_191 = 2;
+//         }
+//       }
 
-      if (get_159 == 1) {
-        if (_159 + index > 159) {
-          return (0);
-        } else {
-          output++;
-          get_159 = 2;
-        }
-      }
+//       if (get_159 == 1) {
+//         if (_159 + index > 159) {
+//           return (0);
+//         } else {
+//           output++;
+//           get_159 = 2;
+//         }
+//       }
 
-      if (get_127 == 1) {
-        if (_127 + index > 127) {
-          return (0);
-        } else {
-          output++;
-          get_127 = 2;
-        }
-      }
+//       if (get_127 == 1) {
+//         if (_127 + index > 127) {
+//           return (0);
+//         } else {
+//           output++;
+//           get_127 = 2;
+//         }
+//       }
 
-      if (get_95 == 1) {
-        if (_95 + index > 95) {
-          return (0);
-        } else {
-          output++;
-          get_95 = 2;
-        }
-      }
-      if (get_63 == 1) {
-        if (_63 + index > 63) {
-          return (0);
-        } else {
-          output++;
-          get_63 = 2;
-        }
-      }
-      if (get_31 == 1) {
-        if (_31 + index > 31) {
-          return (0);
-        } else {
-          output++;
-          get_31 = 2;
-        }
-      }
-    }
-    if (output > 0 || (output == 1 /*может 2*/ && (!_63 || !_31 || !_95)))
-      return (2);
-    _191--;
-    _159--;
-    _127--;
-    _95--;
-    _63--;
-    _31--;
-  }
-  return (0);  // 0 это ошибка
-}
+//       if (get_95 == 1) {
+//         if (_95 + index > 95) {
+//           return (0);
+//         } else {
+//           output++;
+//           get_95 = 2;
+//         }
+//       }
+//       if (get_63 == 1) {
+//         if (_63 + index > 63) {
+//           return (0);
+//         } else {
+//           output++;
+//           get_63 = 2;
+//         }
+//       }
+//       if (get_31 == 1) {
+//         if (_31 + index > 31) {
+//           return (0);
+//         } else {
+//           output++;
+//           get_31 = 2;
+//         }
+//       }
+//     }
+//     if (output > 0 || (output == 1 /*может 2*/ && (!_63 || !_31 || !_95)))
+//       return (2);
+//     _191--;
+//     _159--;
+//     _127--;
+//     _95--;
+//     _63--;
+//     _31--;
+//   }
+//   return (0);  // 0 это ошибка
+// }
 
 void twist_bit_big(s21_big_decimal *dec_num, int first, int second) {
   s21_set_bit_1_big(dec_num, second);

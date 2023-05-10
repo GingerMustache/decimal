@@ -26,10 +26,10 @@ s21_decimal.a: $(OBJ_FILES)
 s21_decimal.o: $(C_FILES) s21_decimal.h
 	$(CC) $(CFLAGS) $(C_FILES) -fprofile-arcs -ftest-coverage -c $<
 
-check_s21_decimal.o: check_s21_decimal_maks.c s21_decimal.h
+check_s21_decimal.o: check_s21_decimal.c s21_decimal.h
 	$(CC) $(CFLAGS)  -c $<
 
-check_s21_decimal: check_s21_decimal_maks.o s21_decimal.a
+check_s21_decimal: check_s21_decimal.o s21_decimal.a
 	$(CC) $(CFLAGS)  -o $@ $^ $(TEST_LIBS)
 
 

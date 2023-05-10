@@ -13,29 +13,31 @@ int last_bits(int pow,  // первый аргумент заполняет ст
   return (pow << 16) ^ (sign << 31);
 }
 
-float s21_rand_r(float a, float b) {  //  генерирует случайное число с плавающей
-                                      //  точкой в диапазоне от a до b.
-  float m = (float)rand() / RAND_MAX;
-  float num = a + m * (b - a);
-  return num;
-}
+// float s21_rand_r(float a, float b) {  //  генерирует случайное число с
+// плавающей
+//                                       //  точкой в диапазоне от a до b.
+//   float m = (float)rand() / RAND_MAX;
+//   float num = a + m * (b - a);
+//   return num;
+// }
 
-void s21_set_bit(s21_decimal *dst, int index, int bit) {
-  int mask = 1u << (index % 32);
-  dst->bits[index / 32] =
-      bit == 0 ? dst->bits[index / 32] & ~mask : dst->bits[index / 32] | mask;
-}
+// void s21_set_bit(s21_decimal *dst, int index, int bit) {
+//   int mask = 1u << (index % 32);
+//   dst->bits[index / 32] =
+//       bit == 0 ? dst->bits[index / 32] & ~mask : dst->bits[index / 32] |
+//       mask;
+// }
 
-int great_bez_znak(s21_decimal a, s21_decimal b) {
-  int znak1 = s21_get_bits(a.bits[3], 31);
-  int znak2 = s21_get_bits(b.bits[3], 31);
-  s21_set_bit(&a, 127, 0);
-  s21_set_bit(&b, 127, 0);
-  int res = s21_is_greater(a, b);
-  s21_set_bit(&a, 127, znak1);
-  s21_set_bit(&b, 127, znak2);
-  return res;
-}
+// int great_bez_znak(s21_decimal a, s21_decimal b) {
+//   int znak1 = s21_get_bits(a.bits[3], 31);
+//   int znak2 = s21_get_bits(b.bits[3], 31);
+//   s21_set_bit(&a, 127, 0);
+//   s21_set_bit(&b, 127, 0);
+//   int res = s21_is_greater(a, b);
+//   s21_set_bit(&a, 127, znak1);
+//   s21_set_bit(&b, 127, znak2);
+//   return res;
+// }
 
 START_TEST(s21_add_1) {
   s21_decimal src1, src2, origin, result;
@@ -5825,6 +5827,38 @@ START_TEST(s21_div_3) {
   int res_origin = 16384;
   int check = s21_div(src1, src2, &result);
   int check_origin = 0;
+  s21_from_decimal_to_int(result, &res_our_dec);
+  ck_assert_int_eq(res_our_dec, res_origin);
+  ck_assert_int_eq(check, check_origin);
+}
+END_TEST
+
+START_TEST(s21_div_33) {
+  s21_decimal src1, src2, result;
+  int a = 2;
+  int b = 2;
+  int res_our_dec = 0;
+  s21_from_int_to_decimal(a, &src1);
+  s21_from_int_to_decimal(b, &src2);
+  int res_origin = 1;
+  int check = s21_div(src1, src2, &result);
+  int check_origin = 0;
+  s21_from_decimal_to_int(result, &res_our_dec);
+  ck_assert_int_eq(res_our_dec, res_origin);
+  ck_assert_int_eq(check, check_origin);
+}
+END_TEST
+
+START_TEST(s21_div_44) {
+  s21_decimal src1, src2, result;
+  // float a = 0.00000000000000000002;
+  int b = 2000000000;
+  int res_our_dec = 0;
+  s21_from_float_to_decimal(0.00000000000000000002, &src1);
+  s21_from_int_to_decimal(b, &src2);
+  int res_origin = 0;
+  int check = s21_div(src1, src2, &result);
+  int check_origin = 2;
   s21_from_decimal_to_int(result, &res_our_dec);
   ck_assert_int_eq(res_our_dec, res_origin);
   ck_assert_int_eq(check, check_origin);
@@ -12701,7 +12735,9 @@ void srunner_add_arithmetic_tests(SRunner *sr) {
   tcase_add_test(tc1_1, s21_div_1);
   tcase_add_test(tc1_1, s21_div_2);
   tcase_add_test(tc1_1, s21_div_3);
+  tcase_add_test(tc1_1, s21_div_33);
   tcase_add_test(tc1_1, s21_div_4);
+  tcase_add_test(tc1_1, s21_div_44);
   tcase_add_test(tc1_1, s21_div_5);
   tcase_add_test(tc1_1, s21_div_7);
   tcase_add_test(tc1_1, s21_div_8);
