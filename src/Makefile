@@ -12,7 +12,6 @@ else
 endif
 
 
-
 all: clean $(LIBS) gcov_report
 
 clean:

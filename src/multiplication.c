@@ -11,9 +11,9 @@ int s21_mul(s21_decimal value_1, s21_decimal value_2, s21_decimal* result) {
   s21_set_bit_0(&value_2, 127);  // устанавливаем знаки в (+)
   s21_set_bit_0(&value_1, 127);
 
-  s21_big_decimal big_value_1 = {{0}};
-  s21_big_decimal big_value_2 = {{0}};
-  s21_big_decimal big_result = {{0}};
+  s21_big_decimal big_value_1 = {0};
+  s21_big_decimal big_value_2 = {0};
+  s21_big_decimal big_result = {0};
   rewrite_decimal_to_big(&big_value_1, value_1);
   rewrite_decimal_to_big(&big_value_2, value_2);
 
@@ -54,18 +54,18 @@ int s21_big_mul(s21_big_decimal big_value_1, s21_big_decimal big_value_2,
                 s21_big_decimal* result, int func) {
   int index = 0;
   int output = 1;  // поменял с end_mul
-  s21_big_decimal step = {{0}};
+  s21_big_decimal step = {0};
   s21_set_big_dec_number_to_0(result);
   s21_big_decimal tmp = *result;
-  s21_big_decimal big_10 = {{10, 0, 0, 0, 0, 0, 0}};
+  s21_big_decimal big_10 = {10, 0, 0, 0, 0, 0, 0};
   int count_1 = 0, count_2 = 0;
   int power_of_1 = s21_get_power_of_big_decimal(big_value_1);
   int power_of_2 = s21_get_power_of_big_decimal(big_value_2);
   int power_of_result = power_of_1 + power_of_2;
 
   // для банковского округления
-  s21_big_decimal fractional = {{0}};
-  s21_big_decimal value_unsigned_truncated = {{0}};
+  s21_big_decimal fractional = {0};
+  s21_big_decimal value_unsigned_truncated = {0};
 
   if ((power_of_1 || power_of_2)) {
     s21_normalize_big(&big_value_1, &big_value_2);  // нормализация

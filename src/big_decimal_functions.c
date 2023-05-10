@@ -9,7 +9,7 @@ int s21_normalize_big(s21_big_decimal *num_1, s21_big_decimal *num_2) {
   int power_num_2 = s21_get_power_of_big_decimal(*num_2);
   s21_set_power_of_big_decimal(num_1, 0);  // ставим степени чисел в 0
   s21_set_power_of_big_decimal(num_2, 0);
-  s21_big_decimal bit_number_10 = {{10, 0, 0, 0, 0, 0, 0}};
+  s21_big_decimal bit_number_10 = {10, 0, 0, 0, 0, 0, 0};
 
   if (power_num_1 < power_num_2) {
     while (power_num_2 - power_num_1) {
@@ -97,9 +97,9 @@ void s21_set_power_of_big_decimal(s21_big_decimal *src, int power) {
 
 int s21_truncate_zero_big(s21_big_decimal *value) {
   int output = 0;
-  s21_big_decimal reminder = {{0}};
-  s21_big_decimal zero_num = {{0}};
-  s21_big_decimal tmp = {{0}};
+  s21_big_decimal reminder = {0};
+  s21_big_decimal zero_num = {0};
+  s21_big_decimal tmp = {0};
   if (s21_is_equal_big(*value, zero_num)) {
     output = 1;
   } else {
@@ -131,12 +131,12 @@ int s21_is_equal_big(s21_big_decimal num_1, s21_big_decimal num_2) {
 }
 
 int s21_is_decimal_0_big(s21_big_decimal dec_num) {
-  s21_big_decimal zero_decimal = {{0}};
+  s21_big_decimal zero_decimal = {0};
   return s21_is_equal_big(zero_decimal, dec_num);
 }
 
 void s21_set_dec_number_to_1_big(s21_big_decimal *src_num) {
-  s21_big_decimal decimal_1 = {{1}};
+  s21_big_decimal decimal_1 = {1};
   *src_num = decimal_1;
 }
 
@@ -180,7 +180,7 @@ int s21_is_greater_or_equal_big(s21_big_decimal num_1, s21_big_decimal num_2) {
 }
 
 int s21_mul_decimal_by_10_big(s21_big_decimal *num) {
-  s21_big_decimal decimal_10 = {{10, 0, 0, 0, 0, 0, 0}};
+  s21_big_decimal decimal_10 = {10, 0, 0, 0, 0, 0, 0};
   int res =
       s21_big_mul(*num, decimal_10, num,
                   0);  // переписываю умнлжение, надо чекнуть потом условие
@@ -194,13 +194,13 @@ int s21_mul_decimal_by_10_big(s21_big_decimal *num) {
 // прообраз деления,но с остатком
 int s21_div_decimal_by_10_big(s21_big_decimal *value_1,
                               s21_big_decimal *out_reminder) {
-  s21_big_decimal value_2 = {{10, 0, 0, 0, 0, 0, 0}};
-  s21_big_decimal _2 = {{2, 0, 0, 0, 0, 0, 0}};
-  s21_big_decimal prev_value = {{0}};
+  s21_big_decimal value_2 = {10, 0, 0, 0, 0, 0, 0};
+  s21_big_decimal _2 = {2, 0, 0, 0, 0, 0, 0};
+  s21_big_decimal prev_value = {0};
 
-  s21_big_decimal tmp_result = {{0}};
-  s21_big_decimal final_tmp_result = {{0}};
-  s21_big_decimal reminder = {{1}};
+  s21_big_decimal tmp_result = {0};
+  s21_big_decimal final_tmp_result = {0};
+  s21_big_decimal reminder = {1};
   int power_of_value_2 = 0;
   int check_reminder = 0;
   int power_of_result = 0;
@@ -274,8 +274,8 @@ int s21_round_big(s21_big_decimal value, s21_big_decimal *result) {
   s21_set_big_dec_number_to_0(result);
   // int sign = s21_decimal_get_sign(value);
   int sign = s21_get_bit_big(&value, 223);
-  s21_big_decimal fractional = {{0}};
-  s21_big_decimal value_unsigned_truncated = {{0}};
+  s21_big_decimal fractional = {0};
+  s21_big_decimal value_unsigned_truncated = {0};
   // Убираем знак
   s21_big_decimal value_unsigned = value;
   s21_set_bit_0_big(&value_unsigned, 223);
@@ -301,7 +301,7 @@ s21_big_decimal s21_round_banking_big(s21_big_decimal integral,
                                       s21_big_decimal fractional) {
   s21_big_decimal zerofive = s21_decimal_get_zerofive_big();
   s21_big_decimal result;
-  s21_big_decimal decimal_one = {{1}};
+  s21_big_decimal decimal_one = {1};
 
   if (s21_is_equal_big(fractional, zerofive)) {
     if (s21_decimal_even_big(integral)) {
@@ -321,7 +321,7 @@ s21_big_decimal s21_round_banking_big(s21_big_decimal integral,
 int s21_truncate_big(s21_big_decimal value, s21_big_decimal *result) {
   int output = CONVERSATION_ERROR;
   int power = 0;
-  s21_big_decimal reminder = {{0}};
+  s21_big_decimal reminder = {0};
   if (result) {
     output = CONVERSATION_OK;
     power = s21_div_decimal_by_10_big(&value, &reminder);

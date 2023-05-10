@@ -10,16 +10,16 @@ int s21_sub(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
   output = s21_sign_handle(&value_1, &value_2, result, 1);
 
   if (output == 2) {
-    s21_decimal val_1 = {{0}};
-    s21_decimal val_2 = {{0}};
-    s21_decimal tmp = {{0}};
+    s21_decimal val_1 = {0};
+    s21_decimal val_2 = {0};
+    s21_decimal tmp = {0};
     s21_set_dec_number_to_0(result);
 
     int big_decimal_output = 0;
 
-    s21_big_decimal big_value_1 = {{0}};
-    s21_big_decimal big_value_2 = {{0}};
-    s21_big_decimal big_result = {{0}};
+    s21_big_decimal big_value_1 = {0};
+    s21_big_decimal big_value_2 = {0};
+    s21_big_decimal big_result = {0};
 
     rewrite_decimal_to_big(&big_value_1, value_1);
     rewrite_decimal_to_big(&big_value_2, value_2);
@@ -63,10 +63,10 @@ int s21_sub_big(s21_big_decimal val_1, s21_big_decimal val_2,
 
   s21_set_bit_0_big(&val_1, 223);
   s21_set_bit_0_big(&val_2, 223);
-  s21_big_decimal tmp = {{0}};
-  // s21_big_decimal big_10 = {{10, 0, 0, 0, 0, 0, 0}};
+  s21_big_decimal tmp = {0};
+  // s21_big_decimal big_10 = {10, 0, 0, 0, 0, 0, 0};
 
-  s21_big_decimal fractional = {{0}};
+  s21_big_decimal fractional = {0};
   s21_big_decimal value_unsigned_truncated = {0};
 
   int index_bit = 0;
