@@ -1,44 +1,6 @@
 #include "s21_decimal.h"
 
 // функция для принятия решения (-) или (+)
-int s21_sign_handle(s21_decimal *value_1, s21_decimal *value_2,
-                    s21_decimal *result, int function) {
-  // function = 0 (from s21_add)
-  // function = 1 (from s21_sub)
-  int output = 0;
-  int sign_1 = s21_get_bit(value_1, 127);
-  int sign_2 = s21_get_bit(value_2, 127);
-
-  // варианты для s21_sub
-  if (function) {
-    if (sign_1 == 1 && sign_2 == 0) {  // если пришло -3 - 2
-      s21_set_bit_1(value_2, 127);
-      output = s21_add(*value_1, *value_2, result);  // отправляем -3 + (-2)
-
-    } else if ((sign_1 == 0 && sign_2 == 1)) {  // если пришло 3 - (-2)
-      s21_set_bit_0(value_2, 127);
-      output = s21_add(*value_1, *value_2, result);  // отправляем 3 + 2
-
-    } else {
-      output = 2;
-    }
-    // варианты для s21_add
-  } else {
-    if (sign_1 == 1 && sign_2 == 0) {  //  если пришло -3 + 2
-      s21_set_bit_0(value_1, 127);
-      output = s21_sub(*value_2, *value_1, result);  // отправляем 2 - 3
-
-    } else if (sign_1 == 0 && sign_2 == 1) {  // если пришло 3 + (-2)
-      s21_set_bit_0(value_2, 127);
-      output = s21_sub(*value_1, *value_2, result);  // отправляем 3 - 2
-
-    } else {  // остальные случаи обрабатываются в самих функциях
-      output = 2;
-    }
-  }
-
-  return output;
-}
 
 int s21_sub(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
   int output = CONVERSATION_ERROR;
@@ -102,7 +64,7 @@ int s21_sub_big(s21_big_decimal val_1, s21_big_decimal val_2,
   s21_set_bit_0_big(&val_1, 223);
   s21_set_bit_0_big(&val_2, 223);
   s21_big_decimal tmp = {0};
-  s21_big_decimal big_10 = {10, 0, 0, 0, 0, 0, 0};
+  // s21_big_decimal big_10 = {10, 0, 0, 0, 0, 0, 0};
 
   s21_big_decimal fractional = {0};
   s21_big_decimal value_unsigned_truncated = {0};
@@ -158,7 +120,8 @@ int s21_sub_big(s21_big_decimal val_1, s21_big_decimal val_2,
       *result = tmp;
     } else if (power_of_result) {
       while (power_of_result && rewrite != 3) {
-        s21_div_big(tmp, big_10, &tmp);
+        // s21_div_big(tmp, big_10, &tmp);
+        s21_set_power_of_big_decimal(&tmp, 1);
         s21_truncate_big(tmp, &value_unsigned_truncated);
         s21_sub_big(tmp, value_unsigned_truncated, &fractional, 1);
         tmp = s21_round_banking_big(value_unsigned_truncated, fractional);

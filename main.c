@@ -138,46 +138,32 @@ int main(void) {
   //   // if (i <= 10) {
   //   //   s21_set_bit_1(&bit_number_2, i);  // число
   //   // }
-  //   // // if (i == 127) {
-  //   //   s21_set_bit_1(&bit_number, i);  // знак
+  //   // if (i == 127) {
+  //   //   s21_set_bit_1(&bit_number, 127);  // знак
   //   // }
   //   // if (i == 112) {
   //   //   s21_set_bit_1(&bit_number_2, i);  // степень
   //   // }
   //   i++;
   // }
-  // s21_decimal src1, src2;
-  // int origin;
-  // src1 = -545454512454545.35265454545645;
-  // src2 = -5.352654545456454545645464;
-  s21_decimal src1, src2;
-  // src1 = -9878798789.5867800;
-  // src2 = -9878798789.58678;
-  src1.bits[0] = 0b11001110100110111101100110011000;
-  src1.bits[1] = 0b00000001010111101111011100100110;
-  src1.bits[2] = 0b00000000000000000000000000000000;
-  src1.bits[3] = 0b10000000000001110000000000000000;
-  src2.bits[0] = 0b10110101010001000001111001010110;
-  src2.bits[1] = 0b00000000000000111000001001111000;
-  src2.bits[2] = 0b00000000000000000000000000000000;
-  src2.bits[3] = 0b10000000000001010000000000000000;
-  printf("%d", s21_is_less(src1, src2));
+
   // s21_set_power_of_big_decimal(&big_bit_number_2, 28);
   // s21_set_power_of_decimal(&bit_number_2, 26);
 
-  // printf("Output = %d\n", s21_from_float_to_decimal(12, &bit_number));
+  printf("Output = %d\n", s21_from_float_to_decimal(1234.567, &bit_number));
 
-  // printf("Output = %d\n", s21_from_float_to_decimal(0.5, &bit_number_2));
+  printf("Output = %d\n", s21_from_float_to_decimal(
+                              0.00000000000000000000000008, &bit_number_2));
   // printf("децимал перед входом в функцию\n");
 
-  // printf("\nfirst dec number\n");
-  // s21_print_decimal_number(&src1);
+  printf("\nfirst dec number\n");
+  s21_print_decimal_number(&bit_number);
   // rewrite_decimal_to_big(&big_bit_number, bit_number);
   // printf("\nbig_decimal_number first\n");
   // s21_print_big_decimal_number(&big_bit_number);
 
-  // printf("\nsecond dec number\n");
-  // s21_print_decimal_number(&src2);
+  printf("\nsecond dec number\n");
+  s21_print_decimal_number(&bit_number_2);
   // rewrite_decimal_to_big(&big_bit_number_2, bit_number_2);
   // printf("big_decimal_number second\n");
   // s21_print_big_decimal_number(&big_bit_number_2);
@@ -187,13 +173,14 @@ int main(void) {
 
   // printf("\nbit_res\n");
 
-  // printf("res of func = %d\n", s21_div(src1, src2, &result));
+  printf("res of func = %d\n",
+         s21_mul(bit_number, bit_number_2, &bit_number_result));
   //  s21_div_decimal_by_10_big(&big_bit_number));
   // s21_truncate_big(big_bit_number_result, &big_bit_number_result_2);
   // printf("%d", count_ones(big_bit_number, big_bit_number_2));
 
-  // printf("decimal result\n");
-  // s21_print_big_decimal_number(&big_bit_number_result);
+  printf("decimal result\n");
+  s21_print_decimal_number(&bit_number_result);
   // printf("decimal result\n");
   // s21_print_decimal_number(&result);
 
@@ -221,7 +208,8 @@ int main(void) {
   варианты для проверки
   -умножения
   1.printf("Output = %d\n", s21_from_float_to_decimal(0.234, &bit_number));
-    printf("Output = %d\n", s21_from_float_to_decimal(-2.56745, &bit_number_2));
+    printf("Output = %d\n", s21_from_float_to_decimal(-2.56745,
+  &bit_number_2));
     // при этой проверки остается 0 в дробной части, но его убирать не надо -
       степень все решает 2.
 

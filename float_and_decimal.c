@@ -1,69 +1,5 @@
 #include "s21_decimal.h"
 
-void s21_from_unsigned_long_int_to_decimal(unsigned long int src,
-                                           s21_decimal *dst) {
-  int exp = 0;
-  src = fabs((double)src);
-  while (src >= pow(2, exp)) exp++;
-  while (src) {
-    if (src - pow(2, exp) < 0) {
-      s21_set_bit_0(dst, exp);
-    } else {
-      src -= pow(2, exp);
-      s21_set_bit_1(dst, exp);
-    }
-    exp--;
-  }
-}
-
-int s21_rewrite_float_bits_to_buff(s21_decimal *buff,
-                                   float val) {  //  зачем написал ?? хз..
-  int float_in_32bit = *(int *)&val;
-  int index = 31;
-  long int i = two_32 / 2;  // 2^32
-  int scale = 0;
-
-  while (i != 1) {
-    if (float_in_32bit & i && i == two_32 / 2) {  // проверка знака числа
-      // set_sign_of_number(buff, (int)val);
-      s21_set_bit_1(buff, 31);
-      // мжно заменить просто на постановку бита в 31 бит
-    } else if ((float_in_32bit & i) &&
-               (index < 31 && index > 22)) {  // учет степени
-      scale += pow(2, index - 23);
-      s21_set_bit_1(buff, index);
-      // если index от 30 до 23 то это степень, относительно 127
-    } else if (float_in_32bit & i) {  // постановка бита в 1
-      s21_set_bit_1(buff, index);
-    } else {  // постановка бита в 0
-      s21_set_bit_0(buff, index);
-    }
-    i >>= 1;
-    index--;
-  }
-  return (scale -= 127);
-}
-
-int get_float_exp_from_string(char *str, int *sign_of_float_power) {
-  int result = 0;
-  char *ptr = str;
-  while (*ptr) {
-    if (*ptr == 'E') {
-      if (*(ptr + 1) == '+') {
-        *sign_of_float_power = 1;
-      } else if (*(ptr + 1) == '-') {
-        *sign_of_float_power = 2;
-      }
-      ++ptr;
-      result = strtol(ptr, NULL, 10);
-      break;
-    }
-    ++ptr;
-  }
-
-  return result;
-}
-
 int s21_from_float_to_decimal(float src, s21_decimal *dst) {
   int output = CONVERSATION_OK;
   int count_significant_decimal_digits = 6;
@@ -74,9 +10,7 @@ int s21_from_float_to_decimal(float src, s21_decimal *dst) {
   unsigned long int result = 0;
   char buffer_flt[64];
 
-  if (!dst) {
-    output = CONVERSATION_ERROR;
-  } else if (src == 0.0) {
+  if (src == 0.0) {
     output = CONVERSATION_OK;
     s21_set_dec_number_to_0(dst);
     s21_set_sign_of_int_and_float_number(dst, src, CASE_OF_DECIMAL);

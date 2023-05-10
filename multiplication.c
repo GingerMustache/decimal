@@ -27,7 +27,11 @@ int s21_mul(s21_decimal value_1, s21_decimal value_2, s21_decimal* result) {
     if (!result_of_big_decimal) {
       rewrite_from_big_decimal_to_decimal(big_result, result);
     } else if (result_of_big_decimal == 1) {
-      output = CONVERSATION_BIG;
+      if (sign_1 || sign_2) {
+        output = CONVERSATION_SMALL;
+      } else {
+        output = CONVERSATION_BIG;
+      }
     } else if (result_of_big_decimal == 2) {
       output = CONVERSATION_SMALL;
     }

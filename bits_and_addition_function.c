@@ -187,3 +187,106 @@ int s21_normalize(s21_decimal *num_1, s21_decimal *num_2) {
   }
   return (power_num_1);
 }
+
+void s21_from_unsigned_long_int_to_decimal(unsigned long int src,
+                                           s21_decimal *dst) {
+  int exp = 0;
+  src = fabs((double)src);
+  while (src >= pow(2, exp)) exp++;
+  while (src) {
+    if (src - pow(2, exp) < 0) {
+      s21_set_bit_0(dst, exp);
+    } else {
+      src -= pow(2, exp);
+      s21_set_bit_1(dst, exp);
+    }
+    exp--;
+  }
+}
+
+int s21_rewrite_float_bits_to_buff(s21_decimal *buff,
+                                   float val) {  //  зачем написал ?? хз..
+  int float_in_32bit = *(int *)&val;
+  int index = 31;
+  long int i = two_32 / 2;  // 2^32
+  int scale = 0;
+
+  while (i != 1) {
+    if (float_in_32bit & i && i == two_32 / 2) {  // проверка знака числа
+      // set_sign_of_number(buff, (int)val);
+      s21_set_bit_1(buff, 31);
+      // мжно заменить просто на постановку бита в 31 бит
+    } else if ((float_in_32bit & i) &&
+               (index < 31 && index > 22)) {  // учет степени
+      scale += pow(2, index - 23);
+      s21_set_bit_1(buff, index);
+      // если index от 30 до 23 то это степень, относительно 127
+    } else if (float_in_32bit & i) {  // постановка бита в 1
+      s21_set_bit_1(buff, index);
+    } else {  // постановка бита в 0
+      s21_set_bit_0(buff, index);
+    }
+    i >>= 1;
+    index--;
+  }
+  return (scale -= 127);
+}
+
+int get_float_exp_from_string(char *str, int *sign_of_float_power) {
+  int result = 0;
+  char *ptr = str;
+  while (*ptr) {
+    if (*ptr == 'E') {
+      if (*(ptr + 1) == '+') {
+        *sign_of_float_power = 1;
+      } else if (*(ptr + 1) == '-') {
+        *sign_of_float_power = 2;
+      }
+      ++ptr;
+      result = strtol(ptr, NULL, 10);
+      break;
+    }
+    ++ptr;
+  }
+
+  return result;
+}
+
+int s21_sign_handle(s21_decimal *value_1, s21_decimal *value_2,
+                    s21_decimal *result, int function) {
+  // function = 0 (from s21_add)
+  // function = 1 (from s21_sub)
+  int output = 0;
+  int sign_1 = s21_get_bit(value_1, 127);
+  int sign_2 = s21_get_bit(value_2, 127);
+
+  // варианты для s21_sub
+  if (function) {
+    if (sign_1 == 1 && sign_2 == 0) {  // если пришло -3 - 2
+      s21_set_bit_1(value_2, 127);
+      output = s21_add(*value_1, *value_2, result);  // отправляем -3 + (-2)
+
+    } else if ((sign_1 == 0 && sign_2 == 1)) {  // если пришло 3 - (-2)
+      s21_set_bit_0(value_2, 127);
+      output = s21_add(*value_1, *value_2, result);  // отправляем 3 + 2
+
+    } else {
+      output = 2;
+    }
+    // варианты для s21_add
+  } else {
+    if (sign_1 == 1 && sign_2 == 0) {  //  если пришло -3 + 2
+      s21_set_bit_0(value_1, 127);
+      output = s21_sub(*value_2, *value_1, result);  // отправляем 2 - 3
+
+    } else if (sign_1 == 0 && sign_2 == 1) {  // если пришло 3 + (-2)
+      s21_set_bit_0(value_2, 127);
+      output = s21_sub(*value_1, *value_2, result);  // отправляем 3 - 2
+
+    } else {  // остальные случаи обрабатываются в самих функциях
+      output = 2;
+    }
+  }
+
+  return output;
+}
