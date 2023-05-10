@@ -81,7 +81,7 @@ void s21_set_big_dec_number_to_0(s21_big_decimal *src_num) {
 }
 
 int s21_is_decimal_0(s21_decimal dec_num) {
-  s21_decimal zero_decimal = {0};
+  s21_decimal zero_decimal = {{0}};
   return s21_is_equal(zero_decimal, dec_num);
 }
 
@@ -142,7 +142,7 @@ int s21_get_power_of_decimal(s21_decimal src) {
 // }
 
 void s21_set_dec_number_to_1(s21_decimal *src_num) {
-  s21_decimal decimal_1 = {1};
+  s21_decimal decimal_1 = {{1}};
   *src_num = decimal_1;
 }
 

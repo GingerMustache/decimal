@@ -4,7 +4,7 @@
 int s21_add(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
   int output = CONVERSATION_OK;
   int sign_1 = s21_get_bit(&value_1, 127);
-  // s21_decimal zero_decimal = {0};
+  // s21_decimal zero_decimal = {{0}};
   output = s21_sign_handle(&value_1, &value_2, result, 0);
 
   if (output == 2) {
@@ -24,13 +24,13 @@ int s21_add(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
     // }
     s21_set_dec_number_to_0(result);
     int big_decimal_output = 0;
-    s21_decimal tmp = {0};
+    s21_decimal tmp = {{0}};
 
     if (sign_1) s21_set_bit_1(&tmp, 127);  // постановка знака чисел
 
-    s21_big_decimal big_value_1 = {0};
-    s21_big_decimal big_value_2 = {0};
-    s21_big_decimal big_result = {0};
+    s21_big_decimal big_value_1 = {{0}};
+    s21_big_decimal big_value_2 = {{0}};
+    s21_big_decimal big_result = {{0}};
     rewrite_decimal_to_big(&big_value_1, value_1);
     rewrite_decimal_to_big(&big_value_2, value_2);
 
@@ -66,11 +66,11 @@ int s21_big_add(s21_big_decimal big_value_1, s21_big_decimal big_value_2,
   int power_of_2 = s21_get_power_of_big_decimal(big_value_2);
   int power_of_result = 0;
 
-  s21_big_decimal fractional = {0};
-  s21_big_decimal value_unsigned_truncated = {0};
+  s21_big_decimal fractional = {{0}};
+  s21_big_decimal value_unsigned_truncated = {{0}};
 
-  s21_big_decimal big_tmp = {0};
-  // s21_big_decimal big_10 = {10, 0, 0, 0, 0, 0, 0};
+  s21_big_decimal big_tmp = {{0}};
+  // s21_big_decimal big_10 = {{10, 0, 0, 0, 0, 0, 0}};
   ;
 
   if (power_of_1 || power_of_2) {
@@ -154,7 +154,7 @@ int s21_big_add(s21_big_decimal big_value_1, s21_big_decimal big_value_2,
 // функция используется не во всей арифметики
 int check_big_decimal(s21_big_decimal big_tmp) {
   int rewrite = 0;
-  s21_big_decimal zero_dec = {0};
+  s21_big_decimal zero_dec = {{0}};
   for (int i = 3; i < 6; i++) {
     if (big_tmp.bits[i] == zero_dec.bits[i]) {
       rewrite++;

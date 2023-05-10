@@ -94,7 +94,7 @@ int s21_round(s21_decimal value, s21_decimal *result) {
 s21_decimal s21_round_banking(s21_decimal integral, s21_decimal fractional) {
   s21_decimal zerofive = s21_decimal_get_zerofive();
   s21_decimal result;
-  s21_decimal decimal_one = {1};
+  s21_decimal decimal_one = {{1}};
 
   if (s21_is_equal(fractional, zerofive)) {
     // Если дробная часть ровно 0.5

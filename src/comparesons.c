@@ -10,8 +10,8 @@ int s21_is_greater(s21_decimal num_1, s21_decimal num_2) {
     output = 0;
   } else {
     int result_of_big_decimal = 0;
-    s21_big_decimal big_value_1 = {0};
-    s21_big_decimal big_value_2 = {0};
+    s21_big_decimal big_value_1 = {{0}};
+    s21_big_decimal big_value_2 = {{0}};
     rewrite_decimal_to_big(&big_value_1, num_1);
     rewrite_decimal_to_big(&big_value_2, num_2);
     if (sign_1 < sign_2) {
@@ -57,8 +57,8 @@ int s21_is_equal(s21_decimal num_1, s21_decimal num_2) {
     output = 1;
   } else {
     int result_of_big_decimal = 0;
-    s21_big_decimal big_value_1 = {0};
-    s21_big_decimal big_value_2 = {0};
+    s21_big_decimal big_value_1 = {{0}};
+    s21_big_decimal big_value_2 = {{0}};
     rewrite_decimal_to_big(&big_value_1, num_1);
     rewrite_decimal_to_big(&big_value_2, num_2);
 

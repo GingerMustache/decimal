@@ -22,9 +22,9 @@ int s21_div(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
     int sign_2 = s21_get_bit(&value_2, 127);
 
     int result_of_big_decimal = 0;
-    s21_big_decimal big_value_1 = {0};
-    s21_big_decimal big_value_2 = {0};
-    s21_big_decimal big_result = {0};
+    s21_big_decimal big_value_1 = {{0}};
+    s21_big_decimal big_value_2 = {{0}};
+    s21_big_decimal big_result = {{0}};
     rewrite_decimal_to_big(&big_value_1, value_1);
     rewrite_decimal_to_big(&big_value_2, value_2);
 
@@ -86,9 +86,9 @@ int s21_div_big(s21_big_decimal value_1, s21_big_decimal value_2,
     s21_set_big_dec_number_to_0(result);
     // int flg_end_of_95_bit = 0;
     int rewrite = 3;
-    s21_big_decimal tmp_result = {0};
-    s21_big_decimal final_tmp_result = {0};
-    s21_big_decimal reminder = {1};
+    s21_big_decimal tmp_result = {{0}};
+    s21_big_decimal final_tmp_result = {{0}};
+    s21_big_decimal reminder = {{0}};
     int power_of_value_2 = 0;
     int check_reminder = 0;
     int power_of_result = 0;
@@ -99,8 +99,8 @@ int s21_div_big(s21_big_decimal value_1, s21_big_decimal value_2,
     s21_set_power_of_big_decimal(&value_2, 0);
     s21_big_decimal tmp_1 = value_1;
     s21_big_decimal tmp_2 = value_2;
-    s21_big_decimal prev_value = {0};
-    s21_big_decimal _2 = {2, 0, 0, 0, 0, 0, 0};
+    s21_big_decimal prev_value = {{0}};
+    s21_big_decimal _2 = {{2, 0, 0, 0, 0, 0, 0}};
 
     power_of_result += power_of_1 - power_of_2;
 
@@ -157,7 +157,7 @@ int s21_div_big(s21_big_decimal value_1, s21_big_decimal value_2,
             s21_mul_decimal_by_10_big(&reminder);
           } else {
             final_tmp_result = tmp_result;
-            s21_big_decimal garbege = {0};
+            s21_big_decimal garbege = {{0}};
             while (power_of_result > 28) {
               s21_div_decimal_by_10_big(&final_tmp_result, &garbege);
               power_of_result--;
