@@ -1,5 +1,15 @@
 #include "s21_decimal.h"
 
+/**
+ * @brief
+ * Основные функции больше и равно.
+ * На их основе работают остальные функции.
+ *
+ * Функции больше и равно происходят в big_decimal
+ * в decimal с полседующим переписыванием
+ */
+
+// Сравнение - больше
 int s21_is_greater(s21_decimal num_1, s21_decimal num_2) {
   int output = 0;  // 0 - false, 1 - true
   int sign_1 = s21_get_bit(&num_1, 127);
@@ -43,10 +53,7 @@ int s21_is_greater(s21_decimal num_1, s21_decimal num_2) {
   return output;
 }
 
-int s21_is_less(s21_decimal num_1, s21_decimal num_2) {
-  return (s21_is_greater(num_2, num_1));
-}
-
+// Сравнение - равно
 int s21_is_equal(s21_decimal num_1, s21_decimal num_2) {
   int output = 0;
   int sign_1 = s21_get_bit(&num_1, 127);
@@ -73,14 +80,22 @@ int s21_is_equal(s21_decimal num_1, s21_decimal num_2) {
   return output;
 }
 
+// Сравнение - меньше
+int s21_is_less(s21_decimal num_1, s21_decimal num_2) {
+  return (s21_is_greater(num_2, num_1));
+}
+
+// Сравнение - не равно
 int s21_is_not_equal(s21_decimal num_1, s21_decimal num_2) {
   return (s21_is_equal(num_1, num_2) == 0 ? 1 : 0);
 }
 
+// Сравнение - больше или равно
 int s21_is_greater_or_equal(s21_decimal num_1, s21_decimal num_2) {
   return s21_is_greater(num_1, num_2) || s21_is_equal(num_1, num_2);
 }
 
+// Сравнение - меньше или равно
 int s21_is_less_or_equal(s21_decimal num_1, s21_decimal num_2) {
   return s21_is_less(num_1, num_2) || s21_is_equal(num_1, num_2);
 }

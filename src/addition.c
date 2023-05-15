@@ -1,9 +1,10 @@
 #include "s21_decimal.h"
 //------------------------Сложение decimal----------------------//
-/*
- Все вычисления происходят в big_decimal
- Сама же функция - распределитель и учет знака
-*/
+/**
+ * @brief  Все вычисления происходят в big_decimal
+ * Сама же функция - распределитель и учет знака
+ */
+
 int s21_add(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
   int output = CONVERSATION_OK;
   int sign_1 = s21_get_bit(&value_1, 127);
