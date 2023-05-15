@@ -3,6 +3,7 @@
 int s21_get_row(int bit) { return bit / 32; }
 int s21_get_col(int bit) { return bit % 32; }
 
+// Постановка знака
 void s21_set_sign_of_int_and_float_number(s21_decimal *dec_num, float num_1,
                                           int case_of_type) {
   long int i = two_32 / 2;
@@ -18,6 +19,7 @@ void s21_set_sign_of_int_and_float_number(s21_decimal *dec_num, float num_1,
   }
 }
 
+// Убираем степень
 void s21_cut_exp(s21_decimal *a, int exp) {
   for (int i = exp; i > 0; i--) {
     s21_div_decimal_by_10(a);
@@ -25,23 +27,27 @@ void s21_cut_exp(s21_decimal *a, int exp) {
   s21_set_power_of_decimal(a, 0);
 }
 
+// Получить биты
 int s21_get_bits(unsigned int bits, unsigned int num) {
   unsigned int mask = 1 << num;
   return (bits & mask) ? 1 : 0;
 }
 
+// Получить бит
 int s21_get_bit(s21_decimal *dec_num, int index) {
   int getRow = s21_get_row(index);
   int getCol = s21_get_col(index);
   return (dec_num->bits[getRow] & (1 << getCol)) != 0;
 }
 
+// Поставить бит в 1
 void s21_set_bit_1(s21_decimal *dec_num, int index) {
   int getRow = s21_get_row(index);
   int getCol = s21_get_col(index);
   dec_num->bits[getRow] |= (1 << getCol);
 }
 
+// Поставить бит в 0
 void s21_set_bit_0(s21_decimal *dec_num, int index) {
   int getRow = s21_get_row(index);
   int getCol = s21_get_col(index);
@@ -52,15 +58,18 @@ void s21_set_dec_number_to_0(s21_decimal *src_num) {
   memset(&(src_num->bits), 0, sizeof(src_num->bits));
 }
 
+// Поставить биг децимал в 0
 void s21_set_big_dec_number_to_0(s21_big_decimal *src_num) {
   memset(&(src_num->bits), 0, sizeof(src_num->bits));
 }
 
+// Децимал 0?
 int s21_is_decimal_0(s21_decimal dec_num) {
   s21_decimal zero_decimal = {0};
   return s21_is_equal(zero_decimal, dec_num);
 }
 
+// Деление на 10, работает только для децимал, не биг
 void s21_div_decimal_by_10(s21_decimal *num) {
   unsigned long long rem = 0, tmp;
   for (int i = 2; i >= 0; i--) {
@@ -71,6 +80,7 @@ void s21_div_decimal_by_10(s21_decimal *num) {
   }
 }
 
+// Получить степень
 int s21_get_power_of_decimal(s21_decimal src) {
   int index = 112;
   int result = 0;
@@ -86,11 +96,13 @@ int s21_get_power_of_decimal(s21_decimal src) {
   return result;
 }
 
+// Получить децимал равный 1
 void s21_set_dec_number_to_1(s21_decimal *src_num) {
   s21_decimal decimal_1 = {{1, 0, 0, 0}};
   *src_num = decimal_1;
 }
 
+// Постановка степени децимал
 void s21_set_power_of_decimal(s21_decimal *src, int power) {
   if (power < 29) {
     for (int i = 112; i < 120; i++) {  // обнуление
@@ -108,8 +120,10 @@ s21_decimal s21_decimal_get_zerofive(void) {
   return result;
 }
 
+// Проверка на четность
 int s21_decimal_even(s21_decimal value) { return (value.bits[0] & 1) != 1; }
 
+// Перевод, не помню зачем
 void s21_from_unsigned_long_int_to_decimal(unsigned long int src,
                                            s21_decimal *dst) {
   int exp = 0;
@@ -126,6 +140,7 @@ void s21_from_unsigned_long_int_to_decimal(unsigned long int src,
   }
 }
 
+// Степень float
 int get_float_exp_from_string(char *str, int *sign_of_float_power) {
   int result = 0;
   char *ptr = str;
@@ -145,7 +160,7 @@ int get_float_exp_from_string(char *str, int *sign_of_float_power) {
 
   return result;
 }
-
+// Обработка знака для сложения и вычитания
 int s21_sign_handle(s21_decimal *value_1, s21_decimal *value_2,
                     s21_decimal *result, int function) {
   // function = 0 (from s21_add)

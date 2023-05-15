@@ -6,9 +6,11 @@ int s21_sub(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
   int sign_1 = s21_get_bit(&value_1, 127);
   int sign_2 = s21_get_bit(&value_2, 127);
   int sign_res = 0;
+  // Обработка знаков
   output = s21_sign_handle(&value_1, &value_2, result, 1);
 
   if (output == 2) {
+    // Создание тонны переменных
     s21_decimal val_1 = {0};
     s21_decimal val_2 = {0};
     s21_decimal tmp = {0};

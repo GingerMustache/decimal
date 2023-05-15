@@ -1,5 +1,6 @@
 #include "s21_decimal.h"
 
+// Нормализация - выравнивание степеней
 int s21_normalize_big(s21_big_decimal *num_1, s21_big_decimal *num_2) {
   int power_num_1 = s21_get_power_of_big_decimal(*num_1);
   int power_num_2 = s21_get_power_of_big_decimal(*num_2);
