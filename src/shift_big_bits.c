@@ -1,95 +1,20 @@
 #include "s21_decimal.h"
 
-// Ускорение умножение
-// int check_index_shift_big(s21_big_decimal dec_num, int index) {
-//   int output = 0;
-//   int _31 = 31;
-//   int _63 = 63;
-//   int _95 = 95;
-//   int _127 = 127;
-//   int _159 = 159;
-//   int _191 = 191;
+/*
+  Ну.. тут все понятно
+  Сдвиги вправо, используются в умножении
 
-//   int get_63 = 0;
-//   int get_31 = 0;
-//   int get_95 = 0;
-//   int get_127 = 0;
-//   int get_159 = 0;
-//   int get_191 = 0;
+  Каждый сдвиг зависит от вышестоящих интов, если мы собираемся перенести бит из
+  нулевого инта в первый, то проверяем первый ряд, если там все ок (31 бит в 1
+  инте свободен), то двигаем его, ставим бит в 1 ряд, ставим 0 в 0 ряд и двигаем
+  его.
 
-//   while (_31 > -1) {
-//     if (get_63 != 2) get_63 = s21_get_bit_big(&dec_num, _63);
-//     if (get_31 != 2) get_31 = s21_get_bit_big(&dec_num, _31);
-//     if (get_95 != 2) get_95 = s21_get_bit_big(&dec_num, _95);
-//     if (get_127 != 2) get_63 = s21_get_bit_big(&dec_num, _63);
-//     if (get_159 != 2) get_31 = s21_get_bit_big(&dec_num, _31);
-//     if (get_191 != 2) get_95 = s21_get_bit_big(&dec_num, _95);
+  2-  ...           ...        ...        ...
 
-//     if (index + _31 >= 31) {
-//       if (get_191 == 1) {
-//         if (_191 + index > 191) {
-//           return (0);
-//         } else {
-//           output++;
-//           get_191 = 2;
-//         }
-//       }
+  1-  0010..00  ->  0100..00 -> 0100..01 -> 0100..01
 
-//       if (get_159 == 1) {
-//         if (_159 + index > 159) {
-//           return (0);
-//         } else {
-//           output++;
-//           get_159 = 2;
-//         }
-//       }
-
-//       if (get_127 == 1) {
-//         if (_127 + index > 127) {
-//           return (0);
-//         } else {
-//           output++;
-//           get_127 = 2;
-//         }
-//       }
-
-//       if (get_95 == 1) {
-//         if (_95 + index > 95) {
-//           return (0);
-//         } else {
-//           output++;
-//           get_95 = 2;
-//         }
-//       }
-//       if (get_63 == 1) {
-//         if (_63 + index > 63) {
-//           return (0);
-//         } else {
-//           output++;
-//           get_63 = 2;
-//         }
-//       }
-//       if (get_31 == 1) {
-//         if (_31 + index > 31) {
-//           return (0);
-//         } else {
-//           output++;
-//           get_31 = 2;
-//         }
-//       }
-//     }
-//     if (output > 0 || (output == 1 /*может 2*/ && (!_63 || !_31 || !_95)))
-//       return (2);
-//     _191--;
-//     _159--;
-//     _127--;
-//     _95--;
-//     _63--;
-//     _31--;
-//   }
-//   return (0);  // 0 это ошибка
-// }
-
+  0-  1000..01      1000..01    0000..01    0000..10
+*/
 void twist_bit_big(s21_big_decimal *dec_num, int first, int second) {
   s21_set_bit_1_big(dec_num, second);
   s21_set_bit_0_big(dec_num, first);
@@ -265,29 +190,6 @@ int s21_shift_bits_big(s21_big_decimal *dec_num, int index) {
     flg_31 = 1;
     index--;
   }
-  // Ускорение
-  // if (flg_31 && flg_63) {
-  //   if (check_index_shift_big(*dec_num, index) && flg_overlow_index) {
-  //     /*
-  //        если сдвиг можно сделать без перехода в другие разряды то
-  //        двигаем все на index сразу
-  //     */
-  //     shift_big_bit_left(dec_num, index);
-  //     flg_index = 0;
-  //   } else {
-  //     /*
-  //        если нет, но двигаем все на 1 смотрим дальше
-  //     */
-  //     shift_big_bit_left(dec_num, 1);
-  //     flg_overlow_index = 0;
-  //   }
-  // }
-  // flg_191 = 1;
-  // flg_159 = 1;
-  // flg_95 = 1;
-  // flg_63 = 1;
-  // flg_31 = 1;
-  // index--;
 
   return (1);  // при ошибке вернет 0
 }

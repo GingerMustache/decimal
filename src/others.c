@@ -1,5 +1,6 @@
 #include "s21_decimal.h"
 
+// Убираем дробную часть
 int s21_truncate(s21_decimal value, s21_decimal *result) {
   int output = CONVERSATION_ERROR;
 
@@ -16,6 +17,7 @@ int s21_truncate(s21_decimal value, s21_decimal *result) {
   return output;
 }
 
+// decimal -= decimal
 int s21_negate(s21_decimal value, s21_decimal *result) {
   int output = CONVERSATION_ERROR;
   if (result) {
@@ -30,6 +32,7 @@ int s21_negate(s21_decimal value, s21_decimal *result) {
   return output;
 }
 
+// Округление в меньшую сторону
 int s21_floor(s21_decimal value, s21_decimal *result) {
   int res = 0;
   int power_of_decimal = s21_get_power_of_decimal(value);
@@ -52,11 +55,12 @@ int s21_floor(s21_decimal value, s21_decimal *result) {
   return res;
 }
 
+// Округление в большую сторону
 int s21_round(s21_decimal value, s21_decimal *result) {
   int output = CONVERSATION_OK;
 
   if (!result) {
-    // Если указатель на decimal является NULL
+    // если указатель на decimal является NULL
     output = CONVERSATION_ERROR;
   } else {
     // В остальных случаях округляем
@@ -89,6 +93,7 @@ int s21_round(s21_decimal value, s21_decimal *result) {
   return output;
 }
 
+// Банковское округление
 s21_decimal s21_round_banking(s21_decimal integral, s21_decimal fractional) {
   s21_decimal zerofive = s21_decimal_get_zerofive();
   s21_decimal result;

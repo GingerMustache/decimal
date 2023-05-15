@@ -1,5 +1,6 @@
 #include "s21_decimal.h"
 
+// Вычитание
 int s21_sub(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
   int output = CONVERSATION_ERROR;
   int sign_1 = s21_get_bit(&value_1, 127);
@@ -82,14 +83,14 @@ int s21_sub_big(s21_big_decimal val_1, s21_big_decimal val_2,
   while (index_bit != 191) {
     bit_of_num_1 = s21_get_bit_big(&val_1, index_bit);
     bit_of_num_2 = s21_get_bit_big(&val_2, index_bit);
-
-    if (!bit_of_num_1 && !bit_of_num_2) {  // оба бита = 0
+    // оба бита = 0
+    if (!bit_of_num_1 && !bit_of_num_2) {
       s21_set_bit_0_big(&tmp, index_bit);
-
-    } else if (bit_of_num_1 && !bit_of_num_2) {  // бит первого = 1, второго = 0
+      // бит первого = 1, второго = 0
+    } else if (bit_of_num_1 && !bit_of_num_2) {
       s21_set_bit_1_big(&tmp, index_bit);
-
-    } else if (!bit_of_num_1 && bit_of_num_2) {  // бит первого = 0, второго = 0
+      // бит первого = 0, второго = 0
+    } else if (!bit_of_num_1 && bit_of_num_2) {
       i = 1;  // с ее помощью смотрим следующии биты
       s21_set_bit_0_big(&tmp, index_bit);
       // цикл будет искать ближайший бит = 1
@@ -117,7 +118,6 @@ int s21_sub_big(s21_big_decimal val_1, s21_big_decimal val_2,
       *result = tmp;
     } else if (power_of_result) {
       while (power_of_result && rewrite != 3) {
-        // s21_div_big(tmp, big_10, &tmp);
         s21_set_power_of_big_decimal(&tmp, 1);
         s21_truncate_big(tmp, &value_unsigned_truncated);
         s21_sub_big(tmp, value_unsigned_truncated, &fractional, 1);
@@ -151,15 +151,3 @@ int s21_sub_big(s21_big_decimal val_1, s21_big_decimal val_2,
 
   return output;
 }
-
-/*
-  Максимум decimal ..335
-    работает при
-      95 битах без 1 в начале - 10.678, округляет до ..323
-      95 битах целых - 0.6 и 0.4 правильно округляетв меньшую и большую сторону
-      1234567891 - 0.0000000000003 в ответе 13ая степень
-      1234567891 - 0.000000000000000000000003 (степень 24, с 28 тоже работает) в
-        ответе число округленно  без степени, транкейте все рубит, но число
-  правильное
-
-*/
