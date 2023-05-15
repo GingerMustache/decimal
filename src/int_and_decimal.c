@@ -1,5 +1,5 @@
 #include "s21_decimal.h"
-
+// Доп. функция, вынесена т.к. используется не только тут
 void s21_set_bits_from_int_to_decimal(int src, s21_decimal *dst,
                                       int which_int_part_to_fill) {
   unsigned int exp = 0;
@@ -16,6 +16,7 @@ void s21_set_bits_from_int_to_decimal(int src, s21_decimal *dst,
   }
 }
 
+// Конвертер int->decimal
 int s21_from_int_to_decimal(int src, s21_decimal *dst) {
   int output = CONVERSATION_ERROR;
   if (dst) {
@@ -33,6 +34,7 @@ int s21_from_int_to_decimal(int src, s21_decimal *dst) {
   return output;
 }
 
+// Конвертер decimal->int
 int s21_from_decimal_to_int(s21_decimal src, int *dst) {
   int output = CONVERSATION_ERROR;
 

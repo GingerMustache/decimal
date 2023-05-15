@@ -1,5 +1,6 @@
 #include "s21_decimal.h"
 
+// Конвертер float->decimal
 int s21_from_float_to_decimal(float src, s21_decimal *dst) {
   int output = CONVERSATION_OK;
   int count_significant_decimal_digits = 6;
@@ -86,6 +87,7 @@ int s21_from_float_to_decimal(float src, s21_decimal *dst) {
   }
 }
 
+// Конвертер decimal->float
 int s21_from_decimal_to_float(s21_decimal src, float *dst) {
   int output = CONVERSATION_ERROR;
   if (dst) {
