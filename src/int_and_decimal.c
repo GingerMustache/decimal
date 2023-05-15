@@ -46,7 +46,7 @@ int s21_from_decimal_to_int(s21_decimal src, int *dst) {
       long long buffer = 0;  // 20 didgets
 
       while (power_of_decimal) {
-        s21_div_decimal_by_10(&src);  // заменить потом на нормальное деление
+        s21_div_decimal_by_10(&src);
         power_of_decimal--;
       }
       while (index != 96) {
@@ -66,9 +66,8 @@ int s21_from_decimal_to_int(s21_decimal src, int *dst) {
       if (output == CONVERSATION_OK) {
         *dst = (int)buffer;
       }
-      // printf("buffer = %lld\n", buffer);  // delete
     }
   }
 
   return output;
-}  // когда будет готов truncate надо поменять div_decimal_by_10 на truncate
+}

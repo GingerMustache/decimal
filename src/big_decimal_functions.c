@@ -1,22 +1,17 @@
 #include "s21_decimal.h"
 
-// добавить обработку ошибок
-// проверить заполнение периодом и добавить его обработку
-// походу тут не нужна нормализация
-
 int s21_normalize_big(s21_big_decimal *num_1, s21_big_decimal *num_2) {
   int power_num_1 = s21_get_power_of_big_decimal(*num_1);
   int power_num_2 = s21_get_power_of_big_decimal(*num_2);
   s21_set_power_of_big_decimal(num_1, 0);  // ставим степени чисел в 0
   s21_set_power_of_big_decimal(num_2, 0);
-  s21_big_decimal bit_number_10 = {10, 0, 0, 0, 0, 0, 0};
+  s21_big_decimal bit_number_10 = {{10, 0, 0, 0, 0, 0, 0}};
 
   if (power_num_1 < power_num_2) {
     while (power_num_2 - power_num_1) {
       s21_big_mul(*num_1, bit_number_10, num_1, 0);
       power_num_1++;
     }
-    // s21_print_big_decimal_number(num_1);
     return (power_num_1);
   } else if (power_num_2 < power_num_1) {
     while (power_num_1 - power_num_2) {
@@ -87,7 +82,7 @@ void s21_set_bits_from_int_to_big_decimal(int src, s21_big_decimal *dst,
 }
 
 void s21_set_power_of_big_decimal(s21_big_decimal *src, int power) {
-  if (power < 29) {  // не понял пока сколько надо, но точно больше
+  if (power < 29) {
     for (int i = 208; i < 215; i++) {  // обнуление
       s21_set_bit_0_big(src, i);
     }
@@ -136,7 +131,7 @@ int s21_is_decimal_0_big(s21_big_decimal dec_num) {
 }
 
 void s21_set_dec_number_to_1_big(s21_big_decimal *src_num) {
-  s21_big_decimal decimal_1 = {1};
+  s21_big_decimal decimal_1 = {{1, 0, 0, 0, 0, 0, 0}};
   *src_num = decimal_1;
 }
 
@@ -180,11 +175,8 @@ int s21_is_greater_or_equal_big(s21_big_decimal num_1, s21_big_decimal num_2) {
 }
 
 int s21_mul_decimal_by_10_big(s21_big_decimal *num) {
-  s21_big_decimal decimal_10 = {10, 0, 0, 0, 0, 0, 0};
-  int res =
-      s21_big_mul(*num, decimal_10, num,
-                  0);  // переписываю умнлжение, надо чекнуть потом условие
-  // printf("res of  = %d\n", res);
+  s21_big_decimal decimal_10 = {{10, 0, 0, 0, 0, 0, 0}};
+  int res = s21_big_mul(*num, decimal_10, num, 0);
   if (!res)  // 0
     return (0);
   else
@@ -194,13 +186,13 @@ int s21_mul_decimal_by_10_big(s21_big_decimal *num) {
 // прообраз деления,но с остатком
 int s21_div_decimal_by_10_big(s21_big_decimal *value_1,
                               s21_big_decimal *out_reminder) {
-  s21_big_decimal value_2 = {10, 0, 0, 0, 0, 0, 0};
-  s21_big_decimal _2 = {2, 0, 0, 0, 0, 0, 0};
+  s21_big_decimal value_2 = {{10, 0, 0, 0, 0, 0, 0}};
+  s21_big_decimal _2 = {{2, 0, 0, 0, 0, 0, 0}};
   s21_big_decimal prev_value = {0};
 
   s21_big_decimal tmp_result = {0};
   s21_big_decimal final_tmp_result = {0};
-  s21_big_decimal reminder = {1};
+  s21_big_decimal reminder = {{1, 0, 0, 0, 0, 0, 0}};
   int power_of_value_2 = 0;
   int check_reminder = 0;
   int power_of_result = 0;
@@ -227,8 +219,6 @@ int s21_div_decimal_by_10_big(s21_big_decimal *value_1,
         prev_value = tmp_2;
         shift_big_bit_left(&tmp_2, 1, 0, 5);
       }
-      // s21_print_big_decimal_number(&tmp_1);
-      // s21_print_big_decimal_number(&tmp_2);
       // сдвигаем влево tmp_2 пока он <= tmp_1
     }
     if (s21_is_greater_big(tmp_2, tmp_1)) {
@@ -240,7 +230,6 @@ int s21_div_decimal_by_10_big(s21_big_decimal *value_1,
       power_of_value_2 -= 1;
     }
     if (power_of_value_2 < 0) {
-      //   shift_bit_left(&tmp_2, 1);
       tmp_2 = value_2;
     } else {
       if (s21_is_less_or_equal_big(tmp_2, tmp_1)) {
@@ -250,15 +239,12 @@ int s21_div_decimal_by_10_big(s21_big_decimal *value_1,
         tmp_2 = value_2;
       }
     }
-    // s21_print_big_decimal_number(&tmp_result);
     power_of_value_2 = 0;
     reminder = tmp_1;
     check_reminder = s21_is_less_big(reminder, value_2);
     *out_reminder = reminder;
   }
   s21_big_add(final_tmp_result, tmp_result, &final_tmp_result, 0);
-  // s21_print_big_decimal_number(&tmp_result);
-
   power_of_result += power_of_1 - power_of_2;
   while (power_of_result < 0) {
     s21_mul_decimal_by_10_big(&final_tmp_result);
@@ -272,22 +258,18 @@ int s21_div_decimal_by_10_big(s21_big_decimal *value_1,
 int s21_round_big(s21_big_decimal value, s21_big_decimal *result) {
   int output = CONVERSATION_OK;
   s21_set_big_dec_number_to_0(result);
-  // int sign = s21_decimal_get_sign(value);
   int sign = s21_get_bit_big(&value, 223);
   s21_big_decimal fractional = {0};
   s21_big_decimal value_unsigned_truncated = {0};
-  // Убираем знак
   s21_big_decimal value_unsigned = value;
   s21_set_bit_0_big(&value_unsigned, 223);
   s21_truncate_big(value_unsigned, &value_unsigned_truncated);
-  // s21_print_big_decimal_number(&value_unsigned_truncated);
   s21_sub_big(value_unsigned, value_unsigned_truncated, &fractional, 0);
-  // s21_print_big_decimal_number(&fractional);
   value_unsigned_truncated =
       s21_round_banking_big(value_unsigned_truncated, fractional);
 
   *result = value_unsigned_truncated;
-  // s21_decimal_set_sign(result, sign);
+
   if (sign) {  // постановка знака
     s21_set_bit_1_big(result, 223);
   } else {
@@ -301,7 +283,7 @@ s21_big_decimal s21_round_banking_big(s21_big_decimal integral,
                                       s21_big_decimal fractional) {
   s21_big_decimal zerofive = s21_decimal_get_zerofive_big();
   s21_big_decimal result;
-  s21_big_decimal decimal_one = {1};
+  s21_big_decimal decimal_one = {{1, 0, 0, 0, 0, 0, 0}};
 
   if (s21_is_equal_big(fractional, zerofive)) {
     if (s21_decimal_even_big(integral)) {

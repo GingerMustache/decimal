@@ -48,11 +48,6 @@ typedef struct {
                  */
 } s21_big_decimal;
 
-// typedef union {
-//   int ui;
-//   float fl;
-// } floatbits;
-
 //------------------------Конверторы----------------------//
 int s21_from_int_to_decimal(int src, s21_decimal *dst);
 int s21_from_decimal_to_int(s21_decimal src, int *dst);
@@ -85,8 +80,6 @@ void s21_set_sign_of_int_and_float_number(s21_decimal *dec_num, float num_1,
 void s21_set_dec_number_to_0(s21_decimal *src_num);
 void s21_set_dec_number_to_1(s21_decimal *src_num);
 void s21_print_decimal_number(s21_decimal *num);
-// int s21_get_float_bit(int num, int index);
-// int s21_rewrite_float_bits_to_buff(s21_decimal *buff, float val);
 void s21_set_bits_from_int_to_decimal(int src, s21_decimal *dst,
                                       int which_int_part_to_fill);
 void s21_from_unsigned_long_int_to_decimal(unsigned long int src,
@@ -94,13 +87,9 @@ void s21_from_unsigned_long_int_to_decimal(unsigned long int src,
 int get_float_exp_from_string(char *str, int *sign_of_float_power);
 int s21_get_power_of_decimal(s21_decimal src);
 void s21_div_decimal_by_10(s21_decimal *num);
-// int s21_mul_decimal_by_10(s21_decimal *num);
-// s21_decimal s21_decimal_get_inf(void);
 void s21_set_power_of_decimal(s21_decimal *src, int power);
 int s21_sign_handle(s21_decimal *value_1, s21_decimal *value_2,
                     s21_decimal *result, int function);
-// int s21_normalize(s21_decimal *num_1, s21_decimal *num_2);
-// void s21_truncate_zero(s21_decimal *value, int count_zero);
 int s21_is_decimal_0(s21_decimal dec_num);
 void s21_cut_exp(s21_decimal *a, int exp);
 int s21_get_bits(unsigned int bits, unsigned int num);
@@ -108,13 +97,11 @@ int s21_get_bits(unsigned int bits, unsigned int num);
 s21_decimal s21_decimal_get_zerofive(void);
 int s21_decimal_even(s21_decimal value);
 s21_decimal s21_round_banking(s21_decimal integral, s21_decimal fractional);
-// int s21_is_max_decimal(s21_decimal num);
 
 //------------------------Сдвиги(вспомогательные)----------------------//
 int s21_shift_bits(s21_decimal *dec_num, int index);
 int s21_shift_31(s21_decimal *dec_num, int flg_31, int flg_63);
 int s21_shift_63(s21_decimal *dec_num);
-// int check_index_shift(s21_decimal dec_num, int index);
 void shift_bit_right(s21_decimal *value, int count);
 void shift_bit_left(s21_decimal *value, int count);
 
@@ -124,17 +111,19 @@ int s21_get_row(int bit);
 int s21_get_bit(s21_decimal *dec_num, int index);
 void s21_set_bit_1(s21_decimal *dec_num, int index);
 void s21_set_bit_0(s21_decimal *dec_num, int index);
-// int s21_inverse_bit(s21_decimal *dec_num, int index);
-// int s21_get_bit_from_not_decimal(float src, int index);
 int s21_div(s21_decimal value_1, s21_decimal value_2, s21_decimal *result);
 
 //------------------------Работа с big_decimal----------------------//
 
-void s21_print_big_decimal_number(s21_big_decimal *num);
+//-----Работа с битами-----//
+
 void s21_set_bit_0_big(s21_big_decimal *dec_num, int index);
 void s21_set_bit_1_big(s21_big_decimal *dec_num, int index);
 int s21_get_bit_big(s21_big_decimal *dec_num, int index);
+void s21_set_bits_from_int_to_big_decimal(int src, s21_big_decimal *dst,
+                                          int which_int_part_to_fill);
 
+//-----Арифметика-----//
 int s21_big_add(s21_big_decimal big_value_1, s21_big_decimal big_value_2,
                 s21_big_decimal *big_result, int func);
 int s21_big_mul(s21_big_decimal big_value_1, s21_big_decimal big_value_2,
@@ -144,14 +133,16 @@ int s21_sub_big(s21_big_decimal value_1, s21_big_decimal value_2,
 int s21_div_big(s21_big_decimal value_1, s21_big_decimal value_2,
                 s21_big_decimal *result);
 
+//-----из decimal в big_decimal и обратно-----//
 void rewrite_decimal_to_big(s21_big_decimal *big_decimal, s21_decimal decimal);
 void rewrite_from_big_decimal_to_decimal(s21_big_decimal big_decimal,
                                          s21_decimal *decimal);
+
+//-----Работа со степенью-----//
 int s21_get_power_of_big_decimal(s21_big_decimal src);
-void s21_set_bits_from_int_to_big_decimal(int src, s21_big_decimal *dst,
-                                          int which_int_part_to_fill);
 void s21_set_power_of_big_decimal(s21_big_decimal *src, int power);
-void s21_set_big_dec_number_to_0(s21_big_decimal *src_num);
+
+//-----Другие функции-----//
 int s21_truncate_zero_big(s21_big_decimal *value);
 
 int s21_shift_bits_big(s21_big_decimal *dec_num, int index);
@@ -171,6 +162,7 @@ int s21_normalize_big(s21_big_decimal *num_1, s21_big_decimal *num_2);
 int s21_is_decimal_0_big(s21_big_decimal dec_num);
 void s21_set_dec_number_to_1_big(s21_big_decimal *src_num);
 
+void s21_set_big_dec_number_to_0(s21_big_decimal *src_num);
 int s21_is_equal_big(s21_big_decimal num_1, s21_big_decimal num_2);
 int s21_is_greater_big(s21_big_decimal num_1, s21_big_decimal num_2);
 int s21_is_less_big(s21_big_decimal num_1, s21_big_decimal num_2);

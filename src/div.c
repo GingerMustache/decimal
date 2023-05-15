@@ -1,8 +1,5 @@
 #include "s21_decimal.h"
 
-// добавить обработку ошибок
-// проверить заполнение периодом и добавить его обработку
-// походу тут не нужна нормализация
 int s21_div(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
   int output = CONVERSATION_OK;
 
@@ -50,24 +47,6 @@ int s21_div(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
   return (output);
 }
 
-/*
-    считает верно
-        8.24 / 2
-        440 / 4.4 - конечная степень (-)
-        100 / 10
-        225.225 / 1.5
-        0.02 / 0.5
-        7 / 3
-        404440 / 4.4
-        0.00000000000000000000000002 / 2 26 и дальше степени
-        0.00000000000000000002 / 2000000000 - ошибка SMALL
-        0.003 / 11111111 и наоборот
-        12 / 0.002 == 6000
-        80ый бит / 0.00002 = ошибка BIG
-
-    не верно
-*/
-
 //------------------------Дление big_decimal----------------------//
 
 int s21_div_big(s21_big_decimal value_1, s21_big_decimal value_2,
@@ -84,11 +63,10 @@ int s21_div_big(s21_big_decimal value_1, s21_big_decimal value_2,
     s21_set_dec_number_to_1_big(result);
   } else {
     s21_set_big_dec_number_to_0(result);
-    // int flg_end_of_95_bit = 0;
     int rewrite = 3;
     s21_big_decimal tmp_result = {0};
     s21_big_decimal final_tmp_result = {0};
-    s21_big_decimal reminder = {1};
+    s21_big_decimal reminder = {{1, 0, 0, 0, 0, 0, 0}};
     int power_of_value_2 = 0;
     int check_reminder = 0;
     int power_of_result = 0;
@@ -100,7 +78,7 @@ int s21_div_big(s21_big_decimal value_1, s21_big_decimal value_2,
     s21_big_decimal tmp_1 = value_1;
     s21_big_decimal tmp_2 = value_2;
     s21_big_decimal prev_value = {0};
-    s21_big_decimal _2 = {2, 0, 0, 0, 0, 0, 0};
+    s21_big_decimal _2 = {{2, 0, 0, 0, 0, 0, 0}};
 
     power_of_result += power_of_1 - power_of_2;
 
@@ -111,14 +89,11 @@ int s21_div_big(s21_big_decimal value_1, s21_big_decimal value_2,
           if ((s21_get_bit_big(&tmp_2, 31)) || (s21_get_bit_big(&tmp_2, 63)) ||
               (s21_get_bit_big(&tmp_2, 95)) || (s21_get_bit_big(&tmp_2, 127)) ||
               (s21_get_bit_big(&tmp_2, 159))) {
-            // возможно надо предусмотреть выход за 191 бит
             prev_value = tmp_2;
             s21_big_mul(tmp_2, _2, &tmp_2, 0);
-            // s21_print_big_decimal_number(&tmp_2);
           } else {
             prev_value = tmp_2;
             shift_big_bit_left(&tmp_2, 1, 0, 5);
-            // s21_print_big_decimal_number(&tmp_2);
           }
           // сдвигаем влево tmp_2 пока он <= tmp_1
         }
@@ -145,8 +120,6 @@ int s21_div_big(s21_big_decimal value_1, s21_big_decimal value_2,
         check_reminder = s21_is_less_big(reminder, value_2);
       }
       s21_big_add(final_tmp_result, tmp_result, &final_tmp_result, 0);
-
-      // нужен ли тут функционал переполнения для всех функций?
       if (!s21_is_decimal_0_big(reminder)) {
         while (s21_is_less_big(reminder, tmp_2) == 1 && rewrite == 3) {
           tmp_result = final_tmp_result;

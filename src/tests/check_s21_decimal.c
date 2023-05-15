@@ -5,7 +5,7 @@
 
 #include <check.h>
 
-#include "s21_decimal.h"
+#include "../s21_decimal.h"
 
 int last_bits(int pow,  // первый аргумент заполняет степень, второй аргумент
                         // знак (0 или 1) для последнего бита массива

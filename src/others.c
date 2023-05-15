@@ -8,7 +8,7 @@ int s21_truncate(s21_decimal value, s21_decimal *result) {
     int power = s21_get_power_of_decimal(value);
     s21_set_power_of_decimal(&value, 0);
     while (power) {
-      s21_div_decimal_by_10(&value);  // заменить после на нормальное деление
+      s21_div_decimal_by_10(&value);
       power--;
     }
     *result = value;
@@ -61,7 +61,6 @@ int s21_round(s21_decimal value, s21_decimal *result) {
   } else {
     // В остальных случаях округляем
     s21_set_dec_number_to_0(result);
-    // int sign = s21_decimal_get_sign(value);
     int sign = s21_get_bit(&value, 127);
     s21_decimal fractional;
     s21_decimal value_unsigned_truncated;
@@ -80,7 +79,6 @@ int s21_round(s21_decimal value, s21_decimal *result) {
 
     *result = value_unsigned_truncated;
     // Возвращаем знак
-    // s21_decimal_set_sign(result, sign);
     if (sign) {  // постановка знака
       s21_set_bit_1(result, 127);
     } else {
@@ -94,7 +92,7 @@ int s21_round(s21_decimal value, s21_decimal *result) {
 s21_decimal s21_round_banking(s21_decimal integral, s21_decimal fractional) {
   s21_decimal zerofive = s21_decimal_get_zerofive();
   s21_decimal result;
-  s21_decimal decimal_one = {1};
+  s21_decimal decimal_one = {{1, 0, 0, 0}};
 
   if (s21_is_equal(fractional, zerofive)) {
     // Если дробная часть ровно 0.5

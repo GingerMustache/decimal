@@ -1,40 +1,58 @@
-CC = gcc
-CFLAGS = -std=c11 -Wall -Wextra -Werror -pedantic -Wno-gnu-binary-literal -fprofile-arcs -ftest-coverage -std=c2x
-LIBS = s21_decimal.a
-TESTS = check_s21_decimal
-C_FILES := $(wildcard *.c)
-OBJ_FILES := $(C_FILES:.c=.o)
+# .PHONY: s21_matrix.a gcov_report test clean
 
-ifeq ($(OS), Darwin)
-	TEST_LIBS = -lcheck -lrt -pthread -lsubunit -L/usr/lib/x86_64-linux-gnu/libsubunit.so -L/usr/lib/x86_64-linux-gnu/libcheck.a -lm
+OS=$(shell uname)
+BASE=*.c
+TEST_C=tests/check_s21_decimal.c
+OBJS=addition.o big_decimal_functions.o bits_and_addition_function.o comparesons.o div.o float_and_decimal.o int_and_decimal.o multiplication.o others.o shift_big_bits.o shifts.o substruction.o
+GCC=gcc -std=c11 -Wall -Werror -Wextra #-fsanitize=address
+
+# -- Main targets ---
+LIB=s21_decimal.a
+GCOV=gcov_report
+TEST=test
+CLEAN=clean
+
+# -- Dependencie of OS ---
+ifeq ($(OS), Linux)
+	LINUX=-lsubunit
 else
-	TEST_LIBS = -lcheck -L /usr/bin/
+	VIEWHTML=open ./report/index.html
 endif
 
 
-all: clean $(LIBS) gcov_report
+all: $(CLEAN) $(LIB) $(TEST) $(GCOV)
 
-clean:
-	rm -rf  *.o *.gcda *.gcno *.gcov *.a *.info coverage_report check_s21_decimal a.out
+$(LIB): $(OBJS)
+	rm -rf $(LIB)
+	ar rcs $(LIB) $(OBJS)
+	ranlib $(LIB)
 
-test: $(TESTS) 
-	./$(TESTS) 
-s21_decimal.a: $(OBJ_FILES)
-		ar rcs $@ $< $(OBJ_FILES)
-
-s21_decimal.o: $(C_FILES) s21_decimal.h
-	$(CC) $(CFLAGS) $(C_FILES) -fprofile-arcs -ftest-coverage -c $<
-
-check_s21_decimal.o: check_s21_decimal.c s21_decimal.h
-	$(CC) $(CFLAGS)  -c $<
-
-check_s21_decimal: check_s21_decimal.o s21_decimal.a
-	$(CC) $(CFLAGS)  -o $@ $^ $(TEST_LIBS)
+.c.o:
+	$(GCC) -c -g -o $@ $<
 
 
-gcov_report: CFLAGS += -fprofile-arcs -ftest-coverage
-gcov_report: test
-	lcov --capture --directory . --output-file coverage.info
-	genhtml coverage.info --output-directory coverage_report
-	rm -f *.gcda *.gcno *.gcov
-	open ./coverage_report/index.html
+$(TEST): $(LIB) 
+	$(GCC) $(TEST_C) -o $(TEST).out -L. $(LIB) -lcheck -lm $(LINUX)
+ifeq ($(OS), Darwin)
+	./$(TEST).out
+else
+	CK_FORK=no valgrind --vgdb=no --leak-check=full --show-leak-kinds=all --track-origins=yes --verbose ./$(TEST).out
+endif
+
+$(GCOV): $(LIB)
+	rm -rf *.o *.gcno *.gcda
+	$(GCC) $(TEST_C) $(BASE) -o gcov --coverage -lcheck -lm $(LINUX) -L. $(LIB)
+	./gcov
+	lcov -t "gcov" -o $(GCOV).info --no-external -c -d .
+	genhtml -o report $(GCOV).info
+	$(VIEWHTML)
+
+rebuild: $(CLEAN) all
+
+$(CLEAN):
+	rm -rf  *.gcno  *.inf *.info gcov *.gcda *.a test.out ./report *.o *.dSYM a.out tests/*.o
+
+check:
+	cp ../materials/linters/.clang-format .
+	clang-format -n *.c *.h ./*/*.c ./*/*.h
+	rm -f .clang-format

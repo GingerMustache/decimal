@@ -1,7 +1,5 @@
 #include "s21_decimal.h"
 
-// функция для принятия решения (-) или (+)
-
 int s21_sub(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
   int output = CONVERSATION_ERROR;
   int sign_1 = s21_get_bit(&value_1, 127);
@@ -64,7 +62,6 @@ int s21_sub_big(s21_big_decimal val_1, s21_big_decimal val_2,
   s21_set_bit_0_big(&val_1, 223);
   s21_set_bit_0_big(&val_2, 223);
   s21_big_decimal tmp = {0};
-  // s21_big_decimal big_10 = {10, 0, 0, 0, 0, 0, 0};
 
   s21_big_decimal fractional = {0};
   s21_big_decimal value_unsigned_truncated = {0};

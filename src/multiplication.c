@@ -1,5 +1,5 @@
 #include "s21_decimal.h"
-// нужны тесты
+
 int s21_mul(s21_decimal value_1, s21_decimal value_2, s21_decimal* result) {
   int output = CONVERSATION_OK;
 
@@ -53,11 +53,11 @@ int s21_mul(s21_decimal value_1, s21_decimal value_2, s21_decimal* result) {
 int s21_big_mul(s21_big_decimal big_value_1, s21_big_decimal big_value_2,
                 s21_big_decimal* result, int func) {
   int index = 0;
-  int output = 1;  // поменял с end_mul
+  int output = 1; 
   s21_big_decimal step = {0};
   s21_set_big_dec_number_to_0(result);
   s21_big_decimal tmp = *result;
-  s21_big_decimal big_10 = {10, 0, 0, 0, 0, 0, 0};
+  s21_big_decimal big_10 = {{10, 0, 0, 0, 0, 0, 0}};
   int count_1 = 0, count_2 = 0;
   int power_of_1 = s21_get_power_of_big_decimal(big_value_1);
   int power_of_2 = s21_get_power_of_big_decimal(big_value_2);
@@ -134,7 +134,6 @@ int s21_big_mul(s21_big_decimal big_value_1, s21_big_decimal big_value_2,
       s21_set_power_of_big_decimal(result, power_of_result);
       output = CONVERSATION_OK;
     } else {
-      // можно для деления что то подставить
       output = CONVERSATION_SMALL;
     }
 
@@ -143,13 +142,3 @@ int s21_big_mul(s21_big_decimal big_value_1, s21_big_decimal big_value_2,
   }
   return output;
 }
-
-/*
-    работает
-    1234.567 * 0.00000000000000000000000008
-    0
-    95, 90, 83, 70, 50 бит и 0.06^10 и любая приемлемая степень
-    0.0000000000000008 * 12.34
-    95 *  на обычные числа
-
-*/

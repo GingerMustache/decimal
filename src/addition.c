@@ -1,27 +1,11 @@
 #include "s21_decimal.h"
-// нужны тесты
 // все вычисления происходят в big_decimal и потом пепереписываются в decimal
 int s21_add(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
   int output = CONVERSATION_OK;
   int sign_1 = s21_get_bit(&value_1, 127);
-  // s21_decimal zero_decimal = {0};
   output = s21_sign_handle(&value_1, &value_2, result, 0);
 
   if (output == 2) {
-    // если хоть один максимум и второй не 0 -> на выход
-    // if (s21_is_max_decimal(value_1) || s21_is_max_decimal(value_2)) {
-    //   if (!s21_is_max_decimal(value_1) && s21_is_equal(value_2,
-    //   zero_decimal)) {
-    //     return (output = CONVERSATION_BIG);
-    //   } else if (!s21_is_max_decimal(value_2) &&
-    //              s21_is_equal(value_1, zero_decimal)) {
-    //     return (output = CONVERSATION_BIG);
-    //   } else {
-    //     output = CONVERSATION_OK;
-    //   }
-    // } else {
-    //   output = CONVERSATION_OK;
-    // }
     s21_set_dec_number_to_0(result);
     int big_decimal_output = 0;
     s21_decimal tmp = {0};
@@ -51,7 +35,6 @@ int s21_add(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
 }
 
 //------------------------Сложение big_decimal----------------------//
-// тут нет учета знака
 // func - переменная показывающая необходимо ли использовать функционал
 // переполнения
 int s21_big_add(s21_big_decimal big_value_1, s21_big_decimal big_value_2,
@@ -70,8 +53,6 @@ int s21_big_add(s21_big_decimal big_value_1, s21_big_decimal big_value_2,
   s21_big_decimal value_unsigned_truncated = {0};
 
   s21_big_decimal big_tmp = {0};
-  // s21_big_decimal big_10 = {10, 0, 0, 0, 0, 0, 0};
-  ;
 
   if (power_of_1 || power_of_2) {
     power_of_result =
@@ -112,24 +93,14 @@ int s21_big_add(s21_big_decimal big_value_1, s21_big_decimal big_value_2,
   }
   if (func == 1) {
     int rewrite = check_big_decimal(big_tmp);
-    // s21_print_big_decimal_number(&big_tmp);
     if (rewrite == 3) {
       *big_result = big_tmp;
     } else if (power_of_result) {
       while (power_of_result && rewrite != 3) {
-        // s21_div_big(big_tmp, big_10, &big_tmp);
-        s21_set_power_of_big_decimal(&big_tmp,
-                                     1);  // не уверен, но тест пройдет
-        // s21_print_big_decimal_number(&big_tmp);
-        // rewrite = check_big_decimal(big_tmp);
-        // if (rewrite != 3) {
+        s21_set_power_of_big_decimal(&big_tmp, 1);
         s21_truncate_big(big_tmp, &value_unsigned_truncated);
-        // s21_print_big_decimal_number(&value_unsigned_truncated);
         s21_sub_big(big_tmp, value_unsigned_truncated, &fractional, 1);
-        // s21_print_big_decimal_number(&fractional);
         big_tmp = s21_round_banking_big(value_unsigned_truncated, fractional);
-        // s21_print_big_decimal_number(&big_tmp);
-        // }
         rewrite = check_big_decimal(big_tmp);
         power_of_result--;
       }
