@@ -1,5 +1,9 @@
 #include "s21_decimal.h"
-// все вычисления происходят в big_decimal и потом пепереписываются в decimal
+//------------------------Сложение decimal----------------------//
+/*
+ Все вычисления происходят в big_decimal
+ Сама же функция - распределитель и учет знака
+*/
 int s21_add(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
   int output = CONVERSATION_OK;
   int sign_1 = s21_get_bit(&value_1, 127);
@@ -35,8 +39,11 @@ int s21_add(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
 }
 
 //------------------------Сложение big_decimal----------------------//
-// func - переменная показывающая необходимо ли использовать функционал
-// переполнения
+
+/*
+  func - переменная показывающая необходимо ли использовать функционал
+  переполнения
+*/
 int s21_big_add(s21_big_decimal big_value_1, s21_big_decimal big_value_2,
                 s21_big_decimal *big_result, int func) {
   int output = CONVERSATION_OK;
@@ -122,7 +129,10 @@ int s21_big_add(s21_big_decimal big_value_1, s21_big_decimal big_value_2,
 
   return output;
 }
-// функция используется не во всей арифметики
+/*
+  Функция проверяет умещается ли биг децимал в обычный децемал и возвращает
+  результат. ЕСли rewrite = 3, то все OK
+*/
 int check_big_decimal(s21_big_decimal big_tmp) {
   int rewrite = 0;
   s21_big_decimal zero_dec = {0};

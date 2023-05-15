@@ -135,6 +135,7 @@ void s21_set_dec_number_to_1_big(s21_big_decimal *src_num) {
   *src_num = decimal_1;
 }
 
+//------------------------Сравнение----------------------//
 int s21_is_greater_big(s21_big_decimal num_1, s21_big_decimal num_2) {
   int res_1 = 0, res_2 = 0;
   int i = 191;
@@ -255,6 +256,8 @@ int s21_div_decimal_by_10_big(s21_big_decimal *value_1,
   return (power_of_result);
 }
 
+//------------------------Другие функции----------------------//
+// Округление в большкю сторону
 int s21_round_big(s21_big_decimal value, s21_big_decimal *result) {
   int output = CONVERSATION_OK;
   s21_set_big_dec_number_to_0(result);

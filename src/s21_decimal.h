@@ -15,7 +15,7 @@
   0.00000000000000000000000000010000000031710768509710513471352647538147514756461109f
 
 //------------------------output----------------------//
-#define CONVERSATION_ERROR 1  // надо проверить все функции!
+#define CONVERSATION_ERROR 1
 
 #define CONVERSATION_OK 0
 #define CONVERSATION_BIG 1
@@ -48,6 +48,8 @@ typedef struct {
                  */
 } s21_big_decimal;
 
+//----------------------------Работа с decimal----------------------------//
+
 //------------------------Конверторы----------------------//
 int s21_from_int_to_decimal(int src, s21_decimal *dst);
 int s21_from_decimal_to_int(s21_decimal src, int *dst);
@@ -58,6 +60,7 @@ int s21_from_decimal_to_float(s21_decimal src, float *dst);
 int s21_add(s21_decimal value_1, s21_decimal value_2, s21_decimal *result);
 int s21_sub(s21_decimal value_1, s21_decimal value_2, s21_decimal *result);
 int s21_mul(s21_decimal value_1, s21_decimal value_2, s21_decimal *result);
+int s21_div(s21_decimal value_1, s21_decimal value_2, s21_decimal *result);
 
 //------------------------Другие функции----------------------//
 int s21_truncate(s21_decimal value, s21_decimal *result);
@@ -98,32 +101,23 @@ s21_decimal s21_decimal_get_zerofive(void);
 int s21_decimal_even(s21_decimal value);
 s21_decimal s21_round_banking(s21_decimal integral, s21_decimal fractional);
 
-//------------------------Сдвиги(вспомогательные)----------------------//
-int s21_shift_bits(s21_decimal *dec_num, int index);
-int s21_shift_31(s21_decimal *dec_num, int flg_31, int flg_63);
-int s21_shift_63(s21_decimal *dec_num);
-void shift_bit_right(s21_decimal *value, int count);
-void shift_bit_left(s21_decimal *value, int count);
-
 //------------------------Работа с битами----------------------//
 int s21_get_col(int bit);
 int s21_get_row(int bit);
 int s21_get_bit(s21_decimal *dec_num, int index);
 void s21_set_bit_1(s21_decimal *dec_num, int index);
 void s21_set_bit_0(s21_decimal *dec_num, int index);
-int s21_div(s21_decimal value_1, s21_decimal value_2, s21_decimal *result);
 
-//------------------------Работа с big_decimal----------------------//
+//----------------------------Работа с big_decimal----------------------------//
 
-//-----Работа с битами-----//
-
+//------------------------Работа с битами----------------------//
 void s21_set_bit_0_big(s21_big_decimal *dec_num, int index);
 void s21_set_bit_1_big(s21_big_decimal *dec_num, int index);
 int s21_get_bit_big(s21_big_decimal *dec_num, int index);
 void s21_set_bits_from_int_to_big_decimal(int src, s21_big_decimal *dst,
                                           int which_int_part_to_fill);
 
-//-----Арифметика-----//
+//------------------------Арифметика----------------------//
 int s21_big_add(s21_big_decimal big_value_1, s21_big_decimal big_value_2,
                 s21_big_decimal *big_result, int func);
 int s21_big_mul(s21_big_decimal big_value_1, s21_big_decimal big_value_2,
@@ -133,18 +127,21 @@ int s21_sub_big(s21_big_decimal value_1, s21_big_decimal value_2,
 int s21_div_big(s21_big_decimal value_1, s21_big_decimal value_2,
                 s21_big_decimal *result);
 
-//-----из decimal в big_decimal и обратно-----//
+//-------------------из decimal в big_decimal и обратно-------------------//
 void rewrite_decimal_to_big(s21_big_decimal *big_decimal, s21_decimal decimal);
 void rewrite_from_big_decimal_to_decimal(s21_big_decimal big_decimal,
                                          s21_decimal *decimal);
 
-//-----Работа со степенью-----//
+//---------------Работа со степенью---------------//
 int s21_get_power_of_big_decimal(s21_big_decimal src);
 void s21_set_power_of_big_decimal(s21_big_decimal *src, int power);
 
-//-----Другие функции-----//
+//---------------Другие функции---------------//
 int s21_truncate_zero_big(s21_big_decimal *value);
+int s21_truncate_big(s21_big_decimal value, s21_big_decimal *result);
+int s21_round_big(s21_big_decimal value, s21_big_decimal *result);
 
+//---------------Сдвиги и доп. функции  для умножения---------------//
 int s21_shift_bits_big(s21_big_decimal *dec_num, int index);
 int s21_shift_31_big(s21_big_decimal *dec_num, int *flg_63, int *flg_95,
                      int *flg_127, int *flg_159, int *flg_overlow);
@@ -158,29 +155,26 @@ void shift_bit_right_big(s21_big_decimal *value, int count, int number_shift);
 void shift_big_bit_left(s21_big_decimal *value, int count, int number_shift,
                         int end_shift);
 void twist_bit_big(s21_big_decimal *dec_num, int first, int second);
-int s21_normalize_big(s21_big_decimal *num_1, s21_big_decimal *num_2);
-int s21_is_decimal_0_big(s21_big_decimal dec_num);
-void s21_set_dec_number_to_1_big(s21_big_decimal *src_num);
 
-void s21_set_big_dec_number_to_0(s21_big_decimal *src_num);
+//------------------------Сравнение----------------------//
 int s21_is_equal_big(s21_big_decimal num_1, s21_big_decimal num_2);
 int s21_is_greater_big(s21_big_decimal num_1, s21_big_decimal num_2);
 int s21_is_less_big(s21_big_decimal num_1, s21_big_decimal num_2);
 int s21_is_less_or_equal_big(s21_big_decimal num_1, s21_big_decimal num_2);
 int s21_is_greater_or_equal_big(s21_big_decimal num_1, s21_big_decimal num_2);
 
-int s21_truncate_big(s21_big_decimal value, s21_big_decimal *result);
+//------------------------Вспомогательные функции----------------------//
+int s21_is_decimal_0_big(s21_big_decimal dec_num);
+int s21_normalize_big(s21_big_decimal *num_1, s21_big_decimal *num_2);
+void s21_set_big_dec_number_to_0(s21_big_decimal *src_num);
+void s21_set_dec_number_to_1_big(s21_big_decimal *src_num);
 s21_big_decimal s21_round_banking_big(s21_big_decimal integral,
                                       s21_big_decimal fractional);
-
 s21_big_decimal s21_decimal_get_zerofive_big(void);
 int s21_decimal_even_big(s21_big_decimal value);
-int s21_round_big(s21_big_decimal value, s21_big_decimal *result);
-
 int s21_mul_decimal_by_10_big(s21_big_decimal *num);
 int s21_div_decimal_by_10_big(s21_big_decimal *value_1,
                               s21_big_decimal *out_reminder);
-
 int check_big_decimal(s21_big_decimal big_tmp);
 
 #endif  // _SRC_S21_DECIMAL_H_
