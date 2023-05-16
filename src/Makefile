@@ -2,7 +2,7 @@
 
 OS=$(shell uname)
 BASE=*.c
-TEST_C=tests/check_s21_decimal.c
+TEST_C=tests/test_mat.c
 OBJS=addition.o big_decimal_functions.o bits_and_addition_function.o comparesons.o div.o float_and_decimal.o int_and_decimal.o multiplication.o others.o shift_big_bits.o substruction.o
 GCC=gcc -std=c11 -Wall -Werror -Wextra #-fsanitize=address
 

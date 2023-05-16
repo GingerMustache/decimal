@@ -199,3 +199,9 @@ int s21_sign_handle(s21_decimal *value_1, s21_decimal *value_2,
 
   return output;
 }
+
+int last_bits(int pow,  // первый аргумент заполняет степень, второй аргумент
+                        // знак (0 или 1) для последнего бита массива
+              int sign) {  // Возвращает число для последнего бита массива
+  return (pow << 16) ^ (sign << 31);
+}

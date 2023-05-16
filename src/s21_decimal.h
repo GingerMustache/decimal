@@ -1,3 +1,4 @@
+#include <check.h>
 #include <limits.h>
 #include <math.h>
 #include <stdio.h>
@@ -101,6 +102,7 @@ s21_decimal s21_decimal_get_zerofive(void);
 int s21_decimal_even(s21_decimal value);
 s21_decimal s21_round_banking(s21_decimal integral, s21_decimal fractional);
 
+int last_bits(int pow, int sign);
 //------------------------Работа с битами----------------------//
 int s21_get_col(int bit);
 int s21_get_row(int bit);
